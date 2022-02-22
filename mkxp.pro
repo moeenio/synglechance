@@ -50,6 +50,7 @@ unix {
 		QMAKE_LFLAGS += -L/opt/homebrew/lib -L/opt/homebrew/opt/ruby/lib -L/opt/homebrew/opt/openal-soft/lib
 		HEADERS += src/macos-bindings.h
 		SOURCES += src/macos-bindings.mm
+		QMAKE_CXXFLAGS += -fdeclspec
 	}
 	!macx: {
 		CONFIG(debug, debug|release) {
@@ -263,7 +264,7 @@ BINDING_NULL {
 BINDING_MRI {
 	MRIVERSION = $$(MRIVERSION)
 	isEmpty(MRIVERSION) {
-		MRIVERSION = 2.5
+		MRIVERSION = 3.1
 		unix {
 			!macx {
 				# Issues with compiling on Ubuntu with Ruby 2.4+.

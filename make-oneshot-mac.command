@@ -30,7 +30,7 @@ m4 patches/mac/JournalInfo.plist.in -DONESHOTMACVERSION=$mac_version > ./dist/Jo
 if [[ $use_qmake == True ]]
 	then
 	echo "-> ${cyan}Generate makefile...${color_reset}"
-	qmake MRIVERSION=2.5 -spec macx-xcode
+	MRIVERSION=3.1 qmake -spec macx-xcode
 	echo "-> ${cyan}Compile engine...${color_reset}"
 	xcodebuild
 	# echo "-> ${cyan}Compile steamshim...${color_reset}"
