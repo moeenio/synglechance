@@ -14,7 +14,7 @@ class MkxpConan(ConanFile):
     exports_sources = "*"
     requires = (
         "boost/1.73.0",
-        "openal/1.18.2@bincrafters/stable",
+        "openal/1.21.1",
         "physfs/3.0.1@bincrafters/stable",
         "pixman/0.34.0@bincrafters/stable",
         "ruby/2.5.3@eliza/testing",
