@@ -264,7 +264,7 @@ BINDING_NULL {
 BINDING_MRI {
 	MRIVERSION = $$(MRIVERSION)
 	isEmpty(MRIVERSION) {
-		MRIVERSION = 3.1
+		MRIVERSION = 2.5
 		unix {
 			!macx {
 				# Issues with compiling on Ubuntu with Ruby 2.4+.
