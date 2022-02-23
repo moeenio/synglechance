@@ -2,7 +2,7 @@
 
 TEMPLATE = app
 QT =
-TARGET = oneshot
+TARGET = OneShot
 DEPENDPATH += src shader assets
 INCLUDEPATH += . src
 
