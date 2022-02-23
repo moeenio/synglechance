@@ -66,16 +66,15 @@ fi
 rm -rf ./OneShot.app
 mv ./Release/oneshot.app ./OneShot.app
 
-cp steamshim_parent/steamshim ./OneShot.app/Contents/Resources/steamshim
+cp steamshim_parent/steamshim ./OneShot.app/Contents/macOS/steamshim
 # cp patches/mac/libsteam_api.dylib ./OneShot.app/Contents/Libraries/libsteam_api.dylib
 cp -f journal/unix/macOS/Python dist/_______.app/Contents/MacOS/Python
-install_name_tool -change @loader_path/libsteam_api.dylib "$( cd "$(dirname "$0")" ; pwd -P )"/steamworks/redistributable_bin/osx/libsteam_api.dylib ./OneShot.app/Contents/Resources/steamshim
+install_name_tool -change @loader_path/libsteam_api.dylib "$( cd "$(dirname "$0")" ; pwd -P )"/steamworks/redistributable_bin/osx/libsteam_api.dylib ./OneShot.app/Contents/macOS/steamshim
 cmake -P patches/mac/CompleteBundle.cmake
 cp assets/icon.icns ./OneShot.app/Contents/Resources/icon.icns
 cp assets/icon_journal.icns dist/_______.app/Contents/Resources/icon_journal.icns
 cp steam_appid.txt ./OneShot.app/Contents/Resources/steam_appid.txt
 cp patches/mac/oneshot.sh ./OneShot.app/Contents/MacOS/oneshot.sh
-mv OneShot.app/Contents/MacOS/OneShot OneShot.app/Contents/Resources/OneShot
 rm -rf _______.app
 cp -r dist/_______.app _______.app
 rm -f ./OneShot.app/Contents/Info.plist
