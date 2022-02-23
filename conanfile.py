@@ -46,7 +46,11 @@ class MkxpConan(ConanFile):
 
 	def requirements(self):
 		if self.options.platform == "steam":
-			self.requires("steamworks/1.42@eliza/stable")
+			steamworks_path = os.path.join(
+				os.path.dirname(os.path.realpath(__file__)), 'steamworks'
+			)
+			if not os.path.exists(steamworks_path):
+				raise Error("steamworks not found. Please download from https://partner.steamgames.com/dashboard and put in project root.")
 		if tools.os_info.is_linux:
 			# Overrides
 			self.requires("sqlite3/3.29.0")
