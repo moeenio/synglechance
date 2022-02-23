@@ -35,7 +35,7 @@ if [[ $use_qmake == True ]]
 	xcodebuild
 	echo "-> ${cyan}Compile steamshim...${color_reset}"
 	cd steamshim_parent
-	if [ ! -e $LibrariesDir ]
+	if [ ! -e build ]
 		then mkdir build
 	fi
 	cd build
