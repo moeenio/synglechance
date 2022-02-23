@@ -37,6 +37,9 @@ if [[ $use_qmake == true ]]; then
 	MRIVERSION=2.7 qmake -spec macx-xcode
 	echo "-> ${cyan}Compile engine...${color_reset}"
 	xcodebuild
+	mkdir build/bin
+	mv "./Release/oneshot.app" "./build/bin/OneShot.app"
+	rm -rf Release
 	if [[ $with_steamshim == true ]]; then
 		echo "-> ${cyan}Compile steamshim...${color_reset}"
 		cd build
@@ -65,7 +68,7 @@ rm -rf journal/unix/__pycache__
 
 # Create app bundles
 echo "-> ${cyan}Create app bundles...${color_reset}"
-OSX_App=$([ $use_qmake == true ] && echo ".Release/oneshot.app" || echo "./build/bin/OneShot.app")
+OSX_App="./build/bin/OneShot.app"
 ContentsDir="$OSX_App/Contents"
 LibrariesDir="$OSX_App/Contents/Libraries"
 ResourcesDir="$OSX_App/Contents/Resources"
@@ -81,18 +84,13 @@ fi
 
 # Steamshim
 if [[ $with_steamshim == true ]]; then
-	if [[ $use_qmake == true ]]; then
-		cp steamshim_parent/build/steamshim $OSX_App/Contents/MacOS/steamshim
-	else
-		cp build/bin/steamshim $OSX_App/Contents/MacOS/steamshim
-	fi
-
+	cp build/$([ $use_qmake == true ] && echo "steamshim" || echo "bin")/steamshim $OSX_App/Contents/MacOS/steamshim
 	install_name_tool -change @loader_path/libsteam_api.dylib "$( cd "$(dirname "$0")" ; pwd -P )"/steamworks/redistributable_bin/osx/libsteam_api.dylib $OSX_App/Contents/macOS/steamshim
 fi
 
 # Complete OneShot bundle
 if [[ $use_qmake == true ]]; then
-	cmake -P patches/mac/CompleteBundle.cmake -DUSE_QMAKE=on
+	cmake -P patches/mac/CompleteBundle.cmake
 fi
 
 # Move files into proper locations

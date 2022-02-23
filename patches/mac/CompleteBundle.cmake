@@ -3,14 +3,6 @@ if(COMMAND cmake_policy)
 	cmake_policy(SET CMP0009 NEW)
 endif(COMMAND cmake_policy)
 
-option(USE_QMAKE "Use QMake output paths" off)
-
-if(USE_QMAKE)
-	set(path ${CMAKE_BINARY_DIR})
-else()
-	set(path ${CMAKE_BINARY_DIR}/bin)
-endif()
-
 # gp_item_default_embedded_path item default_embedded_path_var
 #
 # Return the path that others should refer to the item by when the item
@@ -74,5 +66,5 @@ endfunction(gp_item_default_embedded_path_override)
 # -- Run the BundleUtilities cmake code
 include(BundleUtilities)
 set(BU_CHMOD_BUNDLE_ITEMS ON)
-fixup_bundle("${path}/OneShot.app" "" "${path}")
-execute_process(COMMAND chmod 0700 "${path}/OneShot.app")
+fixup_bundle("${CMAKE_BINARY_DIR}/build/bin/OneShot.app" "" "${CMAKE_BINARY_DIR}/build/bin")
+execute_process(COMMAND chmod 0700 "${CMAKE_BINARY_DIR}/build/bin/OneShot.app")
