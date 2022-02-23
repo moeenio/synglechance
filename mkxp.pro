@@ -45,6 +45,7 @@ unix {
 	LIBS += -ldl
 	macx: {
 		QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.10
+		QMAKE_APPLE_DEVICE_ARCHS = arm64 x86_64
 		INCLUDEPATH += $$QMAKE_MAC_SDK_PATH/System/Library/Frameworks/OpenAL.framework/Versions/A/Headers /opt/homebrew/include
 		LIBS += -framework OpenAL -framework AppKit
 		QMAKE_LFLAGS += -L/opt/homebrew/lib -L/opt/homebrew/opt/ruby@2.7/lib -L/opt/homebrew/opt/openal-soft/lib
