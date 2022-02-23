@@ -66,9 +66,12 @@ fi
 rm -rf ./OneShot.app
 mv ./Release/oneshot.app ./OneShot.app
 
-cp steamshim_parent/steamshim ./OneShot.app/Contents/macOS/steamshim
-cp -f journal/unix/macOS/Python dist/_______.app/Contents/MacOS/Python
+# Steamshim
+cp steamshim_parent/steamshim ./OneShot.app/Contents/MacOS/steamshim
 install_name_tool -change @loader_path/libsteam_api.dylib "$( cd "$(dirname "$0")" ; pwd -P )"/steamworks/redistributable_bin/osx/libsteam_api.dylib ./OneShot.app/Contents/macOS/steamshim
+
+# Move files into proper locations
+cp -f journal/unix/macOS/Python dist/_______.app/Contents/MacOS/Python
 cmake -P patches/mac/CompleteBundle.cmake
 cp assets/icon.icns ./OneShot.app/Contents/Resources/icon.icns
 cp assets/icon_journal.icns dist/_______.app/Contents/Resources/icon_journal.icns
