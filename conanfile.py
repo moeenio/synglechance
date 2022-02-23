@@ -17,7 +17,7 @@ class MkxpConan(ConanFile):
 		"openal/1.21.1",
 		"physfs/3.0.1@bincrafters/stable",
 		"pixman/0.34.0@bincrafters/stable",
-		"ruby/2.7.3@queengooborg/stable",
+		"ruby/2.7.5@queengooborg/stable",
 		"sdl2/2.0.16@bincrafters/stable",
 		"sdl2_image/2.0.5@bincrafters/stable",
 		"sdl2_ttf/2.0.15@bincrafters/stable",
