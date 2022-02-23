@@ -17,7 +17,7 @@ IF(DEBUG)
 ENDIF()
 
 IF(APPLE)
-	find_library(steamworks NAMES steam_api steam_api64 PATHS ${STEAMWORKS_PATH}/redistributable_bin/osx32)
+	find_library(steamworks NAMES steam_api steam_api64 PATHS ${STEAMWORKS_PATH}/redistributable_bin/osx)
 ELSEIF(WIN32)
 	list(APPEND SOURCES resources.rc)
 	find_library(steamworks NAMES steam_api steam_api64 PATHS ${STEAMWORKS_PATH}/redistributable_bin/win64)

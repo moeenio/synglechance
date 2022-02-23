@@ -12,7 +12,7 @@ Download Steamworks SDK from [here](https://partner.steamgames.com) and run
 $ export LD_LIBRARY_PATH=/path/to/steamworks/sdk/redistributable_bin/platform
 $ STEAMWORKS=/path/to/steamworks/sdk HOST=platform make
 ```
-inside this directory, where `platform` can be `win64`, `osx32`, `linux64` or `linux32`
+inside this directory, where `platform` can be `win64`, `osx`, `linux64` or `linux32`
 
 If you need debug output from the steamshim parent, compile with `DEBUG=1` in command-line arguments for `make`.
 
