@@ -10,7 +10,7 @@ Thanks to [hunternet93](https://github.com/hunternet93) for starting the reimple
 
 *OneShot* also makes use of [steamshim](https://hg.icculus.org/icculus/steamshim/) for GPL compliance while making use of Steamworks features. See LICENSE.steamshim.txt for details.
 
-## Building (Supported on Windows, Ubuntu Linux, in progress on macOS)
+## Building (Supported and Tested on Windows, macOS, Ubuntu Linux)
 
 Preface: This only supports Visual Studio on Windows and Xcode on macOS. Ubuntu should work with either GCC or clang. You can probably compile with other platforms/setups, but beware.
 

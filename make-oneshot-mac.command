@@ -14,7 +14,9 @@ cyan="\033[1;36m"       # Cyan - Bold
 green="\033[1;32m"      # Green - Bold
 color_reset="\033[0m"   # Reset Colors
 
-use_qmake=True
+use_qmake=false
+with_steamshim=true
+
 
 echo "${white}Compiling ${bold}SyngleChance v${mac_version} ${white}engine for macOS...${color_reset}\n"
 
@@ -27,23 +29,34 @@ m4 patches/mac/Info.plist.in -DONESHOTMACVERSION=$mac_version > ./dist/Info.plis
 m4 patches/mac/JournalInfo.plist.in -DONESHOTMACVERSION=$mac_version > ./dist/JournalInfo.plist
 
 # Generate makefile and build main + journal
-if [[ $use_qmake == True ]]
+if [[ $use_qmake ]]
 	then
 	echo "-> ${cyan}Generate makefile...${color_reset}"
 	MRIVERSION=2.7 qmake -spec macx-xcode
 	echo "-> ${cyan}Compile engine...${color_reset}"
 	xcodebuild
-	echo "-> ${cyan}Compile steamshim...${color_reset}"
-	cd steamshim_parent
+	if [[ $with_steamshim ]]
+		then
+		echo "-> ${cyan}Compile steamshim...${color_reset}"
+		cd steamshim_parent
+		if [ ! -e build ]
+			then mkdir build
+		fi
+		cd build
+		cmake ..
+		make -j${make_threads}
+		cd ../..
+	fi
+else
+	echo "-> ${cyan}Install dependencies...${color_reset}"
 	if [ ! -e build ]
 		then mkdir build
 	fi
 	cd build
-	cmake ..
-	make -j${make_threads}
-	cd ../..
-else
-	echo "${bold}WARNING: Conan/CMake method not ready yet.${color_reset}"
+	conan install .. --build=missing -o platform=$([ "$with_steamshim" ] && echo "steam" || echo "standalone")
+	echo "-> ${cyan}Compile engine...${color_reset}"
+	conan build ..
+	cd ..
 fi
 echo "-> ${cyan}Compile journal...${color_reset}"
 pyinstaller journal/unix/journal.spec --onefile --windowed
@@ -70,8 +83,11 @@ rm -rf ./OneShot.app
 mv ./Release/oneshot.app ./OneShot.app
 
 # Steamshim
-cp steamshim_parent/build/steamshim ./OneShot.app/Contents/MacOS/steamshim
-install_name_tool -change @loader_path/libsteam_api.dylib "$( cd "$(dirname "$0")" ; pwd -P )"/steamworks/redistributable_bin/osx/libsteam_api.dylib ./OneShot.app/Contents/macOS/steamshim
+if [[ $with_steamshim ]]
+	then
+	cp steamshim_parent/build/steamshim ./OneShot.app/Contents/MacOS/steamshim
+	install_name_tool -change @loader_path/libsteam_api.dylib "$( cd "$(dirname "$0")" ; pwd -P )"/steamworks/redistributable_bin/osx/libsteam_api.dylib ./OneShot.app/Contents/macOS/steamshim
+fi
 
 # Move files into proper locations
 cp -f journal/unix/macOS/Python dist/_______.app/Contents/MacOS/Python
