@@ -40,7 +40,7 @@ if [[ $use_qmake == True ]]
 	fi
 	cd build
 	cmake ..
-	STEAMWORKS=./steamworks make -j${make_threads}
+	make -j${make_threads}
 	cd ../..
 else
 	echo "${bold}WARNING: Conan/CMake method not ready yet.${color_reset}"
