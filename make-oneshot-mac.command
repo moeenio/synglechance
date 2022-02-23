@@ -29,13 +29,13 @@ m4 patches/mac/Info.plist.in -DONESHOTMACVERSION=$mac_version > ./dist/Info.plis
 m4 patches/mac/JournalInfo.plist.in -DONESHOTMACVERSION=$mac_version > ./dist/JournalInfo.plist
 
 # Generate makefile and build main + journal
-if [[ $use_qmake ]]
+if [[ $use_qmake == true ]]
 	then
 	echo "-> ${cyan}Generate makefile...${color_reset}"
 	MRIVERSION=2.7 qmake -spec macx-xcode
 	echo "-> ${cyan}Compile engine...${color_reset}"
 	xcodebuild
-	if [[ $with_steamshim ]]
+	if [[ $with_steamshim == true ]]
 		then
 		echo "-> ${cyan}Compile steamshim...${color_reset}"
 		cd steamshim_parent
@@ -53,7 +53,7 @@ else
 		then mkdir build
 	fi
 	cd build
-	conan install .. --build=missing -o platform=$([ "$with_steamshim" ] && echo "steam" || echo "standalone")
+	conan install .. --build=missing -o platform=$([ $with_steamshim == true ] && echo "steam" || echo "standalone")
 	echo "-> ${cyan}Compile engine...${color_reset}"
 	conan build ..
 	cd ..
