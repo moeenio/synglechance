@@ -75,7 +75,7 @@ cp -f journal/unix/macOS/Python dist/_______.app/Contents/MacOS/Python
 cmake -P patches/mac/CompleteBundle.cmake
 cp assets/icon.icns ./OneShot.app/Contents/Resources/icon.icns
 cp assets/icon_journal.icns dist/_______.app/Contents/Resources/icon_journal.icns
-cp steam_appid.txt ./OneShot.app/Contents/Resources/steam_appid.txt
+cp steam_appid.txt ./OneShot.app/Contents/MacOS/steam_appid.txt
 cp patches/mac/oneshot.sh ./OneShot.app/Contents/MacOS/oneshot.sh
 rm -rf _______.app
 cp -r dist/_______.app _______.app
