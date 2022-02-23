@@ -57,6 +57,8 @@ fi
 echo "-> ${cyan}Compile journal...${color_reset}"
 cd ..
 pyinstaller journal/unix/journal.spec --onefile --windowed
+rm -rf build/_______
+rm -rf build/_______.app
 mv dist/* build
 rm -r dist
 rm -rf journal/unix/__pycache__
