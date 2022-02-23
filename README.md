@@ -1,4 +1,4 @@
-# mkxp-oneshot
+# SyngleChance
 
 This is a specialized fork of [mkxp by Ancurio](https://github.com/Ancurio/mkxp) designed for [*OneShot*](http://oneshot-game.com/).
 
