@@ -1,8 +1,13 @@
-cmake_minimum_required(VERSION 2.8.11)
+cmake_minimum_required(VERSION 2.9.0)
+
+project("steamshim_parent")
 
 set(STEAMWORKS_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../steamworks" CACHE PATH "Path to Steamworks folder")
 set(GAME_LAUNCH_NAME "oneshot" CACHE STRING "Game launch name")
 option(DEBUG "Debug mode" OFF)
+
+set(CMAKE_OSX_DEPLOYMENT_TARGET "10.10")
+set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
 
 set(SOURCES
 	steamshim_parent.cpp
@@ -11,13 +16,14 @@ set(SOURCES
 include_directories(${STEAMWORKS_PATH}/public)
 
 add_definitions(-DGAME_LAUNCH_NAME="${GAME_LAUNCH_NAME}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Dnullptr=0")
 
 IF(DEBUG)
 	add_definitions(-DSTEAMSHIM_DEBUG)
 ENDIF()
 
 IF(APPLE)
-	find_library(steamworks NAMES steam_api steam_api64 PATHS ${STEAMWORKS_PATH}/redistributable_bin/osx)
+	find_library(steamworks NAMES steam_api PATHS ${STEAMWORKS_PATH}/redistributable_bin/osx)
 ELSEIF(WIN32)
 	list(APPEND SOURCES resources.rc)
 	find_library(steamworks NAMES steam_api steam_api64 PATHS ${STEAMWORKS_PATH}/redistributable_bin/win64)

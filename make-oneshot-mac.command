@@ -33,12 +33,15 @@ if [[ $use_qmake == True ]]
 	MRIVERSION=2.7 qmake -spec macx-xcode
 	echo "-> ${cyan}Compile engine...${color_reset}"
 	xcodebuild
-	# echo "-> ${cyan}Compile steamshim...${color_reset}"
-	# cd steamshim_parent
-	# mkdir build && cd build
-	# cmake ..
-	# STEAMWORKS=./steamworks make -j${make_threads}
-	# cd ../..
+	echo "-> ${cyan}Compile steamshim...${color_reset}"
+	cd steamshim_parent
+	if [ ! -e $LibrariesDir ]
+		then mkdir build
+	fi
+	cd build
+	cmake ..
+	STEAMWORKS=./steamworks make -j${make_threads}
+	cd ../..
 else
 	echo "${bold}WARNING: Conan/CMake method not ready yet.${color_reset}"
 fi
@@ -67,7 +70,7 @@ rm -rf ./OneShot.app
 mv ./Release/oneshot.app ./OneShot.app
 
 # Steamshim
-cp steamshim_parent/steamshim ./OneShot.app/Contents/MacOS/steamshim
+cp steamshim_parent/build/steamshim ./OneShot.app/Contents/MacOS/steamshim
 install_name_tool -change @loader_path/libsteam_api.dylib "$( cd "$(dirname "$0")" ; pwd -P )"/steamworks/redistributable_bin/osx/libsteam_api.dylib ./OneShot.app/Contents/macOS/steamshim
 
 # Move files into proper locations
