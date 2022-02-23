@@ -21,7 +21,7 @@ class MkxpConan(ConanFile):
         "sdl2/2.0.16@bincrafters/stable",
         "sdl2_image/2.0.5@bincrafters/stable",
         "sdl2_ttf/2.0.15@bincrafters/stable",
-        "sdl_sound-mkxp/1.0.1@eliza/stable",
+        "sdl_sound-mkxp/1.0.1@queengooborg/stable",
         "sigc++/2.10.0@bincrafters/stable",
         # Overrides
         "libpng/1.6.37",
@@ -59,8 +59,8 @@ class MkxpConan(ConanFile):
         if tools.os_info.is_windows:
             # ???
             self.options["openal"].shared = True
-            # Fix linker error in SDL_sound fork with SDL2
-            self.options["sdl2"].shared = True
+        # Fix linker error in SDL_sound fork with SDL2
+        self.options["sdl2"].shared = True
 
     def build_configure(self):
         cmake = CMake(self, msbuild_verbosity='minimal')

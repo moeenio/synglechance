@@ -18,6 +18,7 @@ With Python 3 and pip installed, install Conan via `pip3 install conan`. Afterwa
 
 ```sh
 conan remote add eliza https://rkevin.jfrog.io/artifactory/api/conan/eliza
+conan remote add queengooborg https://queengooborg.jfrog.io/artifactory/api/conan/default-conan
 conan remote add bincrafters https://bincrafters.jfrog.io/artifactory/api/conan/public-conan
 conan config set general.revisions_enabled=1
 setx CONAN_USE_ALWAYS_SHORT_PATHS 1 (windows only)
