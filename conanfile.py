@@ -17,7 +17,7 @@ class MkxpConan(ConanFile):
 		"openal/1.21.1",
 		"physfs/3.0.1@bincrafters/stable",
 		"pixman/0.34.0@bincrafters/stable",
-		"ruby/2.5.3@eliza/testing",
+		"ruby/2.7.3@queengooborg/stable",
 		"sdl2/2.0.16@bincrafters/stable",
 		"sdl2_image/2.0.5@bincrafters/stable",
 		"sdl2_ttf/2.0.15@bincrafters/stable",
@@ -28,7 +28,7 @@ class MkxpConan(ConanFile):
 		"zlib/1.2.11",
 		"bzip2/1.0.8",
 	)
-	build_requires = ("ruby_installer/2.5.5@bincrafters/stable", )
+	build_requires = ("ruby_installer/2.7.3@bincrafters/stable", )
 	options = {
 		"platform": ["standalone", "steam"],
 	}
