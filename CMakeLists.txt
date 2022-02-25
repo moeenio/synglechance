@@ -16,7 +16,7 @@ option(DEBUG "Debug mode" OFF)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.10")
-set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
+set(CMAKE_OSX_ARCHITECTURES "x86_64")
 
 ## Setup main source ##
 

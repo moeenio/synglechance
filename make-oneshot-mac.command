@@ -53,7 +53,7 @@ if [[ $use_qmake == true ]]; then
 	fi
 else
 	echo "-> ${cyan}Install dependencies...${color_reset}"
-	conan install .. --build=missing -o platform=$([ $with_steamshim == true ] && echo "steam" || echo "standalone")
+	conan install .. --build=missing -o platform=$([ $with_steamshim == true ] && echo "steam" || echo "standalone") -s arch=x86_64
 	echo "-> ${cyan}Compile engine...${color_reset}"
 	conan build ..
 fi
