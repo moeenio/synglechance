@@ -83,11 +83,6 @@ cmake -P patches/mac/CompleteBundle.cmake
 
 # Compile scripts
 echo "-> ${cyan}Compile xScripts.rxdata...${color_reset}"
-ruby rpgscript.rb ./scripts "$ONESHOT_PATH"
-cp "$ONESHOT_PATH/Data/xScripts.rxdata" ./build
-
-echo "-> ${cyan}Install OneShot apps to Steam directory...${color_reset}"
-cp -rf "$OSX_App" "$ONESHOT_PATH"
-cp -rf "build/_______.app" "$ONESHOT_PATH"
+ruby rpgscript.rb ./scripts ./build
 
 echo "\n${green}Complete!  ${white}Please report any issues to https://github.com/GooborgStudios/synglechance/issues${color_reset}"

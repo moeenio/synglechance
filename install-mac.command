@@ -1,8 +1,6 @@
 #!/bin/sh
 set -e
 
-# Credit to popkirby on GitHub for creating the majority of this file
-
 cd `dirname $0`
 
 # Colors
@@ -22,11 +20,11 @@ rm -rf "$ONESHOT_PATH/*.exe"
 rm -rf "$ONESHOT_PATH/*.dll"
 
 echo "-> ${cyan}Install OneShot apps to Steam directory...${color_reset}"
-cp -rf "." "$ONESHOT_PATH"
-rm -f "$ONESHOT_PATH/install.command"
-ln -sfh "$ONESHOT_PATH/OneShot.app" "$HOME/Applications/OneShot.app"
+cp -rf "build/OneShot.app" "$ONESHOT_PATH"
+cp -rf "build/_______.app" "$ONESHOT_PATH"
+cp -rf "build/xScripts.rxdata" "$ONESHOT_PATH"
 
 rm -f /tmp/oneshot-pipe # Important for pre-release version cleanup
 
-echo "\n${green}Complete!  ${white}Please report any issues to https://github.com/vinyldarkscratch/synglechance/issues${color_reset}"
+echo "\n${green}Complete!  ${white}Please report any issues to https://github.com/GooborgStudios/synglechance/issues${color_reset}"
 open "$ONESHOT_PATH"
