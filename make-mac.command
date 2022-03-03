@@ -19,9 +19,7 @@ color_reset="\033[0m"   # Reset Colors
 
 echo "${white}Compiling ${bold}SyngleChance v${mac_version} ${white}engine for macOS...${color_reset}\n"
 
-if [ ! -e build ]; then
-	mkdir build
-fi
+mkdir -p build
 cd build
 
 # Set version number -- being replaced by CMake steps
