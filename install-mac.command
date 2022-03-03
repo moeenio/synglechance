@@ -27,4 +27,3 @@ cp -rf "build/Data/xScripts.rxdata" "$ONESHOT_PATH/Data/xScripts.rxdata"
 rm -f /tmp/oneshot-pipe # Important for pre-release version cleanup
 
 echo "\n${green}Complete!  ${white}Please report any issues to https://github.com/GooborgStudios/synglechance/issues${color_reset}"
-open "$ONESHOT_PATH"
