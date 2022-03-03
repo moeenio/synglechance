@@ -31,7 +31,7 @@ m4 ../patches/mac/JournalInfo.plist.in -DONESHOTMACVERSION=$mac_version > ./Jour
 
 # Generate makefile and build main
 echo "-> ${cyan}Install dependencies...${color_reset}"
-conan install .. --build=missing -o platform=$([ $with_steamshim == true ] && echo "steam" || echo "standalone") -s arch=x86_64
+conan install .. --build=missing -o platform=$([ $with_steamshim == true ] && echo "steam" || echo "standalone") -s arch=x86_64 -s os.version=10.10
 echo "-> ${cyan}Compile engine...${color_reset}"
 conan build ..
 
