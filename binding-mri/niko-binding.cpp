@@ -125,6 +125,8 @@ RB_METHOD(nikoPrepare)
 		execl(journal.c_str(), journal.c_str(), (char*)"niko", (char*)0);
 		exit(1);
 	}
+	
+	SDL_RaiseWindow(shState->rtData().window);
 #endif
 	return Qnil;
 }
