@@ -5,7 +5,7 @@ import os, sys, time
 
 from PyQt6.QtCore import Qt, QEvent, QThread, pyqtSignal, QRect, QRectF, QTimer, QPoint
 from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QAbstractButton
-from PyQt6.QtGui import QIcon, QPixmap, QPainter, QCursor
+from PyQt6.QtGui import QIcon, QPixmap, QPainter, QCursor, QColor
 
 def get_documents_path():
 	if sys.platform == 'win32':
@@ -42,8 +42,14 @@ elif sys.platform == 'linux':
 
 if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
 	base_path = Path(sys._MEIPASS)
+	if sys.platform == 'darwin':
+		img_path = Path(base_path, '..', '..', '..')
+	else:
+		img_path = base_path
+	img_path = Path(img_path, 'Graphics', 'Journal').resolve()
 else:
 	base_path = Path(__file__).parent
+	img_path = Path(base_path, 'images')
 
 class PipeThread(QThread):
 	def __init__(self, *args, **kwargs):
@@ -188,15 +194,19 @@ class Journal(QWidget):
 			self.close_button.hide()
 
 		if lang == 'en':
-			img = os.path.join(base_path, 'images', '{}.bmp'.format(name))
+			img = os.path.join(img_path, '{}.bmp'.format(name))
 		else:
-			img = os.path.join(base_path, 'images', lang.upper(), '{}.bmp'.format(name))
+			img = os.path.join(img_path, lang.upper(), '{}.bmp'.format(name))
 		
 		if not os.path.exists(img):
 			return
 
-		self.pixmap = QPixmap(img)
-		self.label.setPixmap(self.pixmap)
+		canvas = QPainter()
+		pixmap = QPixmap(img)
+		mask = pixmap.createMaskFromColor(QColor(0, 255, 0), Qt.MaskMode.MaskInColor)
+		pixmap.setMask(mask)
+
+		self.label.setPixmap(pixmap)
 
 class Niko(QWidget):
 	def __init__(self, *args, **kwargs):
