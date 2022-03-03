@@ -52,7 +52,7 @@
 
 #define DEF_SCREEN_W  (rgssVer == 1 ? 640 : 544)
 #define DEF_SCREEN_H  (rgssVer == 1 ? 480 : 416)
-#define DEF_FRAMERATE (rgssVer == 1 ?  40 :  60)
+#define DEF_FRAMERATE 60 //(rgssVer == 1 ?  40 :  60)
 
 #if defined _WIN32
 	#define OS_W32
