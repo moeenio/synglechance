@@ -2,76 +2,90 @@
 
 This is a specialized fork of [mkxp by Ancurio](https://github.com/Ancurio/mkxp) designed for [*OneShot*](http://oneshot-game.com/).
 
-Thanks to [hunternet93](https://github.com/hunternet93) for starting the reimplementation of the journal program!
+## Prepare
 
-> mkxp is a project that seeks to provide a fully open source implementation of the Ruby Game Scripting System (RGSS) interface used in the popular game creation software "RPG Maker XP", "RPG Maker VX" and "RPG Maker VX Ace" (trademark by Enterbrain, Inc.), with focus on Linux. The goal is to be able to run games created with the above software natively without changing a single file.
->
-> It is licensed under the GNU General Public License v2+.
+There are a few prerequesites you must install before proceeding.  They are:
 
-*OneShot* also makes use of [steamshim](https://hg.icculus.org/icculus/steamshim/) for GPL compliance while making use of Steamworks features. See LICENSE.steamshim.txt for details.
+- [Python 3+](https://www.python.org/)
+- Conan (`pip install conan`)
+- PyQt6 (`pip install pyqt6`)
+- [CMake](https://cmake.org/)
+- Windows only:
+	- Visual Studio
+- macOS only:
+	- Xcode
+- Linux only:
+	- [linuxdeploy](https://github.com/linuxdeploy/linuxdeploy)
+	- [AppImageTool](https://github.com/AppImage/AppImageKit)
+	- `sudo apt install libgtk2.0-dev libxfconf-0-dev python3-venv libxcb-xinerama`
 
-## Building (Supported and Tested on Windows, macOS, Ubuntu Linux)
-
-Preface: This only supports Visual Studio on Windows and Xcode on macOS. Ubuntu should work with either GCC or clang. You can probably compile with other platforms/setups, but beware.
-
-With Python 3 and pip installed, install Conan via `pip3 install conan`. Afterwards, add the necessary package repositories by adding running the following commands:
+Once you have installed these dependencies, run the following commands to configure Conan:
 
 ```sh
 conan remote add eliza https://rkevin.jfrog.io/artifactory/api/conan/eliza
 conan remote add queengooborg https://queengooborg.jfrog.io/artifactory/api/conan/default-conan
 conan remote add bincrafters https://bincrafters.jfrog.io/artifactory/api/conan/public-conan
 conan config set general.revisions_enabled=1
-setx CONAN_USE_ALWAYS_SHORT_PATHS 1 (windows only)
 ```
 
-Prepare to build *OneShot* by installing the necessary dependencies with Conan.
+On Windows, additionally run the following:
 
 ```sh
-cd synglechance
+setx CONAN_USE_ALWAYS_SHORT_PATHS 1
+```
+
+## Building
+
+Building the engine is tested and supported on Windows, macOS, and Ubuntu Linux.
+
+### Windows
+
+(XXX WIP Instructions XXX)
+
+```sh
 mkdir build
 cd build
 conan install .. --build=missing
-```
-
-Hopefully, this should complete without error. It may take quite a while to build all of the dependencies.
-
-On Ubuntu, make sure you install the necessary dependencies before building *OneShot* proper:
-
-```sh
-sudo apt install libgtk2.0-dev libxfconf-0-dev
-```
-
-Finally, you can build the project by running the following:
-
-```sh
 conan build ..
 ```
 
-On Linux, you likely want to generate an AppImage. Please refer to how to build the Journal app below, as this is a prerequisite for building the AppImage. Afterwards, you may run the command, from the root directory of the repository:
+### macOS
+
+All of the steps on macOS are automated by a single command.  Simply run the following:
 
 ```sh
-./make-appimage.sh . build /path/to/game/files /path/to/journal/_______ /some/path/OneShot.AppImage`
+./make-mac.command
 ```
 
-Requires [linuxdeploy](https://github.com/linuxdeploy/linuxdeploy) and [AppImageTool](https://github.com/AppImage/AppImageKit) in your `PATH`.
-
-## Building the Journal app on Unix systems
-
-As a prerequisite on Ubuntu, ensure that the following packages are installed.
+### Linux
 
 ```sh
-sudo apt install python3-venv libxcb-xinerama
+# Make main program
+mkdir build
+cd build
+conan install .. --build=missing
+conan build ..
+
+# Make journal
+cd ..
+./make-journal-linux.sh . /build
+./make-appimage.sh . build </path/to/game/files> /build/_______ /build/_______.AppImage`
 ```
 
-Then run the script. From the root of the repository:
+## Installation
+
+Simply copy the generated binaries in the `build/` folder to your OneShot game folder, available through Steam.  By design, the game will not run without a copy of the game through Steam.
+
+### macOS
+
+Installation is automatic using the following command:
 
 ```sh
-./make-journal-linux.sh . /path/to/journal/parent/directory/
+./install-mac.command
 ```
 
-This will generate a file called `_______`.
+## Running OneShot
 
-### Supported image/audio formats
 These depend on the SDL auxiliary libraries. *OneShot* only makes use of bmp/png for images and oggvorbis/wav for audio.
 
 To run *OneShot*, you should have a graphics card capable of at least **OpenGL (ES) 2.0** with an up-to-date driver installed.
@@ -85,3 +99,7 @@ All option entries can alternatively be specified as command line options. Any o
 The syntax is: `--<option>=<value>`
 
 Example: `./oneshot --gameFolder="oneshot" --vsync=true`
+
+## Credits
+
+Please view `CREDITS.txt`.
