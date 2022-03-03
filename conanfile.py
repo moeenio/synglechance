@@ -61,9 +61,7 @@ class MkxpConan(ConanFile):
 			self.requires("libalsa/1.1.9")
 
 	def configure(self):
-		if tools.os_info.is_windows:
-			# ???
-			self.options["openal"].shared = True
+		self.options["openal"].shared = True
 		# Fix linker error in SDL_sound fork with SDL2
 		self.options["sdl2"].shared = True
 
