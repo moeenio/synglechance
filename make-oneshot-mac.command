@@ -89,9 +89,10 @@ if [[ $with_steamshim == true ]]; then
 fi
 
 # Complete OneShot bundle
-if [[ $use_qmake == true ]]; then
-	cmake -P patches/mac/CompleteBundle.cmake
+if [[ $use_qmake == false ]]; then
+	cp -r build/lib/* $LibrariesDir
 fi
+cmake -P patches/mac/CompleteBundle.cmake
 
 # Move files into proper locations
 cp -f journal/unix/macOS/Python build/_______.app/Contents/MacOS/Python

@@ -96,19 +96,23 @@ class MkxpConan(ConanFile):
 		self.do_copy_deps(self.copy_deps)
 
 	def do_copy_deps(self, copy):
-		if tools.os_info.is_windows:
-			deps = set(self.deps_cpp_info.deps) - set(
-				("cygwin_installer", "msys2_installer", "ruby_installer"))
-			for dep in deps:
-				copy("*.dll",
-					 dst="bin",
-					 src="bin",
-					 root_package=dep,
-					 keep_path=False)
-				copy("*.so*",
-					 dst="lib",
-					 src="lib",
-					 root_package=dep,
-					 keep_path=True)
-				if self.settings.build_type == "Debug":
-					copy("*.pdb", dst="bin", root_package=dep, keep_path=False)
+		deps = set(self.deps_cpp_info.deps) - set(
+			("cygwin_installer", "msys2_installer", "ruby_installer"))
+		for dep in deps:
+			copy("*.dll",
+				 dst="bin",
+				 src="bin",
+				 root_package=dep,
+				 keep_path=False)
+			copy("*.dylib*",
+				 dst="lib",
+				 src="lib",
+				 root_package=dep,
+				 keep_path=True)
+			copy("*.so*",
+				 dst="lib",
+				 src="lib",
+				 root_package=dep,
+				 keep_path=True)
+			if self.settings.build_type == "Debug":
+				copy("*.pdb", dst="bin", root_package=dep, keep_path=False)
