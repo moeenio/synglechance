@@ -67,6 +67,8 @@ class MkxpConan(ConanFile):
 
 	def build_configure(self):
 		cmake = CMake(self, msbuild_verbosity='minimal')
+		if tools.os_info.is_macos:
+			cmake._generator = 'Xcode'
 		if self.options.platform == "steam":
 			cmake.definitions["STEAM"] = "ON"
 		cmake.configure()
