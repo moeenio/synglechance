@@ -318,7 +318,7 @@ IF(APPLE)
 	    MACOSX_BUNDLE_COPYRIGHT "Copyright © 2017-2019, OneShot team, all rights reserved. View CREDITS.txt for more. Port for macOS copyright © 2018-2022, Gooborg Studios, MIT License."
 	)
 
-	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND cmake -P "${CMAKE_SOURCE_DIR}/patches/mac/CompleteBundle.cmake" VERBATIM)
+	# add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND cmake -P "${CMAKE_SOURCE_DIR}/patches/mac/CompleteBundle.cmake" VERBATIM)
 ENDIF()
 
 if(STEAM)
