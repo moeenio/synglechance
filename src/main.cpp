@@ -331,9 +331,10 @@ int main(int argc, char *argv[])
 	SDL_Window *win;
 	Uint32 winFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_ALLOW_HIGHDPI;
 
-	// #ifdef __APPLE__
-	// 	winFlags |= SDL_WINDOW_RESIZABLE;
-	// #endif
+	// XXX Needed for fullscreen button, but need to lock size somehow...
+	#ifdef __APPLE__
+		winFlags |= SDL_WINDOW_RESIZABLE;
+	#endif
 
 	if (conf.fullscreen)
 		winFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
@@ -347,6 +348,10 @@ int main(int argc, char *argv[])
 		showInitError(std::string("Error creating window: ") + SDL_GetError());
 		return 0;
 	}
+
+	#ifdef __APPLE__
+		SDL_SetWindowMinimumSize(win, conf.defScreenW, conf.defScreenH);
+	#endif
 
 	/* OSX and Windows have their own native ways of
 	 * dealing with icons; don't interfere with them */
