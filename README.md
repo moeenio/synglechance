@@ -27,7 +27,7 @@ setx CONAN_USE_ALWAYS_SHORT_PATHS 1 (windows only)
 Prepare to build *OneShot* by installing the necessary dependencies with Conan.
 
 ```sh
-cd mkxp-oneshot
+cd synglechance
 mkdir build
 cd build
 conan install .. --build=missing
