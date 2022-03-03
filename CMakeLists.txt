@@ -316,6 +316,7 @@ IF(APPLE)
 	    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION}
 	    MACOSX_BUNDLE_INFO_STRING "You only have one shot."
 	    MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/patches/mac/Info.plist.in
+	    MACOSX_BUNDLE_ICON_FILE "icon"
 	    MACOSX_BUNDLE_COPYRIGHT "Copyright © 2017-2019, OneShot team, all rights reserved. View CREDITS.txt for more. Port for macOS copyright © 2018-2022, Gooborg Studios, MIT License."
 	)
 
