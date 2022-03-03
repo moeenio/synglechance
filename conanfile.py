@@ -27,6 +27,7 @@ class MkxpConan(ConanFile):
 		"libpng/1.6.37",
 		"zlib/1.2.11",
 		"bzip2/1.0.8",
+		"libiconv/1.16",
 	)
 	if tools.os_info.is_windows:
 		build_requires = ("ruby_installer/2.7.3@bincrafters/stable", )
@@ -64,8 +65,8 @@ class MkxpConan(ConanFile):
 
 	def configure(self):
 		self.options["openal"].shared = True
-		# Fix linker error in SDL_sound fork with SDL2
 		self.options["sdl2"].shared = True
+		self.options["libiconv"].shared = True
 
 	def build_configure(self):
 		cmake = CMake(self, msbuild_verbosity='minimal')

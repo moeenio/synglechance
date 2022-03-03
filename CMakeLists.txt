@@ -296,6 +296,7 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE ${DEFINES})
 target_include_directories(${PROJECT_NAME} PRIVATE src)
 target_link_libraries(${PROJECT_NAME}
 	CONAN_PKG::boost
+	CONAN_PKG::libiconv
 	CONAN_PKG::openal
 	CONAN_PKG::physfs
 	CONAN_PKG::pixman
