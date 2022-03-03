@@ -7,6 +7,8 @@ cd `dirname $0`
 mac_version="1.2.0"
 make_threads=8
 ONESHOT_PATH=$HOME/Library/Application\ Support/Steam/steamapps/common/OneShot
+with_steamshim=true
+
 # Colors
 white="\033[0;37m"      # White - Regular
 bold="\033[1;37m"       # White - Bold
@@ -14,8 +16,6 @@ cyan="\033[1;36m"       # Cyan - Bold
 green="\033[1;32m"      # Green - Bold
 color_reset="\033[0m"   # Reset Colors
 
-use_qmake=false
-with_steamshim=true
 
 
 echo "${white}Compiling ${bold}SyngleChance v${mac_version} ${white}engine for macOS...${color_reset}\n"
@@ -27,36 +27,15 @@ cd build
 
 # Set version number -- being replaced by CMake steps
 echo "-> ${cyan}Set version number...${color_reset}"
-if [[ $use_qmake == true ]]; then m4 ../patches/mac/Info.plist.in -DONESHOTMACVERSION=$mac_version > ./Info.plist; fi
 m4 ../patches/mac/JournalInfo.plist.in -DONESHOTMACVERSION=$mac_version > ./JournalInfo.plist
 
-# Generate makefile and build main + journal
-if [[ $use_qmake == true ]]; then
-	cd ..
-	echo "-> ${cyan}Generate makefile...${color_reset}"
-	MRIVERSION=2.7 qmake -spec macx-xcode
-	echo "-> ${cyan}Compile engine...${color_reset}"
-	xcodebuild
-	mkdir build/bin
-	mv "./Release/oneshot.app" "./build/bin/OneShot.app"
-	rm -rf Release
-	if [[ $with_steamshim == true ]]; then
-		echo "-> ${cyan}Compile steamshim...${color_reset}"
-		cd build
-		if [ ! -e steamshim ]; then
-			mkdir steamshim
-		fi
-		cd steamshim
-		cmake ../../steamshim_parent
-		make -j${make_threads}
-		cd ..
-	fi
-else
-	echo "-> ${cyan}Install dependencies...${color_reset}"
-	conan install .. --build=missing -o platform=$([ $with_steamshim == true ] && echo "steam" || echo "standalone") -s arch=x86_64
-	echo "-> ${cyan}Compile engine...${color_reset}"
-	conan build ..
-fi
+# Generate makefile and build main
+echo "-> ${cyan}Install dependencies...${color_reset}"
+conan install .. --build=missing -o platform=$([ $with_steamshim == true ] && echo "steam" || echo "standalone") -s arch=x86_64
+echo "-> ${cyan}Compile engine...${color_reset}"
+conan build ..
+
+# Build journal
 echo "-> ${cyan}Compile journal...${color_reset}"
 cd ..
 pyinstaller journal/unix/journal.spec --onefile --windowed
@@ -84,7 +63,7 @@ fi
 
 # Steamshim
 if [[ $with_steamshim == true ]]; then
-	cp build/$([ $use_qmake == true ] && echo "steamshim" || echo "bin")/steamshim $OSX_App/Contents/MacOS/steamshim
+	cp build/bin/steamshim $OSX_App/Contents/MacOS/steamshim
 	install_name_tool -change @loader_path/libsteam_api.dylib "$( cd "$(dirname "$0")" ; pwd -P )"/steamworks/redistributable_bin/osx/libsteam_api.dylib $OSX_App/Contents/macOS/steamshim
 fi
 
@@ -94,13 +73,7 @@ cp assets/icon.icns $OSX_App/Contents/Resources/icon.icns
 cp assets/icon_journal.icns build/_______.app/Contents/Resources/icon_journal.icns
 cp steam_appid.txt $OSX_App/Contents/MacOS/steam_appid.txt
 cp patches/mac/oneshot.sh $OSX_App/Contents/MacOS/oneshot.sh
-
-if [[ $use_qmake == true ]]; then
-	rm -f $OSX_App/Contents/Info.plist
-	cp build/Info.plist $OSX_App/Contents/Info.plist
-else
-	cp -r build/lib/* $LibrariesDir
-fi
+cp -r build/lib/* $LibrariesDir
 rm -f build/_______.app/Contents/Info.plist
 cp build/JournalInfo.plist build/_______.app/Contents/Info.plist
 
