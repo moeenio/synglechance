@@ -61,15 +61,7 @@ All of the steps on macOS are automated by a single command.  Simply run the fol
 ### Linux
 
 ```sh
-# Make main program
-mkdir build
-cd build
-conan install .. --build=missing
-conan build ..
-
-# Make journal
-cd ..
-./make-journal-linux.sh . /build
+./make-linux.sh
 ./make-appimage.sh . build </path/to/game/files> /build/_______ /build/_______.AppImage`
 ```
 
@@ -77,12 +69,10 @@ cd ..
 
 Simply copy the generated binaries in the `build/` folder to your OneShot game folder, available through Steam.  By design, the game will not run without a copy of the game through Steam.
 
-### macOS
-
-Installation is automatic using the following command:
-
+Installation is automatic using the following command on macOS or Linux:
 ```sh
-./install-mac.command
+./install-mac.command # macOS
+./install-linux.sh # Linux
 ```
 
 ## Running OneShot
