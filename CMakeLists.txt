@@ -16,7 +16,8 @@ option(DEBUG "Debug mode" OFF)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.10")
-set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
+set(CMAKE_OSX_ARCHITECTURES "x86_64")
+set(CMAKE_XCODE_ATTRIBUTE_OTHER_CODE_SIGN_FLAGS "--deep")
 
 ## Setup main source ##
 
@@ -315,10 +316,11 @@ IF(APPLE)
 	    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION}
 	    MACOSX_BUNDLE_INFO_STRING "You only have one shot."
 	    MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/patches/mac/Info.plist.in
+	    MACOSX_BUNDLE_ICON_FILE "icon"
 	    MACOSX_BUNDLE_COPYRIGHT "Copyright © 2017-2019, OneShot team, all rights reserved. View CREDITS.txt for more. Port for macOS copyright © 2018-2022, Gooborg Studios, MIT License."
 	)
 
-	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND cmake -P "${CMAKE_SOURCE_DIR}/patches/mac/CompleteBundle.cmake" VERBATIM)
+	# add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND cmake -P "${CMAKE_SOURCE_DIR}/patches/mac/CompleteBundle.cmake" VERBATIM)
 ENDIF()
 
 if(STEAM)

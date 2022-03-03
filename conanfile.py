@@ -32,9 +32,11 @@ class MkxpConan(ConanFile):
 		build_requires = ("ruby_installer/2.7.3@bincrafters/stable", )
 	options = {
 		"platform": ["standalone", "steam"],
+		"debug": [True, False]
 	}
 	default_options = (
 		"platform=standalone",
+		"debug=False",
 		"boost:without_test=True",
 		"cygwin_installer:packages=xxd",
 		# Avoid dead url bitrot in cygwin_installer
@@ -61,16 +63,18 @@ class MkxpConan(ConanFile):
 			self.requires("libalsa/1.1.9")
 
 	def configure(self):
-		if tools.os_info.is_windows:
-			# ???
-			self.options["openal"].shared = True
+		self.options["openal"].shared = True
 		# Fix linker error in SDL_sound fork with SDL2
 		self.options["sdl2"].shared = True
 
 	def build_configure(self):
 		cmake = CMake(self, msbuild_verbosity='minimal')
+		if tools.os_info.is_macos:
+			cmake._generator = 'Xcode'
 		if self.options.platform == "steam":
 			cmake.definitions["STEAM"] = "ON"
+		if self.options.debug:
+			cmake.definitions["DEBUG"] = "ON"
 		cmake.configure()
 		cmake.build()
 
@@ -98,19 +102,23 @@ class MkxpConan(ConanFile):
 		self.do_copy_deps(self.copy_deps)
 
 	def do_copy_deps(self, copy):
-		if tools.os_info.is_windows:
-			deps = set(self.deps_cpp_info.deps) - set(
-				("cygwin_installer", "msys2_installer", "ruby_installer"))
-			for dep in deps:
-				copy("*.dll",
-					 dst="bin",
-					 src="bin",
-					 root_package=dep,
-					 keep_path=False)
-				copy("*.so*",
-					 dst="lib",
-					 src="lib",
-					 root_package=dep,
-					 keep_path=True)
-				if self.settings.build_type == "Debug":
-					copy("*.pdb", dst="bin", root_package=dep, keep_path=False)
+		deps = set(self.deps_cpp_info.deps) - set(
+			("cygwin_installer", "msys2_installer", "ruby_installer"))
+		for dep in deps:
+			copy("*.dll",
+				 dst="bin",
+				 src="bin",
+				 root_package=dep,
+				 keep_path=False)
+			copy("*.dylib*",
+				 dst="lib",
+				 src="lib",
+				 root_package=dep,
+				 keep_path=True)
+			copy("*.so*",
+				 dst="lib",
+				 src="lib",
+				 root_package=dep,
+				 keep_path=True)
+			if self.settings.build_type == "Debug":
+				copy("*.pdb", dst="bin", root_package=dep, keep_path=False)

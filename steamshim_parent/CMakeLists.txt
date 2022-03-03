@@ -7,7 +7,7 @@ set(GAME_LAUNCH_NAME "oneshot" CACHE STRING "Game launch name")
 option(DEBUG "Debug mode" OFF)
 
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.10")
-set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
+set(CMAKE_OSX_ARCHITECTURES "x86_64")
 
 set(SOURCES
 	steamshim_parent.cpp
