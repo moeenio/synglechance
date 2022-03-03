@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
+from pathlib import Path
 import os, sys, time
 
 from PyQt6.QtCore import Qt, QEvent, QThread, pyqtSignal, QRect, QRectF, QTimer, QPoint
-from PyQt6.QtWidgets import QApplication, QWidget, QLabel
+from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QAbstractButton
 from PyQt6.QtGui import QIcon, QPixmap, QPainter
 
 def get_documents_path():
@@ -39,8 +40,10 @@ elif sys.platform == 'linux':
 		# If this fails, don't worry about it
 		pass
 
-try: base_path = sys._MEIPASS
-except AttributeError: base_path = os.path.abspath('.')
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+	base_path = Path(sys._MEIPASS)
+else:
+	base_path = Path(__file__).parent
 
 class PipeThread(QThread):
 	def __init__(self, *args, **kwargs):
@@ -104,6 +107,23 @@ class AnimationTimer(PipeThread):
 					
 				time.sleep(0.05)
 
+class CloseButton(QAbstractButton):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+
+		self.parent = parent
+		self.pixmap = QPixmap(os.path.join(base_path, 'images', 'close.png'))
+
+	def paintEvent(self, event):
+		painter = QPainter(self)
+		painter.drawPixmap(event.rect(), self.pixmap)
+
+	def sizeHint(self):
+		return self.pixmap.size()
+
+	def mousePressEvent(self, mouseEvent):
+		self.parent.app.quit()
+
 class Journal(QWidget):
 	def __init__(self, *args, **kwargs):
 		self.app = kwargs['app']
@@ -116,11 +136,8 @@ class Journal(QWidget):
 
 		self.label = QLabel(self)
 
-		self.close_label = QLabel(self)
-		self.close_label.setPixmap(QPixmap(os.path.join(base_path, 'images', 'close.png')))
-		if not left_close: self.close_label.move(776, 0) # X = 800-24
-
-		self.close_button = True
+		self.close_button = CloseButton(self)
+		if not left_close: self.close_button.move(800-24, 0)
 
 		self.change_image('default_en')
 
@@ -138,27 +155,14 @@ class Journal(QWidget):
 	def mousePressEvent(self, event):
 		self.mousedown = True
 		self.mousedownpos = event.pos()
-		# self.prevx = -999
-		# self.prevy = -999
-		# print('Mouse down: ({0}, {1})'.format(self.mousedownpos.x(), self.mousedownpos.y()))
-
-		if self.close_button and (((left_close and self.mousedownpos.x() <= 24) or (not left_close and self.mousedownpos.x() >= 776)) and self.mousedownpos.y() < 24):
-			self.app.quit()
 
 	def mouseReleaseEvent(self, event):
-		# print('Mouse release')
 		self.mousedown = False
 
 	def mouseMoveEvent(self, event):
 		if event.buttons() == Qt.MouseButton.LeftButton:
 			pos = event.pos()
 			frameGm = self.frameGeometry()
-			# prevx, prevy = frameGm.x() + pos.x() - self.mousedownpos.x(), frameGm.y() + pos.y() - self.mousedownpos.y()
-			# if prevx != self.prevx and prevy != self.prevy:
-			# 	print('Mouse move: ({0}, {1})'.format(prevx, prevy))
-			# 	print('Previous: geo({0}, {1}), pos({0}, {1}), mdp({0}, {1})'.format(frameGm.x(), frameGm.y(), pos.x(), pos.y(), self.mousedownpos.x(), self.mousedownpos.y()))
-			# 	self.prevx = prevx
-			# 	self.prevy = prevy
 			self.setGeometry(frameGm.x() + pos.x() - self.mousedownpos.x(), frameGm.y() + pos.y() - self.mousedownpos.y(), 800, 600)
 
 	def change_image(self, image):
@@ -170,11 +174,9 @@ class Journal(QWidget):
 		name, lang = image.split('_', 1)
 
 		if name == 'default' or name == 'save' or name == 'final':
-			self.close_label.show()
-			self.close_button = True
+			self.close_button.show()
 		else:
-			self.close_label.hide()
-			self.close_button = False
+			self.close_button.hide()
 
 		if lang == 'en': img = os.path.join(base_path, 'images', '{}.png'.format(name))
 		else: img = os.path.join(base_path, 'images', lang.upper(), '{}.png'.format(name))
