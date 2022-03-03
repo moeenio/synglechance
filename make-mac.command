@@ -54,13 +54,8 @@ LibrariesDir="$OSX_App/Contents/Libraries"
 ResourcesDir="$OSX_App/Contents/Resources"
 
 # create directories in the @target@.app bundle
-if [ ! -e $LibrariesDir ]; then
-	mkdir -p "$LibrariesDir"
-fi
-
-if [ ! -e $ResourcesDir ]; then
-	mkdir -p "$ResourcesDir"
-fi
+mkdir -p "$LibrariesDir"
+mkdir -p "$ResourcesDir"
 
 # Steamshim
 if [[ $with_steamshim == true ]]; then
@@ -83,6 +78,7 @@ cmake -P patches/mac/CompleteBundle.cmake
 
 # Compile scripts
 echo "-> ${cyan}Compile xScripts.rxdata...${color_reset}"
+mkdir -p build/Data
 ruby rpgscript.rb ./scripts ./build
 
 echo "\n${green}Complete!  ${white}Please report any issues to https://github.com/GooborgStudios/synglechance/issues${color_reset}"
