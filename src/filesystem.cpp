@@ -373,41 +373,10 @@ struct CacheEnumData
 
 	CacheEnumData(FileSystemPrivate *p)
 	    : p(p)
-	{
-#ifdef OS_OSX
-		nfd2nfc = iconv_open("utf-8", "utf-8-mac");
-#endif
-	}
+	{}
 
 	~CacheEnumData()
-	{
-#ifdef OS_OSX
-		iconv_close(nfd2nfc);
-#endif
-	}
-
-	/* Converts in-place */
-	void toNFC(char *inout)
-	{
-#ifdef OS_OSX
-		size_t srcSize = strlen(inout);
-		size_t bufSize = sizeof(buf);
-		char *bufPtr = buf;
-		char *inoutPtr = inout;
-
-		/* Reserve room for null terminator */
-		--bufSize;
-
-		iconv(nfd2nfc,
-			  &inoutPtr, &srcSize,
-			  &bufPtr, &bufSize);
-		/* Null-terminate */
-		*bufPtr = 0;
-		strcpy(inout, buf);
-#else
-		(void) inout;
-#endif
-	}
+	{}
 };
 
 static PHYSFS_EnumerateCallbackResult
@@ -420,9 +389,6 @@ cacheEnumCB(void *d, const char *origdir, const char *fname)
 		snprintf(fullPath, sizeof(fullPath), "%s", fname);
 	else
 		snprintf(fullPath, sizeof(fullPath), "%s/%s", origdir, fname);
-
-	/* Deal with OSX' weird UTF-8 standards */
-	data.toNFC(fullPath);
 
 	std::string mixedCase(fullPath);
 	std::string lowerCase = mixedCase;
