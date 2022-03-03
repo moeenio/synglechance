@@ -26,8 +26,18 @@ def get_pipe_path(mode='journal'):
 			return os.path.expanduser('~/.oneshot-niko-pipe')
 		return os.path.expanduser('~/.oneshot-pipe')
 
+# Get whether to place close button on left or right
 left_close = False
-if sys.platform == 'darwin': left_close = True
+if sys.platform == 'darwin':
+	left_close = True
+elif sys.platform == 'linux';
+	try:
+		o = os.popen('gsettings get org.gnome.desktop.wm.preferences button-layout').read()
+		if 'close' in o.split(':')[0]:
+			left_close = True
+	except:
+		# If this fails, don't worry about it
+		pass
 
 try: base_path = sys._MEIPASS
 except AttributeError: base_path = os.path.abspath('.')
