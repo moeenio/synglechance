@@ -8,6 +8,10 @@
 #include <SDL.h>
 #include <boost/crc.hpp>
 
+#ifdef __APPLE__
+	#include <dispatch/dispatch.h>
+#endif
+
 RB_METHOD(oneshotSetYesNo)
 {
 	RB_UNUSED_PARAM;
@@ -84,7 +88,19 @@ RB_METHOD(oneshotShake)
 		int max = 60 - i;
 		int x = rand() % (max * 2) - max;
 		int y = rand() % (max * 2) - max;
-		SDL_SetWindowPosition(shState->rtData().window, absx + x, absy + y);
+
+		#ifdef __APPLE__
+			// Message boxes and UI changes must be performed from the main thread on macOS Mojave and above.
+			// This block ensures the message box will show from the main thread.
+			dispatch_sync(dispatch_get_main_queue(),
+				^{ 
+					SDL_SetWindowPosition(shState->rtData().window, absx + x, absy + y);
+				}
+			);
+		#else
+			SDL_SetWindowPosition(shState->rtData().window, absx + x, absy + y);
+		#endif
+
 		rb_eval_string_protect("sleep 0.02", &state);
 	}
 	return Qnil;
