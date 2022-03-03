@@ -30,9 +30,9 @@ rm -rf oneshot.xcodeproj
 rm -rf Release/
 rm -rf Debug/
 rm -rf .xcode
+rm -rf Info.plist
+rm -rf xScripts.rxdata
 if [ -f Makefile ]
 then
 	make distclean
-else 
-	echo ""
 fi

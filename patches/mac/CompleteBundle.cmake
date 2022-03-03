@@ -66,5 +66,5 @@ endfunction(gp_item_default_embedded_path_override)
 # -- Run the BundleUtilities cmake code
 include(BundleUtilities)
 set(BU_CHMOD_BUNDLE_ITEMS ON)
-fixup_bundle("${CMAKE_CURRENT_SOURCE_DIR}/OneShot.app" "" "${CMAKE_CURRENT_SOURCE_DIR}")
-execute_process(COMMAND chmod 0700 "${CMAKE_CURRENT_SOURCE_DIR}/OneShot.app")
+fixup_bundle("${CMAKE_BINARY_DIR}/build/bin/OneShot.app" "" "${CMAKE_BINARY_DIR}/build/bin")
+execute_process(COMMAND chmod 0700 "${CMAKE_BINARY_DIR}/build/bin/OneShot.app")

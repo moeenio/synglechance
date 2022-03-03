@@ -3,7 +3,7 @@
 **
 ** This file is part of mkxp.
 **
-** Copyright (C) 2013 Jonas Kulla <Nyocurio@gmail.com>
+** Copyright (C) 2013 - 2021 Amaryllis Kulla <ancurio@mapleshrine.eu>
 **
 ** mkxp is free software: you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -192,12 +192,56 @@ static void setupWindowIcon(const Config &conf, SDL_Window *win)
 	}
 }
 
+// mainly doing this so journal app knows where to load images from
+static void setGamePathInRegistry() {
+
+#if defined WIN32
+	// this logic is currently windows specific
+	char* dataDir = SDL_GetBasePath();
+	if (dataDir)
+	{
+		HKEY key;
+		long keyOpenError = RegOpenKey(HKEY_CURRENT_USER, TEXT("Software\\OneShot\\"), &key);
+
+		if (keyOpenError != ERROR_SUCCESS) {
+			// try creating the key first
+			long keyCreateError = RegCreateKeyEx(HKEY_CURRENT_USER, TEXT("Software\\OneShot\\"), 0L, NULL, REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &key, NULL);
+
+			if (keyCreateError != ERROR_SUCCESS)
+			{
+				showInitError("Unable to create key in registry.");
+			}
+			else {
+				keyOpenError = ERROR_SUCCESS;
+			}
+		}
+
+		if (keyOpenError != ERROR_SUCCESS)
+		{
+			showInitError("Unable to open registry.");
+		}
+		else {
+			DWORD dataSize = (strlen(dataDir) + 1) * sizeof(char);
+			if (RegSetValueEx(key, TEXT("GameDirectory"), 0, REG_SZ, (LPBYTE)dataDir, dataSize) != ERROR_SUCCESS)
+			{
+				showInitError("Unable to set GameDirectory registry value.");
+			}
+			RegCloseKey(key);
+		}
+		SDL_free(dataDir);
+	}
+#endif
+	//TODO handle this for Linux/Mac
+}
+
 int main(int argc, char *argv[])
 {
 	SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
 	SDL_SetHint(SDL_HINT_ACCELEROMETER_AS_JOYSTICK, "0");
 	SDL_SetHint(SDL_HINT_VIDEO_HIGHDPI_DISABLED, "0");
+#if defined(__linux__) && SDL_VERSION_ATLEAST(2, 0, 8)
 	SDL_SetHint(SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR, "0");
+#endif
 
 	/* initialize SDL first */
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER) < 0)
@@ -231,8 +275,12 @@ int main(int argc, char *argv[])
 	}
 #endif
 
+	setGamePathInRegistry();
+
 	/* Initialize physfs here so that config can call PHYSFS_getPrefDir */
 	PHYSFS_init(argv[0]);
+
+	loadLanguageMetadata();
 
 	/* now we load the config */
 	Config conf;
@@ -391,6 +439,7 @@ int main(int argc, char *argv[])
 	Debug() << "Shutting down.";
 
 	unloadLocale();
+	unloadLanguageMetadata();
 
 	alcCloseDevice(alcDev);
 	SDL_DestroyWindow(win);

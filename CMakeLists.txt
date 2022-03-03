@@ -1,5 +1,7 @@
-cmake_minimum_required(VERSION 2.8.11)
-Project(oneshot)
+cmake_minimum_required(VERSION 3.0)
+cmake_policy(VERSION 3.0)
+
+Project(OneShot VERSION 1.2.0)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS)
@@ -13,6 +15,8 @@ option(DEBUG "Debug mode" OFF)
 ## Misc setup ##
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_OSX_DEPLOYMENT_TARGET "10.10")
+set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
 
 ## Setup main source ##
 
@@ -129,8 +133,8 @@ if(WIN32)
 		${CMAKE_CURRENT_BINARY_DIR}/windows
 	)
 elseif(APPLE)
-	list(APPEND MAIN_HEADERS src/mac-desktop.h)
-	list(APPEND MAIN_SOURCE src/mac-desktop.mm)
+	list(APPEND MAIN_HEADERS src/macos-bindings.h)
+	list(APPEND MAIN_SOURCE src/macos-bindings.mm)
 else()
 	find_package(PkgConfig REQUIRED)
 	pkg_check_modules(LINUXPKGS REQUIRED gtk+-2.0 libxfconf-0)
@@ -303,6 +307,17 @@ target_link_libraries(${PROJECT_NAME}
 	${PLATFORM_LIBRARIES})
 
 IF(APPLE)
+	set_target_properties(${PROJECT_NAME} PROPERTIES
+	    BUNDLE True
+	    MACOSX_BUNDLE_GUI_IDENTIFIER gooborgstudios.${PROJECT_NAME}.osx
+	    MACOSX_BUNDLE_BUNDLE_NAME ${PROJECT_NAME}
+	    MACOSX_BUNDLE_LONG_VERSION_STRING "macOS Port v.${PROJECT_VERSION}"
+	    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION}
+	    MACOSX_BUNDLE_INFO_STRING "You only have one shot."
+	    MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/patches/mac/Info.plist.in
+	    MACOSX_BUNDLE_COPYRIGHT "Copyright © 2017-2019, OneShot team, all rights reserved. View CREDITS.txt for more. Port for macOS copyright © 2018-2022, Gooborg Studios, MIT License."
+	)
+
 	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND cmake -P "${CMAKE_SOURCE_DIR}/patches/mac/CompleteBundle.cmake" VERBATIM)
 ENDIF()
 
