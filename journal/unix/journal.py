@@ -30,7 +30,7 @@ def get_pipe_path(mode='journal'):
 left_close = False
 if sys.platform == 'darwin':
 	left_close = True
-elif sys.platform == 'linux';
+elif sys.platform == 'linux':
 	try:
 		o = os.popen('gsettings get org.gnome.desktop.wm.preferences button-layout').read()
 		if 'close' in o.split(':')[0]:
