@@ -88,12 +88,6 @@ if [[ $with_steamshim == true ]]; then
 	install_name_tool -change @loader_path/libsteam_api.dylib "$( cd "$(dirname "$0")" ; pwd -P )"/steamworks/redistributable_bin/osx/libsteam_api.dylib $OSX_App/Contents/macOS/steamshim
 fi
 
-# Complete OneShot bundle
-if [[ $use_qmake == false ]]; then
-	cp -r build/lib/* $LibrariesDir
-fi
-cmake -P patches/mac/CompleteBundle.cmake
-
 # Move files into proper locations
 cp -f journal/unix/macOS/Python build/_______.app/Contents/MacOS/Python
 cp assets/icon.icns $OSX_App/Contents/Resources/icon.icns
@@ -104,9 +98,14 @@ cp patches/mac/oneshot.sh $OSX_App/Contents/MacOS/oneshot.sh
 if [[ $use_qmake == true ]]; then
 	rm -f $OSX_App/Contents/Info.plist
 	cp build/Info.plist $OSX_App/Contents/Info.plist
+else
+	cp -r build/lib/* $LibrariesDir
 fi
 rm -f build/_______.app/Contents/Info.plist
 cp build/JournalInfo.plist build/_______.app/Contents/Info.plist
+
+# Complete OneShot bundle
+cmake -P patches/mac/CompleteBundle.cmake
 
 # Compile scripts
 echo "-> ${cyan}Compile xScripts.rxdata...${color_reset}"
