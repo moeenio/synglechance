@@ -1,6 +1,6 @@
 //
 // SyngleChance Engine - macos-bindings.h
-// ©2018 Vinyl Darkscratch.  You may use this code for anything you'd like.
+// ©2018 Vinyl Da.i'gyu-Kazotetsu.  You may use this code for anything you'd like.
 // https://www.queengoob.org
 //
 
