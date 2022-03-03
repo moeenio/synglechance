@@ -7,6 +7,7 @@ This is a specialized fork of [mkxp by Ancurio](https://github.com/Ancurio/mkxp)
 There are a few prerequesites you must install before proceeding.  They are:
 
 - [Python 3+](https://www.python.org/)
+	- On macOS, please install from website, not Homebrew/MacPorts/etc.
 - Conan (`pip install conan`)
 - PyQt6 (`pip install pyqt6`)
 - [CMake](https://cmake.org/)
