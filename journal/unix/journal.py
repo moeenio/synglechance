@@ -2,9 +2,9 @@
 
 import os, sys, time
 
-from PyQt5.QtCore import Qt, QEvent, QThread, pyqtSignal, QRect, QRectF, QTimer, QPoint
-from PyQt5.QtWidgets import QApplication, QWidget, QDesktopWidget, QLabel
-from PyQt5.QtGui import QIcon, QPixmap, QPainter
+from PyQt6.QtCore import Qt, QEvent, QThread, pyqtSignal, QRect, QRectF, QTimer, QPoint
+from PyQt6.QtWidgets import QApplication, QWidget, QLabel
+from PyQt6.QtGui import QIcon, QPixmap, QPainter
 
 def get_documents_path():
 	if sys.platform == 'win32':
@@ -114,9 +114,9 @@ class Journal(QWidget):
 
 		self.change_image('default_en')
 
-		if 'linux' in sys.platform: self.setWindowFlags(Qt.FramelessWindowHint)
-		else: self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint | Qt.NoDropShadowWindowHint)
-		self.setAttribute(Qt.WA_TranslucentBackground)
+		if 'linux' in sys.platform: self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
+		else: self.setWindowFlags(self.windowFlags() | Qt.WindowType.FramelessWindowHint | Qt.WindowType.NoDropShadowWindowHint)
+		self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 		self.setMouseTracking(True)
 		self.setWindowTitle(' ')
 		self.setMinimumSize(800, 600)
@@ -140,7 +140,7 @@ class Journal(QWidget):
 		self.mousedown = False
 
 	def mouseMoveEvent(self, event):
-		if event.buttons() == Qt.LeftButton:
+		if event.buttons() == Qt.MouseButton.LeftButton:
 			pos = event.pos()
 			frameGm = self.frameGeometry()
 			# prevx, prevy = frameGm.x() + pos.x() - self.mousedownpos.x(), frameGm.y() + pos.y() - self.mousedownpos.y()
@@ -181,8 +181,8 @@ class Niko(QWidget):
 
 		super().__init__(*args, **kwargs)
 
-		self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
-		self.setAttribute(Qt.WA_TranslucentBackground)
+		self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
+		self.setAttribute(Qt.WindowAttributes.WA_TranslucentBackground)
 		self.setMinimumSize(48, 64)
 		self.setMaximumSize(48, 64)
 
@@ -247,7 +247,7 @@ if __name__ == '__main__':
 		pipe_file = open(pipe_path, 'w+')
 		pipe_file.close()
 
-	app.exec_()
+	app.exec()
 
 	try:
 		os.remove(pipe_path)
