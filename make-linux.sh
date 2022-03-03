@@ -5,6 +5,8 @@ cd `dirname $0`
 
 # User-configurable variables
 linux_version="0.1.0"
+with_steamshim=${STEAM:-true}
+debug=${DEBUG:-false}
 
 # Colors
 white="\033[0;37m"      # White - Regular
