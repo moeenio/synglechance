@@ -32,9 +32,11 @@ class MkxpConan(ConanFile):
 		build_requires = ("ruby_installer/2.7.3@bincrafters/stable", )
 	options = {
 		"platform": ["standalone", "steam"],
+		"debug": [True, False]
 	}
 	default_options = (
 		"platform=standalone",
+		"debug=False",
 		"boost:without_test=True",
 		"cygwin_installer:packages=xxd",
 		# Avoid dead url bitrot in cygwin_installer
@@ -71,6 +73,8 @@ class MkxpConan(ConanFile):
 			cmake._generator = 'Xcode'
 		if self.options.platform == "steam":
 			cmake.definitions["STEAM"] = "ON"
+		if self.options.debug:
+			cmake.definitions["DEBUG"] = "ON"
 		cmake.configure()
 		cmake.build()
 
