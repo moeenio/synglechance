@@ -5,8 +5,6 @@ cd `dirname $0`
 
 # User-configurable variables
 mac_version="1.2.0"
-make_threads=8
-ONESHOT_PATH=$HOME/Library/Application\ Support/Steam/steamapps/common/OneShot
 with_steamshim=${STEAM:-true}
 debug=${DEBUG:-false}
 
