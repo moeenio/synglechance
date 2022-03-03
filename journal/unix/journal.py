@@ -5,7 +5,7 @@ import os, sys, time
 
 from PyQt6.QtCore import Qt, QEvent, QThread, pyqtSignal, QRect, QRectF, QTimer, QPoint
 from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QAbstractButton
-from PyQt6.QtGui import QIcon, QPixmap, QPainter
+from PyQt6.QtGui import QIcon, QPixmap, QPainter, QCursor
 
 def get_documents_path():
 	if sys.platform == 'win32':
@@ -114,6 +114,8 @@ class CloseButton(QAbstractButton):
 		self.parent = parent
 		self.pixmap = QPixmap(os.path.join(base_path, 'images', 'close.png'))
 
+		self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+
 	def paintEvent(self, event):
 		painter = QPainter(self)
 		painter.drawPixmap(event.rect(), self.pixmap)
@@ -141,8 +143,15 @@ class Journal(QWidget):
 
 		self.change_image('default_en')
 
-		if 'linux' in sys.platform: self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
-		else: self.setWindowFlags(self.windowFlags() | Qt.WindowType.FramelessWindowHint | Qt.WindowType.NoDropShadowWindowHint)
+		if 'linux' in sys.platform:
+			self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
+		else:
+			self.setWindowFlags(
+				self.windowFlags() |
+				Qt.WindowType.FramelessWindowHint |
+				Qt.WindowType.NoDropShadowWindowHint
+			)
+
 		self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 		self.setMouseTracking(True)
 		self.setWindowTitle(' ')
@@ -178,9 +187,13 @@ class Journal(QWidget):
 		else:
 			self.close_button.hide()
 
-		if lang == 'en': img = os.path.join(base_path, 'images', '{}.png'.format(name))
-		else: img = os.path.join(base_path, 'images', lang.upper(), '{}.png'.format(name))
-		if not os.path.exists(img): return
+		if lang == 'en':
+			img = os.path.join(base_path, 'images', '{}.bmp'.format(name))
+		else:
+			img = os.path.join(base_path, 'images', lang.upper(), '{}.bmp'.format(name))
+		
+		if not os.path.exists(img):
+			return
 
 		self.pixmap = QPixmap(img)
 		self.label.setPixmap(self.pixmap)
