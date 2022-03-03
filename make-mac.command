@@ -62,7 +62,6 @@ if [[ $with_steamshim == true ]]; then
 fi
 
 # Move files into proper locations
-cp -f journal/unix/macOS/Python build/_______.app/Contents/MacOS/Python
 cp assets/icon.icns $OSX_App/Contents/Resources/icon.icns
 cp assets/icon_journal.icns build/_______.app/Contents/Resources/icon_journal.icns
 cp steam_appid.txt $OSX_App/Contents/MacOS/steam_appid.txt
