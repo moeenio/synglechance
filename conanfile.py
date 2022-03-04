@@ -70,14 +70,14 @@ class MkxpConan(ConanFile):
 
 	def build_configure(self):
 		cmake = CMake(self, msbuild_verbosity='minimal')
-		
+
 		if tools.os_info.is_macos:
 			cmake._generator = 'Xcode'
 		if self.options.platform == "steam":
 			cmake.definitions["STEAM"] = "ON"
 		if self.options.debug:
 			cmake.definitions["DEBUG"] = "ON"
-		cmake.definitions['ARCH'] = "arm64" if self.settings.arch == "armv8" else self.settings.arch
+		cmake.definitions['CMAKE_OSX_ARCHITEXTURES'] = "arm64" if self.settings.arch == "armv8" else self.settings.arch
 
 		cmake.configure()
 		cmake.build()
