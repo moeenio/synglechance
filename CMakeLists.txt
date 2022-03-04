@@ -11,12 +11,13 @@ conan_basic_setup(TARGETS)
 option(STEAM "Build for Steam" OFF)
 set(STEAMWORKS_PATH "${CMAKE_CURRENT_SOURCE_DIR}/steamworks" CACHE PATH "Path to Steamworks folder")
 option(DEBUG "Debug mode" OFF)
+option(ARCH "Build architecture" x86_64)
 
 ## Misc setup ##
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.10")
-set(CMAKE_OSX_ARCHITECTURES "x86_64")
+set(CMAKE_OSX_ARCHITECTURES ARCH)
 set(CMAKE_XCODE_ATTRIBUTE_OTHER_CODE_SIGN_FLAGS "--deep")
 
 ## Setup main source ##
