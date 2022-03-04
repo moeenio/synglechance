@@ -72,9 +72,4 @@ cp build/JournalInfo.plist build/_______.app/Contents/Info.plist
 # Complete OneShot bundle
 cmake -P patches/mac/CompleteBundle.cmake
 
-# Compile scripts
-echo "-> ${cyan}Compile xScripts.rxdata...${color_reset}"
-mkdir -p build/Data
-ruby rpgscript.rb ./scripts ./build
-
 echo "\n${green}Complete!  ${white}Please report any issues to https://github.com/GooborgStudios/synglechance/issues${color_reset}"

@@ -17,6 +17,7 @@ echo -e "-> ${cyan}Install OneShot apps to Steam directory...${color_reset}"
 yes | cp -r dist/_______/* "$ONESHOT_PATH"
 yes | cp oneshot "$ONESHOT_PATH"
 yes | cp steamshim_parent/build/steamshim "$ONESHOT_PATH"
+yes | cp build/bin/Data/xScripts.rxdata "$ONESHOT_PATH"
 
 # Copy libraries
 echo -e "-> ${cyan}Install OneShot libraries to Steam directory...${color_reset}"

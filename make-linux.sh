@@ -33,9 +33,4 @@ echo -e "-> ${cyan}Compile journal...${color_reset}"
 cd ..
 pyinstaller journal/unix/journal.spec --windowed
 
-# Compile scripts
-echo -e "-> ${cyan}Compile xScripts.rxdata...${color_reset}"
-mkdir -p build/Data
-ruby rpgscript.rb ./scripts ./build
-
 echo -e "\n${green}Complete!  ${white}Please report any issues to https://github.com/GooborgStudios/synglechance/issues${color_reset}"
