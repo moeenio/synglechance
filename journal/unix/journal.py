@@ -217,7 +217,7 @@ class Niko(QWidget):
 		super().__init__(*args, **kwargs)
 
 		self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
-		self.setAttribute(Qt.WindowAttributes.WA_TranslucentBackground)
+		self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 		self.setMinimumSize(48, 64)
 		self.setMaximumSize(48, 64)
 
