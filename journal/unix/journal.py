@@ -39,17 +39,26 @@ elif sys.platform == 'linux':
 	except:
 		# If this fails, don't worry about it
 		pass
-
-if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
-	base_path = Path(sys._MEIPASS)
-	if sys.platform == 'darwin':
-		img_path = Path(base_path, '..', '..', '..')
+def get_img_path():
+	if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+		base_path = Path(sys._MEIPASS)
+		if sys.platform == 'darwin':
+			base_path = Path(base_path, '..', '..', '..')
 	else:
-		img_path = base_path
-	img_path = Path(img_path, 'Graphics', 'Journal').resolve()
-else:
-	base_path = Path(__file__).parent
-	img_path = Path(base_path, 'images')
+		# XXX Not supposed to be run without PyInstaller bundle
+		# img_path = Path(__file__, '..', 'images').resolve()
+		base_path = Path(Path.home(), "Library/Application Support/Steam/SteamApps/common/OneShot").resolve()
+	return Path(base_path, 'Graphics', 'Journal').resolve()
+
+img_path = get_img_path()
+
+def loadBMP(img):
+	pixmap = QPixmap(img)
+	mask = pixmap.createMaskFromColor(QColor(0, 255, 0), Qt.MaskMode.MaskInColor)
+	pixmap.setMask(mask)
+	return pixmap
+
+
 
 class PipeThread(QThread):
 	def __init__(self, *args, **kwargs):
@@ -118,18 +127,31 @@ class CloseButton(QAbstractButton):
 		super().__init__(parent)
 
 		self.parent = parent
-		self.pixmap = QPixmap(os.path.join(base_path, 'images', 'close.png'))
+		self.pixmap = loadBMP(os.path.join(img_path, 'close.bmp'))
+		self.pixmap_hover = loadBMP(os.path.join(img_path, 'close_hover.bmp'))
 
+		self.hovering = False
+	
 		self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
 	def paintEvent(self, event):
 		painter = QPainter(self)
-		painter.drawPixmap(event.rect(), self.pixmap)
+		painter.drawPixmap(
+			event.rect(), self.pixmap_hover if self.hovering else self.pixmap
+		)
 
 	def sizeHint(self):
 		return self.pixmap.size()
 
-	def mousePressEvent(self, mouseEvent):
+	def enterEvent(self, event):
+		self.hovering = True
+		self.update()
+
+	def leaveEvent(self, event):
+		self.hovering = False
+		self.update()
+
+	def mousePressEvent(self, event):
 		self.parent.app.quit()
 
 class Journal(QWidget):
@@ -201,11 +223,7 @@ class Journal(QWidget):
 		if not os.path.exists(img):
 			return
 
-		canvas = QPainter()
-		pixmap = QPixmap(img)
-		mask = pixmap.createMaskFromColor(QColor(0, 255, 0), Qt.MaskMode.MaskInColor)
-		pixmap.setMask(mask)
-
+		pixmap = loadBMP(img)
 		self.label.setPixmap(pixmap)
 
 class Niko(QWidget):
@@ -221,8 +239,11 @@ class Niko(QWidget):
 		self.setMinimumSize(48, 64)
 		self.setMaximumSize(48, 64)
 
+		self.frames = [
+			loadBMP(os.path.join(img_path, 'niko{}.bmp'.format(n))) for n in range(1,4)
+		]
+
 		self.label = QLabel(self)
-		self.frames = [QPixmap(os.path.join(base_path, 'images', 'niko{}.png'.format(n))) for n in range(1,4)]
 		self.label.setPixmap(self.frames[1])
 
 	def start(self, x, y):
