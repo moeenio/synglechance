@@ -19,7 +19,7 @@
 		<key>CFBundleShortVersionString</key>
 		<string>ONESHOTMACVERSION</string>
 		<key>LSBackgroundOnly</key>
-		<false/>
+		<true/>
 		<key>CFBundleGetInfoString</key>
 		<string>You only have one shot.</string>
 		<key>CFBundleVersion</key>
