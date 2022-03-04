@@ -329,7 +329,7 @@ int main(int argc, char *argv[])
 	}
 
 	SDL_Window *win;
-	Uint32 winFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_ALLOW_HIGHDPI;
+	Uint32 winFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_INPUT_FOCUS;
 
 	// XXX Needed for fullscreen button, but need to lock size somehow...
 	#ifdef __APPLE__
@@ -393,7 +393,7 @@ int main(int argc, char *argv[])
 #endif
 
 	int winW, winH;
-	SDL_GL_GetDrawableSize(win, &winW, &winH);
+	SDL_GetWindowSize(win, &winW, &winH);
 	rtData.windowSizeMsg.post(Vec2i(winW, winH));
 
 	/* Load and post key bindings */
