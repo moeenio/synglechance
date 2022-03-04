@@ -171,14 +171,10 @@ class Journal(QWidget):
 
 		self.change_image('default_en')
 
-		if 'linux' in sys.platform:
-			self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
-		else:
-			self.setWindowFlags(
-				self.windowFlags() |
-				Qt.WindowType.FramelessWindowHint |
-				Qt.WindowType.NoDropShadowWindowHint
-			)
+		self.setWindowFlags(
+			Qt.WindowType.FramelessWindowHint |
+			Qt.WindowType.NoDropShadowWindowHint
+		)
 
 		self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 		self.setMouseTracking(True)
@@ -234,7 +230,11 @@ class Niko(QWidget):
 
 		super().__init__(*args, **kwargs)
 
-		self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
+		self.setWindowFlags(
+			Qt.WindowType.FramelessWindowHint |
+			Qt.WindowType.NoDropShadowWindowHint |
+			Qt.WindowType.WindowStaysOnTopHint
+		)
 		self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 		self.setMinimumSize(48, 64)
 		self.setMaximumSize(48, 64)
