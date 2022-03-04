@@ -35,13 +35,13 @@ conan build ..
 
 # Build journal
 echo "-> ${cyan}Compile journal...${color_reset}"
-cd ..
-pyinstaller journal/unix/journal.spec --onefile --windowed
-rm -rf build/_______
-rm -rf build/_______.app
-mv dist/* build
-rm -r dist
-rm -rf journal/unix/__pycache__
+# cd ..
+# pyinstaller journal/unix/journal.spec --onefile --windowed
+# rm -rf build/_______
+# rm -rf build/_______.app
+# mv dist/* build
+# rm -r dist
+# rm -rf journal/unix/__pycache__
 
 # Create app bundles
 echo "-> ${cyan}Create app bundles...${color_reset}"
@@ -62,12 +62,12 @@ fi
 
 # Move files into proper locations
 cp assets/icon.icns $OSX_App/Contents/Resources/icon.icns
-cp assets/icon_journal.icns build/_______.app/Contents/Resources/icon_journal.icns
+# cp assets/icon_journal.icns build/_______.app/Contents/Resources/icon_journal.icns
 cp steam_appid.txt $OSX_App/Contents/MacOS/steam_appid.txt
 cp patches/mac/oneshot.sh $OSX_App/Contents/MacOS/oneshot.sh
 cp -r build/lib/* $LibrariesDir
-rm -f build/_______.app/Contents/Info.plist
-cp build/JournalInfo.plist build/_______.app/Contents/Info.plist
+# rm -f build/_______.app/Contents/Info.plist
+# cp build/JournalInfo.plist build/_______.app/Contents/Info.plist
 
 # Complete OneShot bundle
 cmake -P patches/mac/CompleteBundle.cmake

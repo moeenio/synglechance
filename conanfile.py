@@ -62,6 +62,9 @@ class MkxpConan(ConanFile):
 			self.requires("ogg/1.3.4")
 			self.requires("vorbis/1.3.6")
 			self.requires("libalsa/1.1.9")
+		if not tools.os_info.is_windows:
+			# For Unix journal
+			self.requires("qt/6.2.3")
 
 	def configure(self):
 		self.options["openal"].shared = True

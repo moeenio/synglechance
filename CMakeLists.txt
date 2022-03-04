@@ -334,4 +334,5 @@ if(STEAM)
 		COPYONLY)
 endif()
 
+add_subdirectory(journal/unix)
 add_subdirectory(scripts)

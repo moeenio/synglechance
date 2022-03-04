@@ -59,11 +59,11 @@ QMAKE_CFLAGS += -std=gnu11
 # Windows
 win32 {
 	SOURCES += \
-		w32/main.c \
-		w32/niko.c \
-		w32/journal.c
+		win/main.c \
+		win/niko.c \
+		win/journal.c
 
 	LIBS += -lgdi32 -lshell32 -luuid -lole32
 
-	RC_FILE = w32/resources.rc
+	RC_FILE = win/resources.rc
 }
