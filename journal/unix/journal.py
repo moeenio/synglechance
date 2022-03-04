@@ -247,7 +247,7 @@ class Niko(QWidget):
 		self.label.setPixmap(self.frames[1])
 
 	def start(self, x, y):
-		self.x = x
+		self.x = x + 8
 		self.y = y
 		self.start_y = y
 
