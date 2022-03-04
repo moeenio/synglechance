@@ -42,7 +42,7 @@ Building the engine is tested and supported on Windows, macOS, and Ubuntu Linux.
 
 ### Windows
 
-(XXX WIP Instructions XXX)
+Launch a command prompt that can run Visual Studio commands.  The easiest way to do this is to open Visual Studio and click `Tools` -> `Command Line` -> `Developer Command Prompt` (or `Developer PowerShell` if prefered).  Then, run the following commands:
 
 ```sh
 mkdir build
