@@ -13,7 +13,7 @@
 class AnimationTimer : public QThread {
 	Q_OBJECT
 	public:
-		AnimationTimer(QObject *parent = nullptr);
+		AnimationTimer(QWidget *parent = nullptr);
 		void run();
 };
 

@@ -16,14 +16,14 @@
 class WatchPipe : public QThread {
 	Q_OBJECT
 	public:
-		WatchPipe(QObject *parent = nullptr);
+		WatchPipe(QWidget *parent = nullptr);
 		void run();
 };
 
 class CloseButton : public QAbstractButton {
 	Q_OBJECT
 	public:
-		CloseButton(QObject *parent = nullptr);
+		CloseButton(QWidget *parent = nullptr);
 		QSize sizeHint();
 	private:
 		void paintEvent(QPaintEvent *e);
