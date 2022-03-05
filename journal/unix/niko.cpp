@@ -5,3 +5,28 @@
  * niko.cpp
  */
 
+#include "niko.h"
+
+AnimationTimer::AnimationTimer(QWidget *parent) : QThread(parent) {
+	// XXX Implement me
+}
+
+void AnimationTimer::run() {
+	// XXX Implement me
+}
+
+Niko::Niko(QWidget *parent) : QWidget(parent) {
+	// XXX Implement me
+}
+
+void Niko::start(int x, int y) {
+	// XXX Implement me
+}
+
+int Niko::getFrame() {
+	// XXX Implement me
+}
+
+void Niko::update() {
+	// XXX Implement me
+}
