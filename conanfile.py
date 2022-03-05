@@ -28,6 +28,7 @@ class MkxpConan(ConanFile):
 		"zlib/1.2.11",
 		"bzip2/1.0.8",
 		"libiconv/1.16",
+		"openssl/1.1.1m"
 	)
 	if tools.os_info.is_windows:
 		build_requires = ("ruby_installer/2.7.3@bincrafters/stable", )
@@ -65,6 +66,7 @@ class MkxpConan(ConanFile):
 		if not tools.os_info.is_windows:
 			# For Unix journal
 			self.requires("qt/6.2.3")
+			self.requires('freetype/2.11.1')
 
 	def configure(self):
 		self.options["openal"].shared = True
