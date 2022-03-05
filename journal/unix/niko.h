@@ -21,7 +21,6 @@ class Niko : public QWidget {
 	Q_OBJECT
 	public:
 		Niko(QWidget *parent = nullptr);
-		~Niko();
 		void start(int x, int y);
 	private:
 		int getFrame();

@@ -37,7 +37,6 @@ class Journal : public QWidget {
 	
 public:
 	Journal(QWidget *parent = nullptr);
-	~Journal();
 private:
 	void mousePressEvent(QMouseEvent *e);
 	void mouseReleaseEvent(QMouseEvent *e);
