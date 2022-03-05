@@ -7,7 +7,7 @@
 
 #include "niko.h"
 
-AnimationTimer::AnimationTimer(QWidget *parent) : QThread(parent) {
+AnimationTimer::AnimationTimer(std::string pipePath, QWidget *parent) : QThread(parent) {
 	// XXX Implement me
 }
 
@@ -15,7 +15,7 @@ void AnimationTimer::run() {
 	// XXX Implement me
 }
 
-Niko::Niko(QWidget *parent) : QWidget(parent) {
+Niko::Niko(QApplication *app, QWidget *parent) : QWidget(parent) {
 	// XXX Implement me
 }
 

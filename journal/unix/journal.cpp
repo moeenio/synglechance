@@ -7,7 +7,7 @@
 
 #include "journal.h"
 
-WatchPipe::WatchPipe(QWidget *parent) : QThread(parent) {
+WatchPipe::WatchPipe(std::string pipePath, QWidget *parent) : QThread(parent) {
 	// XXX Implement me
 }
 
@@ -39,7 +39,7 @@ void CloseButton::mouseReleaseEvent(QMouseEvent *e) {
 	// XXX Implement me
 }
 
-Journal::Journal(QWidget *parent) : QWidget(parent) {
+Journal::Journal(QApplication *app, QWidget *parent) : QWidget(parent) {
 	// XXX Implement me
 }
 

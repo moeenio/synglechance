@@ -13,14 +13,14 @@
 class AnimationTimer : public QThread {
 	Q_OBJECT
 	public:
-		AnimationTimer(QWidget *parent = nullptr);
+		AnimationTimer(std::string pipePath, QWidget *parent = nullptr);
 		void run();
 };
 
 class Niko : public QWidget {
 	Q_OBJECT
 	public:
-		Niko(QWidget *parent = nullptr);
+		Niko(QApplication *app, QWidget *parent = nullptr);
 		void start(int x, int y);
 	private:
 		int getFrame();

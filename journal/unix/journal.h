@@ -16,7 +16,7 @@
 class WatchPipe : public QThread {
 	Q_OBJECT
 	public:
-		WatchPipe(QWidget *parent = nullptr);
+		WatchPipe(std::string pipePath, QWidget *parent = nullptr);
 		void run();
 };
 
@@ -36,7 +36,7 @@ class Journal : public QWidget {
 	Q_OBJECT
 	
 public:
-	Journal(QWidget *parent = nullptr);
+	Journal(QApplication *app, QWidget *parent = nullptr);
 private:
 	void mousePressEvent(QMouseEvent *e);
 	void mouseReleaseEvent(QMouseEvent *e);

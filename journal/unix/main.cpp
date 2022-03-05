@@ -12,20 +12,6 @@
 #include "journal.h"
 #include "niko.h"
 
-std::string getDocumentsPath() {
-	#ifdef _WIN32
-		WCHAR path[MAX_PATH];
-		SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, 0, path);
-		return std::string(w32_fromWide(path));
-	#elif defined __APPLE__
-		return std::string(getenv("HOME")) + "/Documents";
-	#elif defined __linux__
-		return std::string(xdg_user_dir_lookup("DOCUMENTS"));
-	#else
-		#error OS is unsupported!
-	#endif
-}
-
 std::string getPipePath(bool nikoMode) {
 	#ifdef _WIN32
 		return std::string("\\\\.\\pipe\\oneshot-journal-to-game");
@@ -35,17 +21,55 @@ std::string getPipePath(bool nikoMode) {
 	#endif
 }
 
-int main(int argc, char *argv[]) {
+std::string checkSaveProgress() {
+	std::string documentsPath;
+	#ifdef _WIN32
+		WCHAR path[MAX_PATH];
+		SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, 0, path);
+		documentsPath = std::string(path);
+	#elif defined __APPLE__
+		documentsPath = std::string(getenv("HOME")) + "/Documents";
+	#elif defined __linux__
+		documentsPath = std::string(xdg_user_dir_lookup("DOCUMENTS"));
+	#else
+		#error OS is unsupported!
+	#endif
+
+	std::string filePath = documentsPath + "/OneShot/save_progress.oneshot";
+
+	// XXX Implement the rest of me!
+
+	// if os.path.exists(save_path):
+			// with open(save_path, 'rb') as save:
+				// save.seek(-8, os.SEEK_END)
+				// lang = save.read().decode('utf-8')
+				// lang = lang[lang.find('[') + 1:lang.find(']')]
+				// if lang == 'en_US': lang = 'en'
+				// journal.changeImage('save_' + lang)
+}
+
+int doNiko(int argc, char *argv[]) {
 	QApplication app(argc, argv);
+	Niko niko(&app);
 
-	Niko niko;
-	Journal journal;
-
-    if (argc > 1) {
-		// do Niko
-	} else {
-        journal.show();
-	}
+	niko.show();
 
 	return app.exec();
+}
+
+int doJournal(int argc, char *argv[]) {
+	QApplication app(argc, argv);
+	Journal journal(&app);
+
+	journal.show();
+
+	return app.exec();
+}
+
+int main(int argc, char *argv[]) {
+    if (argc > 1) {
+		return doNiko(argc, argv);
+	}
+
+    return doJournal(argc, argv);
 }
