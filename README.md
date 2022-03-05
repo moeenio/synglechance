@@ -6,12 +6,8 @@ This is a specialized fork of [mkxp by Ancurio](https://github.com/Ancurio/mkxp)
 
 There are a few prerequesites you must install before proceeding.  They are:
 
-- [Python 3+](https://www.python.org/)
-	- On macOS, please install from website, not Homebrew/MacPorts/etc.
-- Conan (`pip install conan`)
+- [Conan](https://conan.io/downloads.html)
 - [CMake](https://cmake.org/)
-- macOS/Linux:
-	- PyQt6 (`pip install pyqt6`)
 - Windows only:
 	- Visual Studio
 - macOS only:
@@ -21,7 +17,7 @@ There are a few prerequesites you must install before proceeding.  They are:
 	- [AppImageTool](https://github.com/AppImage/AppImageKit)
 	- `sudo apt install libgtk2.0-dev libxfconf-0-dev python3-venv libxcb-xinerama`
 
-Once you have installed these dependencies, run the following commands to configure Conan:
+Once you have installed these dependencies, Conan will take care of the remaining ones. Run the following commands to configure Conan:
 
 ```sh
 conan remote add eliza https://rkevin.jfrog.io/artifactory/api/conan/eliza
