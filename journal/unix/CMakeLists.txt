@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.0)
 cmake_policy(VERSION 3.0)
 
 Project(OneShot_Journal VERSION 1.2.0)
+set(EXECUTABLE_NAME "_______")
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS)
@@ -34,16 +35,16 @@ set(MAIN_SOURCE
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(${PROJECT_NAME} MACOSX_BUNDLE WIN32 ${MAIN_SOURCE} ${MAIN_HEADERS})
+add_executable(${EXECUTABLE_NAME} MACOSX_BUNDLE WIN32 ${MAIN_SOURCE} ${MAIN_HEADERS})
 
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets)
+target_link_libraries(${EXECUTABLE_NAME} PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets)
 
 IF(APPLE)
-	set_target_properties(${PROJECT_NAME} PROPERTIES
+	set_target_properties(${EXECUTABLE_NAME} PROPERTIES
 		BUNDLE True
 		MACOSX_BUNDLE_GUI_IDENTIFIER gooborgstudios.${PROJECT_NAME}.osx
-		MACOSX_BUNDLE_BUNDLE_NAME ${PROJECT_NAME}
+		MACOSX_BUNDLE_BUNDLE_NAME ${EXECUTABLE_NAME}
 		MACOSX_BUNDLE_LONG_VERSION_STRING "macOS Port v.${PROJECT_VERSION}"
 		MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION}
 		MACOSX_BUNDLE_INFO_STRING "You only have one shot."
