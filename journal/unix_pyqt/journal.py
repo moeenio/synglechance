@@ -39,6 +39,7 @@ elif sys.platform == 'linux':
 	except:
 		# If this fails, don't worry about it
 		pass
+
 def get_img_path():
 	if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
 		base_path = Path(sys._MEIPASS)

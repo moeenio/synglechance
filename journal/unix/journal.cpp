@@ -8,54 +8,166 @@
 #include "journal.h"
 
 WatchPipe::WatchPipe(std::string pipePath, QWidget *parent) : QThread(parent) {
-	// XXX Implement me
+	// changeImage = pyqtSignal(str)
 }
 
 void WatchPipe::run() {
-	// XXX Implement me
+	// while True:
+	// 	self.changeImage.emit('default_en')
+	// 	while not os.path.exists(self.pipe): time.sleep(0.1)
+
+	// 	pipe = open(self.pipe, 'r')
+	// 	pipe.flush()
+
+	// 	was_nondefault = False
+
+	// 	while os.path.exists(self.pipe): # Make sure the file still exists and wasn't cleaned up by SyngleChance
+	// 		message = os.read(pipe.fileno(), 256)
+	// 		if len(message) > 0:
+	// 			m = message.decode()
+	// 			if m != 'default_en':
+	// 				was_nondefault = True
+	// 			self.changeImage.emit(m)
+	// 		else:
+	// 			try:
+	// 				st = os.stat(self.pipe)
+	// 				if st.st_size == 0 and was_nondefault:
+	// 					self.changeImage.emit('CLOSE')
+	// 			except FileNotFoundError:
+	// 				pass
+
+	// 			time.sleep(0.05)
 }
 
 CloseButton::CloseButton(QWidget *parent) : QAbstractButton(parent) {
-	// XXX Implement me
+	// def loadBMP(img):
+	// 	pixmap = QPixmap(img)
+	// 	mask = pixmap.createMaskFromColor(QColor(0, 255, 0), Qt.MaskMode.MaskInColor)
+	// 	pixmap.setMask(mask)
+	// 	return pixmap
+	
+	// self.parent = parent
+	// self.pixmap = loadBMP(os.path.join(img_path, 'close.bmp'))
+	// self.pixmap_hover = loadBMP(os.path.join(img_path, 'close_hover.bmp'))
+
+	// self.hovering = False
+
+	// self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+
+	// self.move(self.getXPos(), 0)
 }
 
 QSize CloseButton::sizeHint() {
-	// XXX Implement me
+	// return self.pixmap.size()
 }
 
 void CloseButton::paintEvent(QPaintEvent *e) {
-	// XXX Implement me
+	// painter = QPainter(self)
+	// painter.drawPixmap(
+	// 	event.rect(), self.pixmap_hover if self.hovering else self.pixmap
+	// )
 }
 
 void CloseButton::enterEvent(QEvent *e) {
-	// XXX Implement me
+	// self.hovering = True
+	// self.update()
 }
 
 void CloseButton::leaveEvent(QEvent *e) {
-	// XXX Implement me
+	// self.hovering = False
+	// self.update()
 }
 
 void CloseButton::mouseReleaseEvent(QMouseEvent *e) {
-	// XXX Implement me
+	// self.parent.app.quit()
+}
+
+int CloseButton::getXPos() {
+	// left_close = False
+	// if sys.platform == 'darwin':
+	// 	left_close = True
+	// elif sys.platform == 'linux':
+	// 	try:
+	// 		o = os.popen('gsettings get org.gnome.desktop.wm.preferences button-layout').read()
+	// 		if 'close' in o.split(':')[0]:
+	// 			left_close = True
+	// 	except:
+	// 		# If this fails, don't worry about it
+	// 		pass
+
+	// return left_close ? 0 : 800-24;
 }
 
 Journal::Journal(QApplication *app, QWidget *parent) : QWidget(parent) {
-	// XXX Implement me
+	// self.mousedown = False
+	// self.mousedownpos = QPoint(0, 0)
+
+	// self.label = QLabel(self)
+
+	// self.close_button = CloseButton(self)
+	// if not left_close: self.close_button.move(800-24, 0)
+
+	// self.changeImage('default_en')
+
+	// self.setWindowFlags(
+	// 	Qt.WindowType.FramelessWindowHint |
+	// 	Qt.WindowType.NoDropShadowWindowHint
+	// )
+
+	// self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+	// self.setMouseTracking(True)
+	// self.setWindowTitle(' ')
+	// self.setMinimumSize(800, 600)
+	// self.setMaximumSize(800, 600)
+	// self.setGeometry(0, 0, 800, 600)
+
+	// self.show()	
 }
 
 void Journal::mousePressEvent(QMouseEvent *e) {
-	// XXX Implement me
+	// self.mousedown = True
+	// self.mousedownpos = event.pos()
 }
 
 void Journal::mouseReleaseEvent(QMouseEvent *e) {
-	// XXX Implement me
+	// self.mousedown = False
 }
 
 void Journal::mouseMoveEvent(QMouseEvent *e) {
-	// XXX Implement me
+	// if event.buttons() == Qt.MouseButton.LeftButton:
+	// 	pos = event.pos()
+	// 	frameGm = self.frameGeometry()
+	// 	self.setGeometry(frameGm.x() + pos.x() - self.mousedownpos.x(), frameGm.y() + pos.y() - self.mousedownpos.y(), 800, 600)
 }
 
 void Journal::changeImage(std::string image) {
-	// XXX Implement me
+	// if image == 'CLOSE':
+	// 	self.app.quit()
+	// 	return
+	// if not '_' in image: return
+
+	// name, lang = image.split('_', 1)
+
+	// if name == 'default' or name == 'save' or name == 'final':
+	// 	self.close_button.show()
+	// else:
+	// 	self.close_button.hide()
+
+	// if lang == 'en':
+	// 	img = os.path.join(img_path, '{}.bmp'.format(name))
+	// else:
+	// 	img = os.path.join(img_path, lang.upper(), '{}.bmp'.format(name))
+	
+	// if not os.path.exists(img):
+	// 	return
+
+	// def loadBMP(img):
+	// 	pixmap = QPixmap(img)
+	// 	mask = pixmap.createMaskFromColor(QColor(0, 255, 0), Qt.MaskMode.MaskInColor)
+	// 	pixmap.setMask(mask)
+	// 	return pixmap
+
+	// pixmap = loadBMP(img)
+	// self.label.setPixmap(pixmap)
 }
 

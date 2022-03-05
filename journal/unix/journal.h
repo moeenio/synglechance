@@ -12,6 +12,7 @@
 #include <QWidget>
 #include <QAbstractButton>
 #include <QThread>
+#include <QPoint>
 
 class WatchPipe : public QThread {
 	Q_OBJECT
@@ -30,6 +31,8 @@ class CloseButton : public QAbstractButton {
 		void enterEvent(QEvent *e);
 		void leaveEvent(QEvent *e);
 		void mouseReleaseEvent(QMouseEvent *e);
+
+		int getXPos();
 };
 
 class Journal : public QWidget {
@@ -41,5 +44,10 @@ private:
 	void mousePressEvent(QMouseEvent *e);
 	void mouseReleaseEvent(QMouseEvent *e);
 	void mouseMoveEvent(QMouseEvent *e);
+
 	void changeImage(std::string image);
+
+	bool mouseDown;
+	QPoint mousePos;
+	CloseButton *closeButton;
 };
