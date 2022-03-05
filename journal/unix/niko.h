@@ -5,6 +5,8 @@
  * niko.h
  */
 
+#pragma once
+
 #include <QWidget>
 #include <QThread>
 
@@ -18,8 +20,10 @@ class AnimationTimer : public QThread {
 class Niko : public QWidget {
 	Q_OBJECT
 	public:
-		Niko(QObject *parent = nullptr);
+		Niko(QWidget *parent = nullptr);
+		~Niko();
 		void start(int x, int y);
+	private:
 		int getFrame();
 		void update();
 };

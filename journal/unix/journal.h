@@ -5,6 +5,8 @@
  * journal.h
  */
 
+#pragma once
+
 #include <string>
 
 #include <QWidget>
@@ -23,6 +25,7 @@ class CloseButton : public QAbstractButton {
 	public:
 		CloseButton(QObject *parent = nullptr);
 		QSize sizeHint();
+	private:
 		void paintEvent(QPaintEvent *e);
 		void enterEvent(QEvent *e);
 		void leaveEvent(QEvent *e);
@@ -31,10 +34,13 @@ class CloseButton : public QAbstractButton {
 
 class Journal : public QWidget {
 	Q_OBJECT
-	public:
-		Journal(QObject *parent = nullptr);
-		void mousePressEvent(QMouseEvent *e);
-		void mouseReleaseEvent(QMouseEvent *e);
-		void mouseMoveEvent(QMouseEvent *e);
-		void changeImage(std::string image);
+	
+public:
+	Journal(QWidget *parent = nullptr);
+	~Journal();
+private:
+	void mousePressEvent(QMouseEvent *e);
+	void mouseReleaseEvent(QMouseEvent *e);
+	void mouseMoveEvent(QMouseEvent *e);
+	void changeImage(std::string image);
 };
