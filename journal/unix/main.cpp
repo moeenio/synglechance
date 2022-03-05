@@ -36,13 +36,16 @@ std::string getPipePath(bool nikoMode) {
 }
 
 int main(int argc, char *argv[]) {
-	QApplication App(argc, argv);
+	QApplication app(argc, argv);
 
-	if (argc > 1) {
+	Niko niko;
+	Journal journal;
+
+    if (argc > 1) {
 		// do Niko
 	} else {
-		// do journal
+        journal.show();
 	}
 
-	return App.exec();
+	return app.exec();
 }
