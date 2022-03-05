@@ -67,11 +67,11 @@ class PipeThread(QThread):
 		super().__init__(*args, **kwargs)
 
 class WatchPipe(PipeThread):
-	change_image = pyqtSignal(str)
+	changeImage = pyqtSignal(str)
 
 	def run(self):
 		while True:
-			self.change_image.emit('default_en')
+			self.changeImage.emit('default_en')
 			while not os.path.exists(self.pipe): time.sleep(0.1)
 
 			pipe = open(self.pipe, 'r')
@@ -85,12 +85,12 @@ class WatchPipe(PipeThread):
 					m = message.decode()
 					if m != 'default_en':
 						was_nondefault = True
-					self.change_image.emit(m)
+					self.changeImage.emit(m)
 				else:
 					try:
 						st = os.stat(self.pipe)
 						if st.st_size == 0 and was_nondefault:
-							self.change_image.emit('CLOSE')
+							self.changeImage.emit('CLOSE')
 					except FileNotFoundError:
 						pass
 
@@ -134,14 +134,14 @@ class CloseButton(QAbstractButton):
 	
 		self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
+	def sizeHint(self):
+		return self.pixmap.size()
+
 	def paintEvent(self, event):
 		painter = QPainter(self)
 		painter.drawPixmap(
 			event.rect(), self.pixmap_hover if self.hovering else self.pixmap
 		)
-
-	def sizeHint(self):
-		return self.pixmap.size()
 
 	def enterEvent(self, event):
 		self.hovering = True
@@ -151,7 +151,7 @@ class CloseButton(QAbstractButton):
 		self.hovering = False
 		self.update()
 
-	def mousePressEvent(self, event):
+	def mouseReleaseEvent(self, event):
 		self.parent.app.quit()
 
 class Journal(QWidget):
@@ -169,7 +169,7 @@ class Journal(QWidget):
 		self.close_button = CloseButton(self)
 		if not left_close: self.close_button.move(800-24, 0)
 
-		self.change_image('default_en')
+		self.changeImage('default_en')
 
 		self.setWindowFlags(
 			Qt.WindowType.FramelessWindowHint |
@@ -198,7 +198,7 @@ class Journal(QWidget):
 			frameGm = self.frameGeometry()
 			self.setGeometry(frameGm.x() + pos.x() - self.mousedownpos.x(), frameGm.y() + pos.y() - self.mousedownpos.y(), 800, 600)
 
-	def change_image(self, image):
+	def changeImage(self, image):
 		if image == 'CLOSE':
 			self.app.quit()
 			return
@@ -294,9 +294,9 @@ if __name__ == '__main__':
 				lang = save.read().decode('utf-8')
 				lang = lang[lang.find('[') + 1:lang.find(']')]
 				if lang == 'en_US': lang = 'en'
-				journal.change_image('save_' + lang)
+				journal.changeImage('save_' + lang)
 		thread = WatchPipe(pipe = pipe_path)
-		thread.change_image.connect(journal.change_image)
+		thread.changeImage.connect(journal.changeImage)
 		thread.start()
 
 	if not os.path.exists(pipe_path):
