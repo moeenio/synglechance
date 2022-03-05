@@ -5,10 +5,35 @@
  * main.cpp
  */
 
+#include <string>
+
+#include <QApplication>
+
 #include "journal.h"
 #include "niko.h"
 
-#include <QApplication>
+std::string getDocumentsPath() {
+	#ifdef _WIN32
+		WCHAR path[MAX_PATH];
+		SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, 0, path);
+		return std::string(w32_fromWide(path));
+	#elif defined __APPLE__
+		return std::string(getenv("HOME")) + "/Documents";
+	#elif defined __linux__
+		return std::string(xdg_user_dir_lookup("DOCUMENTS"));
+	#else
+		#error OS is unsupported!
+	#endif
+}
+
+std::string getPipePath(bool nikoMode) {
+	#ifdef _WIN32
+		return std::string("\\\\.\\pipe\\oneshot-journal-to-game");
+	#else
+		std::string path = (nikoMode ? "/.oneshot-niko-pipe" : "/.oneshot-pipe");
+		return std::string(getenv("HOME")) + path;
+	#endif
+}
 
 int main(int argc, char *argv[]) {
 	QApplication App(argc, argv);
