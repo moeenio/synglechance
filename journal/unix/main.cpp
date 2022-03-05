@@ -5,7 +5,11 @@
  * main.cpp
  */
 
+#include <iostream>
 #include <string>
+#include <filesystem>
+#include <fstream>
+#include <unistd.h>
 
 #include <QApplication>
 
@@ -37,15 +41,26 @@ std::string checkSaveProgress() {
 
 	std::string filePath = documentsPath + "/OneShot/save_progress.oneshot";
 
-	// XXX Implement the rest of me!
+	if (access(filePath.c_str(), F_OK) != -1) {
+		std::ifstream file(filePath, std::ios::in | std::ios::binary);
 
-	// if os.path.exists(save_path):
-			// with open(save_path, 'rb') as save:
-				// save.seek(-8, os.SEEK_END)
-				// lang = save.read().decode('utf-8')
-				// lang = lang[lang.find('[') + 1:lang.find(']')]
-				// if lang == 'en_US': lang = 'en'
-				// journal.changeImage('save_' + lang)
+		std::string search("HeyNoxidHeresTheLanguage[");
+		std::string line;
+
+		while(std::getline(file, line)) {
+			std::size_t searchResult = line.find(search);
+			if (searchResult != std::string::npos) {
+				line = line.substr(line.find(search)+search.length());
+				std::string lang = line.substr(0, line.length()-1);
+				file.close();
+				return lang == "en_US" ? std::string("en") : lang;
+			}
+		}
+
+		file.close();
+	}
+
+	return "";
 }
 
 int doNiko(int argc, char *argv[]) {
