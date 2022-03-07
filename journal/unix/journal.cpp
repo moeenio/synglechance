@@ -13,10 +13,10 @@ WatchPipe::WatchPipe(std::string pipePath, QWidget *parent) : QThread(parent) {
 
 void WatchPipe::run() {
 	// while True:
-	// 	self.changeImage.emit('default_en')
+	// 	self.changeImage.emit("default")
 	// 	while not os.path.exists(self.pipe): time.sleep(0.1)
 
-	// 	pipe = open(self.pipe, 'r')
+	// 	pipe = open(self.pipe, "r")
 	// 	pipe.flush()
 
 	// 	was_nondefault = False
@@ -25,14 +25,14 @@ void WatchPipe::run() {
 	// 		message = os.read(pipe.fileno(), 256)
 	// 		if len(message) > 0:
 	// 			m = message.decode()
-	// 			if m != 'default_en':
+	// 			if m != "default_en":
 	// 				was_nondefault = True
 	// 			self.changeImage.emit(m)
 	// 		else:
 	// 			try:
 	// 				st = os.stat(self.pipe)
 	// 				if st.st_size == 0 and was_nondefault:
-	// 					self.changeImage.emit('CLOSE')
+	// 					self.changeImage.emit("CLOSE")
 	// 			except FileNotFoundError:
 	// 				pass
 
@@ -47,8 +47,8 @@ CloseButton::CloseButton(QWidget *parent) : QAbstractButton(parent) {
 	// 	return pixmap
 	
 	// self.parent = parent
-	// self.pixmap = loadBMP(os.path.join(img_path, 'close.bmp'))
-	// self.pixmap_hover = loadBMP(os.path.join(img_path, 'close_hover.bmp'))
+	// self.pixmap = loadBMP(os.path.join(img_path, "close.bmp"))
+	// self.pixmap_hover = loadBMP(os.path.join(img_path, "close_hover.bmp"))
 
 	// self.hovering = False
 
@@ -84,12 +84,12 @@ void CloseButton::mouseReleaseEvent(QMouseEvent *e) {
 
 int CloseButton::getXPos() {
 	// left_close = False
-	// if sys.platform == 'darwin':
+	// if sys.platform == "darwin":
 	// 	left_close = True
-	// elif sys.platform == 'linux':
+	// elif sys.platform == "linux":
 	// 	try:
-	// 		o = os.popen('gsettings get org.gnome.desktop.wm.preferences button-layout').read()
-	// 		if 'close' in o.split(':')[0]:
+	// 		o = os.popen("gsettings get org.gnome.desktop.wm.preferences button-layout").read()
+	// 		if "close" in o.split(":")[0]:
 	// 			left_close = True
 	// 	except:
 	// 		# If this fails, don't worry about it
@@ -132,10 +132,9 @@ void Journal::mouseMoveEvent(QMouseEvent *e) {
 }
 
 void Journal::changeImage(std::string image) {
-	// if image == 'CLOSE':
+	// if image == "CLOSE":
 	// 	self.app.quit()
 	// 	return
-	// if not '_' in image: return
 
 	// name, lang = image.split('_', 1)
 
@@ -146,6 +145,7 @@ void Journal::changeImage(std::string image) {
 
 	// if lang == 'en':
 	// 	img = os.path.join(img_path, '{}.bmp'.format(name))
+	// if not "_" in image: return
 	// else:
 	// 	img = os.path.join(img_path, lang.upper(), '{}.bmp'.format(name))
 	

@@ -16,16 +16,16 @@ void AnimationTimer::run() {
 	// while True:
 	// 	while not os.path.exists(self.pipe): time.sleep(0.1)
 
-	// 	pipe = open(self.pipe, 'r')
+	// 	pipe = open(self.pipe, "r")
 	// 	pipe.flush()
 
 	// 	while os.path.exists(self.pipe): # Make sure the file still exists and wasn't cleaned up by SyngleChance
 	// 		message = os.read(pipe.fileno(), 256)
 	// 		if len(message) > 0:
 	// 			m = message.decode()
-	// 			if not ',' in m: pass
+	// 			if not "," in m: pass
 	// 			last_line = m.splitlines()[-1]
-	// 			x, y = last_line.split(',')
+	// 			x, y = last_line.split(",")
 	// 			self.start_animation.emit(int(x), int(y))
 
 	// 			while True:
@@ -36,9 +36,9 @@ void AnimationTimer::run() {
 }
 
 Niko::Niko(QApplication *app, QWidget *parent) : QWidget(parent) {
-	// self.app, self.thread = kwargs['app'], kwargs['thread']
-	// self.screen_height = kwargs['screen_height']
-	// del kwargs['screen_height'], kwargs['app'], kwargs['thread']
+	// self.app, self.thread = kwargs["app"], kwargs["thread"]
+	// self.screen_height = kwargs["screen_height"]
+	// del kwargs["screen_height"], kwargs["app"], kwargs["thread"]
 
 	// super().__init__(*args, **kwargs)
 
@@ -58,7 +58,7 @@ Niko::Niko(QApplication *app, QWidget *parent) : QWidget(parent) {
 	// 	return pixmap
 
 	// self.frames = [
-	// 	loadBMP(os.path.join(img_path, 'niko{}.bmp'.format(n))) for n in range(1,4)
+	// 	loadBMP(os.path.join(img_path, "niko{}.bmp".format(n))) for n in range(1,4)
 	// ]
 
 	// self.label = QLabel(self)
