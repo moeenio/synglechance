@@ -135,19 +135,36 @@ void Journal::changeImage(std::string image) {
 	// if image == "CLOSE":
 	// 	self.app.quit()
 	// 	return
-
-	// name, lang = image.split('_', 1)
-
-	// if name == 'default' or name == 'save' or name == 'final':
-	// 	self.close_button.show()
-	// else:
-	// 	self.close_button.hide()
-
-	// if lang == 'en':
-	// 	img = os.path.join(img_path, '{}.bmp'.format(name))
 	// if not "_" in image: return
+
+	std::string imgName;
+	std::string lang = "";
+
+	std::size_t underscore = image.find("_");
+	if (underscore == std::string::npos) {
+		imgName = image;
+	} else {
+		imgName = image.substr(0, underscore);
+		lang = image.substr(underscore);
+
+		if (lang.rfind("en", 0) == 0) {
+			// If en_US, en_UK, etc., set to default
+			lang = "";
+		}
+	}
+
+	if (imgName == "default" || imgName == "save" || imgName == "final") {
+		// this->closeButton->show();
+	} else {
+		// this->closeButton->hide();
+	}
+
+	std::string imgPath;
+	
+	// if lang:
+	// 	img = os.path.join(img_path, lang.upper(), "{}.bmp".format(name))
 	// else:
-	// 	img = os.path.join(img_path, lang.upper(), '{}.bmp'.format(name))
+	// 	img = os.path.join(img_path, "{}.bmp".format(name))
 	
 	// if not os.path.exists(img):
 	// 	return
