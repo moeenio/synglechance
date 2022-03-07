@@ -13,6 +13,7 @@
 #include <QAbstractButton>
 #include <QThread>
 #include <QPoint>
+#include <QLabel>
 
 class WatchPipe : public QThread {
 	Q_OBJECT
@@ -47,7 +48,9 @@ private:
 
 	void changeImage(std::string image);
 
-	bool mouseDown;
-	QPoint mousePos;
+	QApplication *app;
+	bool mouseDown = false;
+	QPoint mousePos = QPoint(0, 0);
+	QLabel label = QLabel(this);
 	CloseButton *closeButton;
 };

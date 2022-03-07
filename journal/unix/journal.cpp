@@ -99,29 +99,20 @@ int CloseButton::getXPos() {
 }
 
 Journal::Journal(QApplication *app, QWidget *parent) : QWidget(parent) {
-	// self.mousedown = False
-	// self.mousedownpos = QPoint(0, 0)
+	this->app = app;
+	this->changeImage("default");
 
-	// self.label = QLabel(self)
+	this->setWindowFlags(
+		Qt::FramelessWindowHint |
+		Qt::NoDropShadowWindowHint
+	);
+	this->setAttribute(Qt::WA_TranslucentBackground);
 
-	// self.close_button = CloseButton(self)
-	// if not left_close: self.close_button.move(800-24, 0)
-
-	// self.changeImage('default_en')
-
-	// self.setWindowFlags(
-	// 	Qt.WindowType.FramelessWindowHint |
-	// 	Qt.WindowType.NoDropShadowWindowHint
-	// )
-
-	// self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
-	// self.setMouseTracking(True)
-	// self.setWindowTitle(' ')
-	// self.setMinimumSize(800, 600)
-	// self.setMaximumSize(800, 600)
-	// self.setGeometry(0, 0, 800, 600)
-
-	// self.show()	
+	this->setMouseTracking(true);
+	this->setWindowTitle(" ");
+	this->setMinimumSize(800, 600);
+	this->setMaximumSize(800, 600);
+	this->setGeometry(0, 0, 800, 600);
 }
 
 void Journal::mousePressEvent(QMouseEvent *e) {
