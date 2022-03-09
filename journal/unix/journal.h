@@ -18,6 +18,8 @@
 #include <QThread>
 #include <QWidget>
 
+#include "pixmap.h"
+
 namespace fs = boost::filesystem;
 
 class WatchPipe : public QThread {

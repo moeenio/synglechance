@@ -143,17 +143,19 @@ void Journal::mouseMoveEvent(QMouseEvent *e) {
 }
 
 void Journal::changeImage(std::string image) {
-	// if image == "CLOSE":
-	// 	self.app.quit()
-	// 	return
-	// if not "_" in image: return
+	// If we're told to close the app, close it
+	if (image == "CLOSE") {
+		this->app->quit();
+	}
 
 	std::string imgName;
 	std::string lang = "";
 
 	std::size_t underscore = image.find("_");
 	if (underscore == std::string::npos) {
+		// If no underscore, assume no locale
 		imgName = image;
+		lang = "";
 	} else {
 		imgName = image.substr(0, underscore);
 		lang = image.substr(underscore);
@@ -162,31 +164,24 @@ void Journal::changeImage(std::string image) {
 			// If en_US, en_UK, etc., set to default
 			lang = "";
 		}
+
+		boost::to_upper(lang);
 	}
 
+	// Show close button when applicable
 	if (imgName == "default" || imgName == "save" || imgName == "final") {
 		// this->closeButton->show();
 	} else {
 		// this->closeButton->hide();
 	}
 
-	std::string imgPath;
-	
-	// if lang:
-	// 	img = os.path.join(img_path, lang.upper(), "{}.bmp".format(name))
-	// else:
-	// 	img = os.path.join(img_path, "{}.bmp".format(name))
-	
-	// if not os.path.exists(img):
-	// 	return
+	fs::path imgPath = this->imagePath / lang / (imgName + ".bmp");
+	if (!fs::exists(imgPath)) {
+		// If the image doesn't exist, ignore
+		return;
+	}
 
-	// def loadBMP(img):
-	// 	pixmap = QPixmap(img)
-	// 	mask = pixmap.createMaskFromColor(QColor(0, 255, 0), Qt.MaskMode.MaskInColor)
-	// 	pixmap.setMask(mask)
-	// 	return pixmap
-
-	// pixmap = loadBMP(img)
-	// self.label.setPixmap(pixmap)
+	QPixmap pixmap = loadPixmap(imgPath);
+	this->label.setPixmap(pixmap);
 }
 
