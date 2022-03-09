@@ -118,21 +118,28 @@ Journal::Journal(QApplication *app, fs::path imagePath, QWidget *parent) : QWidg
 }
 
 void Journal::mousePressEvent(QMouseEvent *e) {
-	// self.mousedown = True
-	// self.mousedownpos = event.pos()
-	this->setCursor(QCursor(Qt::ClosedHandCursor));
+	this->mouseDown = true;
+	this->mouseDownPos = e->pos();
+
+	if (e->buttons() == Qt::LeftButton) {
+		// Set cursor only if left mouse button
+		this->setCursor(QCursor(Qt::ClosedHandCursor));
+	}
 }
 
 void Journal::mouseReleaseEvent(QMouseEvent *e) {
-	// self.mousedown = False
+	this->mouseDown = false;
 	this->setCursor(QCursor(Qt::OpenHandCursor));
 }
 
 void Journal::mouseMoveEvent(QMouseEvent *e) {
-	// if event.buttons() == Qt.MouseButton.LeftButton:
-	// 	pos = event.pos()
-	// 	frameGm = self.frameGeometry()
-	// 	self.setGeometry(frameGm.x() + pos.x() - self.mousedownpos.x(), frameGm.y() + pos.y() - self.mousedownpos.y(), 800, 600)
+	if (e->buttons() != Qt::LeftButton) {
+		// If not dragging with left mouse button, ignore
+		return;
+	}
+	QPoint pos = e->pos();
+	QRect frameGm = this->frameGeometry();
+	this->setGeometry(frameGm.x() + pos.x() - this->mouseDownPos.x(), frameGm.y() + pos.y() - this->mouseDownPos.y(), 800, 600);
 }
 
 void Journal::changeImage(std::string image) {

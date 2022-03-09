@@ -63,7 +63,7 @@ private:
 	QApplication *app;
 	fs::path imagePath;
 	bool mouseDown = false;
-	QPoint mousePos = QPoint(0, 0);
+	QPoint mouseDownPos = QPoint(0, 0);
 	QLabel label = QLabel(this);
 	CloseButton *closeButton = new CloseButton(app, imagePath);
 };
