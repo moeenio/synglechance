@@ -121,6 +121,7 @@ Journal::Journal(QApplication *app, QWidget *parent) : QWidget(parent) {
 	#endif
 
 	this->imagePath /= "Graphics/Journal";
+	this->setCursor(QCursor(Qt::OpenHandCursor));
 
 	// Set to default image
 	this->changeImage("default");
@@ -129,10 +130,12 @@ Journal::Journal(QApplication *app, QWidget *parent) : QWidget(parent) {
 void Journal::mousePressEvent(QMouseEvent *e) {
 	// self.mousedown = True
 	// self.mousedownpos = event.pos()
+	this->setCursor(QCursor(Qt::ClosedHandCursor));
 }
 
 void Journal::mouseReleaseEvent(QMouseEvent *e) {
 	// self.mousedown = False
+	this->setCursor(QCursor(Qt::OpenHandCursor));
 }
 
 void Journal::mouseMoveEvent(QMouseEvent *e) {

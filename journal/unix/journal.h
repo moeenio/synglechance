@@ -13,6 +13,7 @@
 #include <boost/filesystem.hpp>
 #include <QAbstractButton>
 #include <QApplication>
+#include <QCursor>
 #include <QLabel>
 #include <QPoint>
 #include <QThread>
