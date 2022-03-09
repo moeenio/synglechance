@@ -12,9 +12,12 @@
 #include <unistd.h>
 
 #include <QApplication>
+#include <boost/filesystem.hpp>
 
 #include "journal.h"
 #include "niko.h"
+
+namespace fs = boost::filesystem;
 
 std::string getPipePath(bool nikoMode) {
 	#ifdef _WIN32
@@ -39,10 +42,10 @@ std::string checkSaveProgress() {
 		#error OS is unsupported!
 	#endif
 
-	std::string filePath = documentsPath + "/OneShot/save_progress.oneshot";
+	fs::path filePath = documentsPath + "/OneShot/save_progress.oneshot";
 
-	if (access(filePath.c_str(), F_OK) != -1) {
-		std::ifstream file(filePath, std::ios::in | std::ios::binary);
+	if (fs::exists(filePath)) {
+		fs::ifstream file(filePath, std::ios::in | std::ios::binary);
 
 		std::string search("HeyNoxidHeresTheLanguage[");
 		std::string line;
