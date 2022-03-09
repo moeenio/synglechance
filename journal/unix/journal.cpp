@@ -98,9 +98,7 @@ int CloseButton::getXPos() {
 	// return left_close ? 0 : 800-24;
 }
 
-Journal::Journal(QApplication *app, QWidget *parent) : QWidget(parent) {
-	this->app = app;
-
+Journal::Journal(QApplication *app, fs::path imagePath, QWidget *parent) : QWidget(parent), app(app), imagePath(imagePath) {
 	this->setWindowFlags(
 		Qt::FramelessWindowHint |
 		Qt::NoDropShadowWindowHint
@@ -113,14 +111,6 @@ Journal::Journal(QApplication *app, QWidget *parent) : QWidget(parent) {
 	this->setMaximumSize(800, 600);
 	this->setGeometry(0, 0, 800, 600);
 
-	// Set image path
-	this->imagePath = app->applicationDirPath().toStdString();
-
-	#ifdef __APPLE__
-		this->imagePath = fs::canonical("../../..", imagePath);
-	#endif
-
-	this->imagePath /= "Graphics/Journal";
 	this->setCursor(QCursor(Qt::OpenHandCursor));
 
 	// Set to default image

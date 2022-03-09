@@ -7,10 +7,13 @@
 
 #pragma once
 
+#include <boost/filesystem.hpp>
 #include <QWidget>
 #include <QThread>
 
 #include "pixmap.h"
+
+namespace fs = boost::filesystem;
 
 class AnimationTimer : public QThread {
 	Q_OBJECT
@@ -22,9 +25,12 @@ class AnimationTimer : public QThread {
 class Niko : public QWidget {
 	Q_OBJECT
 	public:
-		Niko(QApplication *app, QWidget *parent = nullptr);
+		Niko(QApplication *app, fs::path imagePath, QWidget *parent = nullptr);
 		void start(int x, int y);
 	private:
 		int getFrame();
 		void update();
+
+		QApplication *app;
+		fs::path imagePath;
 };

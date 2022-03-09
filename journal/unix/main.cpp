@@ -19,6 +19,16 @@
 
 namespace fs = boost::filesystem;
 
+fs::path getImagePath(QApplication *app) {
+	fs::path imagePath = app->applicationDirPath().toStdString();
+
+	#ifdef __APPLE__
+		imagePath = fs::canonical("../../..", imagePath);
+	#endif
+
+	return imagePath / "Graphics/Journal";
+}
+
 std::string getPipePath(bool nikoMode) {
 	#ifdef _WIN32
 		return std::string("\\\\.\\pipe\\oneshot-journal-to-game");
@@ -67,21 +77,21 @@ std::string checkSaveProgress() {
 }
 
 int doNiko(int argc, char *argv[]) {
-	QApplication app(argc, argv);
-	Niko niko(&app);
+	QApplication *app = new QApplication(argc, argv);
+	Niko niko(app, getImagePath(app));
 
 	niko.show();
 
-	return app.exec();
+	return app->exec();
 }
 
 int doJournal(int argc, char *argv[]) {
-	QApplication app(argc, argv);
-	Journal journal(&app);
+	QApplication *app = new QApplication(argc, argv);
+	Journal journal(app, getImagePath(app));
 
 	journal.show();
 
-	return app.exec();
+	return app->exec();
 }
 
 int main(int argc, char *argv[]) {

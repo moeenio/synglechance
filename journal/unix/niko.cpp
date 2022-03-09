@@ -35,7 +35,7 @@ void AnimationTimer::run() {
 	// 		time.sleep(0.05)
 }
 
-Niko::Niko(QApplication *app, QWidget *parent) : QWidget(parent) {
+Niko::Niko(QApplication *app, fs::path imagePath, QWidget *parent) : QWidget(parent), app(app), imagePath(imagePath) {
 	// self.app, self.thread = kwargs["app"], kwargs["thread"]
 	// self.screen_height = kwargs["screen_height"]
 	// del kwargs["screen_height"], kwargs["app"], kwargs["thread"]

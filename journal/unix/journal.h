@@ -33,7 +33,7 @@ class WatchPipe : public QThread {
 class CloseButton : public QAbstractButton {
 	Q_OBJECT
 	public:
-		CloseButton(QWidget *parent = nullptr);
+		CloseButton(QApplication *app, fs::path imagePath, QWidget *parent = nullptr);
 		QSize sizeHint();
 	private:
 		void paintEvent(QPaintEvent *e);
@@ -42,13 +42,17 @@ class CloseButton : public QAbstractButton {
 		void mouseReleaseEvent(QMouseEvent *e);
 
 		int getXPos();
+
+		QApplication *app;
+		fs::path imagePath;
 };
 
 class Journal : public QWidget {
 	Q_OBJECT
 	
 public:
-	Journal(QApplication *app, QWidget *parent = nullptr);
+	Journal(QApplication *app, fs::path imagePath, QWidget *parent = nullptr);
+
 private:
 	void mousePressEvent(QMouseEvent *e);
 	void mouseReleaseEvent(QMouseEvent *e);
@@ -61,5 +65,5 @@ private:
 	bool mouseDown = false;
 	QPoint mousePos = QPoint(0, 0);
 	QLabel label = QLabel(this);
-	CloseButton *closeButton;
+	CloseButton *closeButton = new CloseButton(app, imagePath);
 };
