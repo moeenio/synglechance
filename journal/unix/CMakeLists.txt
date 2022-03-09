@@ -28,8 +28,8 @@ set(CMAKE_XCODE_ATTRIBUTE_OTHER_CODE_SIGN_FLAGS "--deep")
 
 ## Get Packages ##
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets Gui REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Gui REQUIRED)
 
 find_package(Boost COMPONENTS filesystem REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
@@ -38,6 +38,8 @@ include_directories(${Boost_INCLUDE_DIR})
 
 set(PROJECT_SOURCES
         main.cpp
+        pixmap.cpp
+        pixmap.h
         journal.cpp
         journal.h
         niko.cpp
@@ -57,7 +59,7 @@ endif()
 
 ## Link packages ##
 
-target_link_libraries(${EXECUTABLE_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(${EXECUTABLE_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui)
 target_link_libraries(${EXECUTABLE_NAME} PRIVATE ${Boost_LIBRARIES})
 
 ## Make bundle ##

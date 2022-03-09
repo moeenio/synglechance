@@ -10,6 +10,8 @@
 #include <QWidget>
 #include <QThread>
 
+#include "pixmap.h"
+
 class AnimationTimer : public QThread {
 	Q_OBJECT
 	public:
