@@ -15,6 +15,9 @@
 #include <QApplication>
 #include <QCursor>
 #include <QLabel>
+#include <QMouseEvent>
+#include <QPainter>
+#include <QPaintEvent>
 #include <QPoint>
 #include <QThread>
 #include <QWidget>
@@ -45,6 +48,10 @@ class CloseButton : public QAbstractButton {
 
 		QApplication *app;
 		fs::path imagePath;
+
+		QPixmap pixmap;
+		QPixmap pixmapHover;
+		bool hovering = false;
 };
 
 class Journal : public QWidget {
@@ -65,5 +72,5 @@ private:
 	bool mouseDown = false;
 	QPoint mouseDownPos = QPoint(0, 0);
 	QLabel label = QLabel(this);
-	CloseButton *closeButton = new CloseButton(app, imagePath);
+	CloseButton *closeButton = new CloseButton(app, imagePath, this);
 };

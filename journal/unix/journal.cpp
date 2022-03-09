@@ -39,63 +39,57 @@ void WatchPipe::run() {
 	// 			time.sleep(0.05)
 }
 
-CloseButton::CloseButton(QWidget *parent) : QAbstractButton(parent) {
-	// def loadBMP(img):
-	// 	pixmap = QPixmap(img)
-	// 	mask = pixmap.createMaskFromColor(QColor(0, 255, 0), Qt.MaskMode.MaskInColor)
-	// 	pixmap.setMask(mask)
-	// 	return pixmap
-	
-	// self.parent = parent
-	// self.pixmap = loadBMP(os.path.join(img_path, "close.bmp"))
-	// self.pixmap_hover = loadBMP(os.path.join(img_path, "close_hover.bmp"))
+CloseButton::CloseButton(QApplication *app, fs::path imagePath, QWidget *parent) : QAbstractButton(parent), app(app), imagePath(imagePath) {
+	this->pixmap = loadPixmap(imagePath / "close.bmp");
+	this->pixmapHover = loadPixmap(imagePath / "close_hover.bmp");
 
-	// self.hovering = False
-
-	// self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-
-	// self.move(self.getXPos(), 0)
+	this->setCursor(QCursor(Qt::PointingHandCursor));
+	this->move(this->getXPos(), 0);
 }
 
 QSize CloseButton::sizeHint() {
-	// return self.pixmap.size()
+	return this->pixmap.size();
 }
 
 void CloseButton::paintEvent(QPaintEvent *e) {
-	// painter = QPainter(self)
-	// painter.drawPixmap(
-	// 	event.rect(), self.pixmap_hover if self.hovering else self.pixmap
-	// )
+	QPainter painter(this);
+	painter.drawPixmap(
+		this->pixmap.rect(), this->hovering ? this->pixmapHover : this->pixmap
+	);
 }
 
 void CloseButton::enterEvent(QEvent *e) {
-	// self.hovering = True
-	// self.update()
+	// XXX Not firing...
+	this->hovering = true;
+	this->update();
 }
 
 void CloseButton::leaveEvent(QEvent *e) {
-	// self.hovering = False
-	// self.update()
+	this->hovering = false;
+	this->update();
 }
 
 void CloseButton::mouseReleaseEvent(QMouseEvent *e) {
-	// self.parent.app.quit()
+	this->app->quit();
 }
 
 int CloseButton::getXPos() {
-	// left_close = False
-	// if sys.platform == "darwin":
-	// 	left_close = True
-	// elif sys.platform == "linux":
-	// 	try:
+	bool leftClose = false;
+
+	#ifdef __APPLE__
+		// Close button is always left on macOS
+		leftClose = true;
+	#elif defined(__linux__)
+			// 	try:
 	// 		o = os.popen("gsettings get org.gnome.desktop.wm.preferences button-layout").read()
 	// 		if "close" in o.split(":")[0]:
 	// 			left_close = True
 	// 	except:
 	// 		# If this fails, don't worry about it
 	// 		pass
+	#endif
 
-	// return left_close ? 0 : 800-24;
+	return leftClose ? 0 : 800-24;
 }
 
 Journal::Journal(QApplication *app, fs::path imagePath, QWidget *parent) : QWidget(parent), app(app), imagePath(imagePath) {
@@ -170,9 +164,9 @@ void Journal::changeImage(std::string image) {
 
 	// Show close button when applicable
 	if (imgName == "default" || imgName == "save" || imgName == "final") {
-		// this->closeButton->show();
+		this->closeButton->show();
 	} else {
-		// this->closeButton->hide();
+		this->closeButton->hide();
 	}
 
 	fs::path imgPath = this->imagePath / lang / (imgName + ".bmp");
