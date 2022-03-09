@@ -100,7 +100,6 @@ int CloseButton::getXPos() {
 
 Journal::Journal(QApplication *app, QWidget *parent) : QWidget(parent) {
 	this->app = app;
-	this->changeImage("default");
 
 	this->setWindowFlags(
 		Qt::FramelessWindowHint |
@@ -113,6 +112,18 @@ Journal::Journal(QApplication *app, QWidget *parent) : QWidget(parent) {
 	this->setMinimumSize(800, 600);
 	this->setMaximumSize(800, 600);
 	this->setGeometry(0, 0, 800, 600);
+
+	// Set image path
+	this->imagePath = app->applicationDirPath().toStdString();
+
+	#ifdef __APPLE__
+		this->imagePath = fs::canonical("../../..", imagePath);
+	#endif
+
+	this->imagePath /= "Graphics/Journal";
+
+	// Set to default image
+	this->changeImage("default");
 }
 
 void Journal::mousePressEvent(QMouseEvent *e) {

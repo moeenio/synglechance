@@ -9,11 +9,16 @@
 
 #include <string>
 
-#include <QWidget>
+#include <boost/algorithm/string.hpp>
+#include <boost/filesystem.hpp>
 #include <QAbstractButton>
-#include <QThread>
-#include <QPoint>
+#include <QApplication>
 #include <QLabel>
+#include <QPoint>
+#include <QThread>
+#include <QWidget>
+
+namespace fs = boost::filesystem;
 
 class WatchPipe : public QThread {
 	Q_OBJECT
@@ -49,6 +54,7 @@ private:
 	void changeImage(std::string image);
 
 	QApplication *app;
+	fs::path imagePath;
 	bool mouseDown = false;
 	QPoint mousePos = QPoint(0, 0);
 	QLabel label = QLabel(this);
