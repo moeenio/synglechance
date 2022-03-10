@@ -35,58 +35,58 @@ void AnimationTimer::run() {
 	// 		time.sleep(0.05)
 }
 
-Niko::Niko(QApplication *app, fs::path imagePath, fs::path pipePath, QWidget *parent) : QWidget(parent), app(app), imagePath(imagePath), pipePath(pipePath) {
-	// self.app, self.thread = kwargs["app"], kwargs["thread"]
-	// self.screen_height = kwargs["screen_height"]
-	// del kwargs["screen_height"], kwargs["app"], kwargs["thread"]
+Niko::Niko(QApplication *app, fs::path imagePath, fs::path pipePath, QWidget *parent) : QWidget(parent), app(app), screenSize(app->primaryScreen()->size()), imagePath(imagePath), pipePath(pipePath) {
+	this->setWindowFlags(
+		Qt::FramelessWindowHint |
+		Qt::NoDropShadowWindowHint |
+		Qt::WindowStaysOnTopHint
+	);
+	this->setAttribute(Qt::WA_TranslucentBackground);
+	this->setMinimumSize(48, 64);
+	this->setMaximumSize(48, 64);
 
-	// super().__init__(*args, **kwargs)
+	for (int i = 0; i < 3; i++) {
+		std::string fileName = "niko" + std::to_string(i+1) + ".bmp";
+		fs::path filePath = imagePath / fileName;
+		this->frames[i] = loadPixmap(filePath);
+	}
 
-	// self.setWindowFlags(
-	// 	Qt.WindowType.FramelessWindowHint |
-	// 	Qt.WindowType.NoDropShadowWindowHint |
-	// 	Qt.WindowType.WindowStaysOnTopHint
-	// )
-	// self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
-	// self.setMinimumSize(48, 64)
-	// self.setMaximumSize(48, 64)
-
-	// def loadBMP(img):
-	// 	pixmap = QPixmap(img)
-	// 	mask = pixmap.createMaskFromColor(QColor(0, 255, 0), Qt.MaskMode.MaskInColor)
-	// 	pixmap.setMask(mask)
-	// 	return pixmap
-
-	// self.frames = [
-	// 	loadBMP(os.path.join(img_path, "niko{}.bmp".format(n))) for n in range(1,4)
-	// ]
-
-	// self.label = QLabel(self)
-	// self.label.setPixmap(self.frames[1])
+	this->label.setPixmap(this->frames[0]);
 }
 
-void Niko::start(int x, int y) {
-	// self.x = x + 8
-	// self.y = y
-	// self.start_y = y
+void Niko::start(QPoint pos) {
+	this->startPos = pos;
+	this->pos = pos;
 
-	// self.show()
+	// X must be offset to align properly
+	this->pos.setX(pos.x() + 8);
+
+	this->show();
 }
 
 int Niko::getFrame() {
-	// if ((self.y - self.start_y) % 32 >= 16): return 1
-	// if ((self.y - self.start_y) % 64 >= 32): return 0
-	// else: return 2
+	if ((this->pos.y() - this->startPos.y()) % 32 >= 16) {
+		return 1;
+	}
+	if ((this->pos.y() - this->startPos.y()) % 64 >= 32) {
+		return 0;
+	}
+	return 2;
 }
 
 void Niko::update() {
-	// self.label.setPixmap(self.frames[self.getFrame()])
-	// self.y += 2
-	// if self.y > self.screen_height:
-	// 	self.app.quit()
-	// 	return
-	// elif self.y > self.screen_height - 64:
-	// 	self.setMinimumSize(48, self.screen_height - self.y)
-	// 	self.resize(48, self.screen_height - self.y)
-	// self.move(self.x, self.y)
+	this->label.setPixmap(this->frames[this->getFrame()]);
+	this->pos.setY(this->pos.y() + 2);
+
+	if (this->pos.y() > this->screenSize.height()) {
+		// Once Niko's walked off the screen, quit the app
+		this->app->quit();
+	} else if (this->pos.y() > this->screenSize.height() - 64) {
+		// Cut off parts outside screen bounds
+		int diff = this->screenSize.height() - this->pos.y();
+		this->setMinimumSize(48, diff);
+		this->resize(48, diff);
+	};
+
+	this->move(this->pos);
 }

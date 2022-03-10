@@ -8,8 +8,11 @@
 #pragma once
 
 #include <boost/filesystem.hpp>
-#include <QWidget>
+#include <QApplication>
+#include <QLabel>
+#include <QScreen>
 #include <QThread>
+#include <QWidget>
 
 #include "pixmap.h"
 
@@ -28,7 +31,7 @@ class Niko : public QWidget {
 	Q_OBJECT
 	public:
 		Niko(QApplication *app, fs::path imagePath, fs::path pipePath, QWidget *parent = nullptr);
-		void start(int x, int y);
+		void start(QPoint pos);
 	private:
 		int getFrame();
 		void update();
@@ -36,5 +39,12 @@ class Niko : public QWidget {
 		QApplication *app;
 		fs::path imagePath;
 		fs::path pipePath;
+		QPixmap frames[3];
+
+		QSize screenSize;
+		QPoint startPos;
+		QPoint pos;
+
+		QLabel label = QLabel(this);
 		AnimationTimer *timer = new AnimationTimer(pipePath, this);
 };
