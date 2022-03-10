@@ -15,6 +15,7 @@
 #include <QApplication>
 #include <QCursor>
 #include <QLabel>
+#include <QHoverEvent>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPaintEvent>
@@ -40,9 +41,7 @@ class CloseButton : public QAbstractButton {
 		QSize sizeHint();
 	private:
 		void paintEvent(QPaintEvent *e);
-		void enterEvent(QEvent *e);
-		void leaveEvent(QEvent *e);
-		void mouseReleaseEvent(QMouseEvent *e);
+		bool event(QEvent *e);
 
 		int getXPos();
 

@@ -40,6 +40,8 @@ void WatchPipe::run() {
 }
 
 CloseButton::CloseButton(QApplication *app, fs::path imagePath, QWidget *parent) : QAbstractButton(parent), app(app), imagePath(imagePath) {
+	this->setAttribute(Qt::WA_Hover, true);
+
 	this->pixmap = loadPixmap(imagePath / "close.bmp");
 	this->pixmapHover = loadPixmap(imagePath / "close_hover.bmp");
 
@@ -58,19 +60,27 @@ void CloseButton::paintEvent(QPaintEvent *e) {
 	);
 }
 
-void CloseButton::enterEvent(QEvent *e) {
-	// XXX Not firing...
-	this->hovering = true;
-	this->update();
-}
+bool CloseButton::event(QEvent *e) {
+	switch(e->type()) {
+		case QEvent::HoverEnter:
+			this->hovering = true;
+			this->update();
+			break;
+		case QEvent::HoverLeave:
+			this->hovering = false;
+			this->update();
+			break;
+		case QEvent::MouseButtonRelease:
+			if (this->rect().contains(static_cast<QMouseEvent*>(e)->pos())) {
+				// If we're still hovering over the close button
+				this->app->quit();
+			}
+			break;
+		default:
+			break;
+	}
 
-void CloseButton::leaveEvent(QEvent *e) {
-	this->hovering = false;
-	this->update();
-}
-
-void CloseButton::mouseReleaseEvent(QMouseEvent *e) {
-	this->app->quit();
+	return QWidget::event(e);
 }
 
 int CloseButton::getXPos() {
