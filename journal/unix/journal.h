@@ -14,8 +14,8 @@
 #include <QAbstractButton>
 #include <QApplication>
 #include <QCursor>
-#include <QLabel>
 #include <QHoverEvent>
+#include <QLabel>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPaintEvent>
@@ -71,6 +71,7 @@ private:
 	QApplication *app;
 	fs::path imagePath;
 	fs::path pipePath;
+	std::string currentImage;
 	bool mouseDown = false;
 	QPoint mouseDownPos = QPoint(0, 0);
 	QLabel label = QLabel(this);

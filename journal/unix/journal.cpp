@@ -187,6 +187,8 @@ void Journal::changeImage(std::string image) {
 		boost::to_upper(lang);
 	}
 
+	this->currentImage = imgName;
+
 	// Show close button when applicable
 	if (imgName == "default" || imgName == "save" || imgName == "final") {
 		this->closeButton->show();
