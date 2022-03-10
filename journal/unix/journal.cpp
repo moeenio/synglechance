@@ -137,10 +137,11 @@ void Journal::mouseReleaseEvent(QMouseEvent *e) {
 }
 
 void Journal::mouseMoveEvent(QMouseEvent *e) {
-	if (e->buttons() != Qt::LeftButton) {
-		// If not dragging with left mouse button, ignore
+	if (!(e->buttons() == Qt::LeftButton && this->mouseDown)) {
+		// If not dragging with left mouse button, or if we didn't start dragging, ignore
 		return;
 	}
+
 	QPoint pos = e->pos();
 	QRect frameGm = this->frameGeometry();
 	this->setGeometry(frameGm.x() + pos.x() - this->mouseDownPos.x(), frameGm.y() + pos.y() - this->mouseDownPos.y(), 800, 600);
