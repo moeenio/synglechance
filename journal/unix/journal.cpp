@@ -90,13 +90,27 @@ int CloseButton::getXPos() {
 		// Close button is always left on macOS
 		leftClose = true;
 	#elif defined(__linux__)
-			// 	try:
-	// 		o = os.popen("gsettings get org.gnome.desktop.wm.preferences button-layout").read()
-	// 		if "close" in o.split(":")[0]:
-	// 			left_close = True
-	// 	except:
-	// 		# If this fails, don't worry about it
-	// 		pass
+		std::array<char, 128> buffer;
+		std::string result;
+
+		// XXX Only supports GNOME right now
+		FILE* pipe = popen("gsettings get org.gnome.desktop.wm.preferences button-layout", "r");
+		if (pipe) {
+			while (fgets(buffer.data(), 128, pipe) != NULL) {
+				// Read the data from the pipe
+				result += buffer.data();
+			}
+			pclose(pipe);
+
+			std::size_t colon = result.find(":");
+			if (colon == std::string::npos) {
+				result = result.substr(0, colon);
+			}
+
+			if (result.find("close")) {
+				leftClose = true;
+			}
+		}
 	#endif
 
 	return leftClose ? 0 : 800-24;
