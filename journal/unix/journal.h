@@ -30,8 +30,10 @@ namespace fs = boost::filesystem;
 class WatchPipe : public QThread {
 	Q_OBJECT
 	public:
-		WatchPipe(std::string pipePath, QWidget *parent = nullptr);
+		WatchPipe(fs::path pipePath, QWidget *parent = nullptr);
 		void run();
+	private:
+		fs::path pipePath;
 };
 
 class CloseButton : public QAbstractButton {
@@ -57,7 +59,7 @@ class Journal : public QWidget {
 	Q_OBJECT
 	
 public:
-	Journal(QApplication *app, fs::path imagePath, QWidget *parent = nullptr);
+	Journal(QApplication *app, fs::path imagePath, fs::path pipePath, QWidget *parent = nullptr);
 
 private:
 	void mousePressEvent(QMouseEvent *e);
@@ -68,8 +70,10 @@ private:
 
 	QApplication *app;
 	fs::path imagePath;
+	fs::path pipePath;
 	bool mouseDown = false;
 	QPoint mouseDownPos = QPoint(0, 0);
 	QLabel label = QLabel(this);
 	CloseButton *closeButton = new CloseButton(app, imagePath, this);
+	WatchPipe *pipe = new WatchPipe(pipePath, this);
 };

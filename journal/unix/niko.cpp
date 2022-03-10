@@ -7,7 +7,7 @@
 
 #include "niko.h"
 
-AnimationTimer::AnimationTimer(std::string pipePath, QWidget *parent) : QThread(parent) {
+AnimationTimer::AnimationTimer(fs::path pipePath, QWidget *parent) : QThread(parent) {
 	// next_frame = pyqtSignal()
 	// start_animation = pyqtSignal(int, int)
 }
@@ -35,7 +35,7 @@ void AnimationTimer::run() {
 	// 		time.sleep(0.05)
 }
 
-Niko::Niko(QApplication *app, fs::path imagePath, QWidget *parent) : QWidget(parent), app(app), imagePath(imagePath) {
+Niko::Niko(QApplication *app, fs::path imagePath, fs::path pipePath, QWidget *parent) : QWidget(parent), app(app), imagePath(imagePath), pipePath(pipePath) {
 	// self.app, self.thread = kwargs["app"], kwargs["thread"]
 	// self.screen_height = kwargs["screen_height"]
 	// del kwargs["screen_height"], kwargs["app"], kwargs["thread"]

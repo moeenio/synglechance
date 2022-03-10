@@ -18,14 +18,16 @@ namespace fs = boost::filesystem;
 class AnimationTimer : public QThread {
 	Q_OBJECT
 	public:
-		AnimationTimer(std::string pipePath, QWidget *parent = nullptr);
+		AnimationTimer(fs::path pipePath, QWidget *parent = nullptr);
 		void run();
+	private:
+		fs::path pipePath;
 };
 
 class Niko : public QWidget {
 	Q_OBJECT
 	public:
-		Niko(QApplication *app, fs::path imagePath, QWidget *parent = nullptr);
+		Niko(QApplication *app, fs::path imagePath, fs::path pipePath, QWidget *parent = nullptr);
 		void start(int x, int y);
 	private:
 		int getFrame();
@@ -33,4 +35,6 @@ class Niko : public QWidget {
 
 		QApplication *app;
 		fs::path imagePath;
+		fs::path pipePath;
+		AnimationTimer *timer = new AnimationTimer(pipePath, this);
 };

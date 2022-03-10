@@ -29,12 +29,12 @@ fs::path getImagePath(QApplication *app) {
 	return imagePath / "Graphics/Journal";
 }
 
-std::string getPipePath(bool nikoMode) {
+fs::path getPipePath(bool nikoMode = false) {
 	#ifdef _WIN32
-		return std::string("\\\\.\\pipe\\oneshot-journal-to-game");
+		return fs::path("\\\\.\\pipe\\oneshot-journal-to-game");
 	#else
-		std::string path = (nikoMode ? "/.oneshot-niko-pipe" : "/.oneshot-pipe");
-		return std::string(getenv("HOME")) + path;
+		std::string filename = (nikoMode ? ".oneshot-niko-pipe" : ".oneshot-pipe");
+		return fs::path(getenv("HOME")) / filename;
 	#endif
 }
 
@@ -52,7 +52,7 @@ std::string checkSaveProgress() {
 		#error OS is unsupported!
 	#endif
 
-	fs::path filePath = documentsPath + "/OneShot/save_progress.oneshot";
+	fs::path filePath = fs::path(documentsPath) / "OneShot" / "save_progress.oneshot";
 
 	if (fs::exists(filePath)) {
 		fs::ifstream file(filePath, std::ios::in | std::ios::binary);
@@ -78,7 +78,7 @@ std::string checkSaveProgress() {
 
 int doNiko(int argc, char *argv[]) {
 	QApplication *app = new QApplication(argc, argv);
-	Niko niko(app, getImagePath(app));
+	Niko niko(app, getImagePath(app), getPipePath(true));
 
 	niko.show();
 
@@ -87,7 +87,7 @@ int doNiko(int argc, char *argv[]) {
 
 int doJournal(int argc, char *argv[]) {
 	QApplication *app = new QApplication(argc, argv);
-	Journal journal(app, getImagePath(app));
+	Journal journal(app, getImagePath(app), getPipePath());
 
 	journal.show();
 

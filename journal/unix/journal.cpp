@@ -7,7 +7,7 @@
 
 #include "journal.h"
 
-WatchPipe::WatchPipe(std::string pipePath, QWidget *parent) : QThread(parent) {
+WatchPipe::WatchPipe(fs::path pipePath, QWidget *parent) : QThread(parent) {
 	// changeImage = pyqtSignal(str)
 }
 
@@ -116,7 +116,7 @@ int CloseButton::getXPos() {
 	return leftClose ? 0 : 800-24;
 }
 
-Journal::Journal(QApplication *app, fs::path imagePath, QWidget *parent) : QWidget(parent), app(app), imagePath(imagePath) {
+Journal::Journal(QApplication *app, fs::path imagePath, fs::path pipePath, QWidget *parent) : QWidget(parent), app(app), imagePath(imagePath), pipePath(pipePath) {
 	this->setWindowFlags(
 		Qt::FramelessWindowHint |
 		Qt::NoDropShadowWindowHint
