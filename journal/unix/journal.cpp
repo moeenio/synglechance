@@ -18,7 +18,6 @@ void WatchPipe::run() {
 		fs::ofstream pipeCreate(this->pipePath, std::ios::trunc);
 		pipeCreate.close();
 
-		std::string msg;
 		std::streampos currentPos = 0, lastPos = 0;
 
 		while (fs::exists(pipePath) && !this->isInterruptionRequested()) {
@@ -29,7 +28,8 @@ void WatchPipe::run() {
 			if (currentPos != lastPos) {
 				pipe.seekg(lastPos);
 				lastPos = currentPos;
-				pipe.read(msg.data(), std::size_t(256));
+				std::string msg;
+				pipe.read(msg.data(), lastPos);
 
 				qDebug() << "Got message: " << msg.c_str();
 
