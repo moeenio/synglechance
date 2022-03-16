@@ -203,7 +203,7 @@ void Journal::changeImage(std::string image) {
 		lang = "";
 	} else {
 		imgName = image.substr(0, underscore);
-		lang = image.substr(underscore);
+		lang = image.substr(underscore+1);
 
 		if (lang.rfind("en", 0) == 0) {
 			// If en_US, en_UK, etc., set to default
