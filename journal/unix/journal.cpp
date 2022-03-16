@@ -12,24 +12,32 @@ WatchPipe::WatchPipe(fs::path pipePath, QWidget *parent) : QThread(parent), pipe
 void WatchPipe::run() {
 	while (!this->isInterruptionRequested()) {
 		emit changeImage("default");
-
-		// Create empty file
-		fs::ofstream pipeCreate(this->pipePath);
-		pipeCreate.close();
-
 		bool nondefault = false;
 
-		while (fs::exists(this->pipePath) && !this->isInterruptionRequested()) {
+		// Create empty file
+		fs::ofstream pipeCreate(this->pipePath, std::ios::trunc);
+		pipeCreate.close();
+
+		std::string msg;
+		std::streampos currentPos = 0, lastPos = 0;
+
+		while (fs::exists(pipePath) && !this->isInterruptionRequested()) {
 			// While pipe exists, get contents
-			fs::ifstream pipe(this->pipePath, std::ios::in);
-			std::string msg;
-			
-			if (std::getline(pipe, msg)) {
+			fs::ifstream pipe(this->pipePath, std::ios::ate);
+
+			currentPos = pipe.tellg();
+			if (currentPos != lastPos) {
+				pipe.seekg(lastPos);
+				lastPos = currentPos;
+				pipe.read(msg.data(), std::size_t(256));
+
+				qDebug() << "Got message: " << msg.c_str();
+
 				if (msg.find("default") != std::string::npos) {
 					nondefault = true;
 				}
 				emit changeImage(msg);
-			} else if (nondefault) {
+			} else if (currentPos == 0 && nondefault) {
 				// If the pipe is emptied and we showed journal pages, close
 				emit quitApp();
 			}
