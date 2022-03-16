@@ -28,10 +28,9 @@ void WatchPipe::run() {
 			if (currentPos != lastPos) {
 				pipe.seekg(lastPos);
 				lastPos = currentPos;
-				std::string msg;
-				pipe.read(msg.data(), lastPos);
-
-				qDebug() << "Got message: " << msg.c_str();
+				char *buf = new char[lastPos];
+				pipe.read(buf, lastPos);
+				std::string msg(buf); // Need casting to fix .find() bug
 
 				if (msg.find("default") != std::string::npos) {
 					nondefault = true;
