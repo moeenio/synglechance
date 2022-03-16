@@ -13,6 +13,7 @@
 #include <boost/filesystem.hpp>
 #include <QAbstractButton>
 #include <QApplication>
+#include <QCloseEvent>
 #include <QCursor>
 #include <QHoverEvent>
 #include <QLabel>
@@ -34,6 +35,7 @@ class WatchPipe : public QThread {
 	public:
 		WatchPipe(fs::path pipePath, QWidget *parent = nullptr);
 		void run();
+		void stop();
 
 	signals:
 		void changeImage(std::string image);
@@ -73,6 +75,7 @@ class Journal : public QWidget {
 		void quitApp();
 
 	private:
+		void closeEvent(QCloseEvent *e);
 		void mousePressEvent(QMouseEvent *e);
 		void mouseReleaseEvent(QMouseEvent *e);
 		void mouseMoveEvent(QMouseEvent *e);

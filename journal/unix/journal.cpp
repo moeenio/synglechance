@@ -42,6 +42,12 @@ void WatchPipe::run() {
 	}
 }
 
+void WatchPipe::stop() {
+	this->requestInterruption();
+	this->wait(); // Wait for watch thread finish
+	fs::remove(this->pipePath); // Delete pipe file
+}
+
 CloseButton::CloseButton(fs::path imagePath, Journal *parent) : QAbstractButton(parent), imagePath(imagePath), parent(parent) {
 	this->setAttribute(Qt::WA_Hover, true);
 
@@ -142,6 +148,11 @@ Journal::Journal(QApplication *app, fs::path imagePath, fs::path pipePath, QWidg
 	this->pipe->start();
 }
 
+void Journal::closeEvent(QCloseEvent *e) {
+	this->pipe->stop();
+	e->accept();
+}
+
 void Journal::mousePressEvent(QMouseEvent *e) {
 	this->mouseDown = true;
 	this->mouseDownPos = e->pos();
@@ -219,8 +230,7 @@ void Journal::changeImage(std::string image) {
 }
 
 void Journal::quitApp() {
-	this->pipe->requestInterruption();
-	fs::remove(pipePath); // Delete pipe file
+	this->pipe->stop();
 	this->app->quit();
 }
 
