@@ -27,11 +27,18 @@
 
 namespace fs = boost::filesystem;
 
+class Journal;
+
 class WatchPipe : public QThread {
 	Q_OBJECT
 	public:
 		WatchPipe(fs::path pipePath, QWidget *parent = nullptr);
 		void run();
+
+	signals:
+		void changeImage(std::string image);
+		void quitApp();
+
 	private:
 		fs::path pipePath;
 };
@@ -39,7 +46,7 @@ class WatchPipe : public QThread {
 class CloseButton : public QAbstractButton {
 	Q_OBJECT
 	public:
-		CloseButton(QApplication *app, fs::path imagePath, QWidget *parent = nullptr);
+		CloseButton(fs::path imagePath, Journal *parent = nullptr);
 		QSize sizeHint();
 	private:
 		void paintEvent(QPaintEvent *e);
@@ -47,7 +54,7 @@ class CloseButton : public QAbstractButton {
 
 		int getXPos();
 
-		QApplication *app;
+		Journal *parent;
 		fs::path imagePath;
 
 		QPixmap pixmap;
@@ -58,23 +65,25 @@ class CloseButton : public QAbstractButton {
 class Journal : public QWidget {
 	Q_OBJECT
 	
-public:
-	Journal(QApplication *app, fs::path imagePath, fs::path pipePath, QWidget *parent = nullptr);
+	public:
+		Journal(QApplication *app, fs::path imagePath, fs::path pipePath, QWidget *parent = nullptr);
 
-private:
-	void mousePressEvent(QMouseEvent *e);
-	void mouseReleaseEvent(QMouseEvent *e);
-	void mouseMoveEvent(QMouseEvent *e);
+	public slots:
+		void changeImage(std::string image);
+		void quitApp();
 
-	void changeImage(std::string image);
+	private:
+		void mousePressEvent(QMouseEvent *e);
+		void mouseReleaseEvent(QMouseEvent *e);
+		void mouseMoveEvent(QMouseEvent *e);
 
-	QApplication *app;
-	fs::path imagePath;
-	fs::path pipePath;
-	std::string currentImage;
-	bool mouseDown = false;
-	QPoint mouseDownPos = QPoint(0, 0);
-	QLabel label = QLabel(this);
-	CloseButton *closeButton = new CloseButton(app, imagePath, this);
-	WatchPipe *pipe = new WatchPipe(pipePath, this);
+		QApplication *app;
+		fs::path imagePath;
+		fs::path pipePath;
+		std::string currentImage;
+		bool mouseDown = false;
+		QPoint mouseDownPos = QPoint(0, 0);
+		QLabel label = QLabel(this);
+		CloseButton *closeButton = new CloseButton(imagePath, this);
+		WatchPipe *pipe = new WatchPipe(pipePath, this);
 };

@@ -7,39 +7,42 @@
 
 #include "journal.h"
 
-WatchPipe::WatchPipe(fs::path pipePath, QWidget *parent) : QThread(parent) {
-	// changeImage = pyqtSignal(str)
-}
+WatchPipe::WatchPipe(fs::path pipePath, QWidget *parent) : QThread(parent), pipePath(pipePath) {}
 
 void WatchPipe::run() {
-	// while True:
-	// 	self.changeImage.emit("default")
-	// 	while not os.path.exists(self.pipe): time.sleep(0.1)
+	while (!this->isInterruptionRequested()) {
+		emit changeImage("default");
 
-	// 	pipe = open(self.pipe, "r")
-	// 	pipe.flush()
+		// Create empty file
+		fs::ofstream pipeCreate(this->pipePath);
+		pipeCreate.close();
 
-	// 	was_nondefault = False
+		bool nondefault = false;
 
-	// 	while os.path.exists(self.pipe): # Make sure the file still exists and wasn't cleaned up by SyngleChance
-	// 		message = os.read(pipe.fileno(), 256)
-	// 		if len(message) > 0:
-	// 			m = message.decode()
-	// 			if m != "default_en":
-	// 				was_nondefault = True
-	// 			self.changeImage.emit(m)
-	// 		else:
-	// 			try:
-	// 				st = os.stat(self.pipe)
-	// 				if st.st_size == 0 and was_nondefault:
-	// 					self.changeImage.emit("CLOSE")
-	// 			except FileNotFoundError:
-	// 				pass
+		while (fs::exists(this->pipePath) && !this->isInterruptionRequested()) {
+			// While pipe exists, get contents
+			fs::ifstream pipe(this->pipePath, std::ios::in);
+			std::string msg;
+			
+			if (std::getline(pipe, msg)) {
+				if (msg.find("default") != std::string::npos) {
+					nondefault = true;
+				}
+				emit changeImage(msg);
+			} else if (nondefault) {
+				// If the pipe is emptied and we showed journal pages, close
+				emit quitApp();
+			}
 
-	// 			time.sleep(0.05)
+			pipe.close();
+			this->usleep(50);
+		}
+
+		this->usleep(50);
+	}
 }
 
-CloseButton::CloseButton(QApplication *app, fs::path imagePath, QWidget *parent) : QAbstractButton(parent), app(app), imagePath(imagePath) {
+CloseButton::CloseButton(fs::path imagePath, Journal *parent) : QAbstractButton(parent), imagePath(imagePath), parent(parent) {
 	this->setAttribute(Qt::WA_Hover, true);
 
 	this->pixmap = loadPixmap(imagePath / "close.bmp");
@@ -73,7 +76,7 @@ bool CloseButton::event(QEvent *e) {
 		case QEvent::MouseButtonRelease:
 			if (this->rect().contains(static_cast<QMouseEvent*>(e)->pos())) {
 				// If we're still hovering over the close button
-				this->app->quit();
+				this->parent->quitApp();
 			}
 			break;
 		default:
@@ -133,6 +136,10 @@ Journal::Journal(QApplication *app, fs::path imagePath, fs::path pipePath, QWidg
 
 	// Set to default image
 	this->changeImage("default");
+
+	connect(this->pipe, &WatchPipe::changeImage, this, &Journal::changeImage);
+	connect(this->pipe, &WatchPipe::quitApp, this, &Journal::quitApp);
+	this->pipe->start();
 }
 
 void Journal::mousePressEvent(QMouseEvent *e) {
@@ -164,7 +171,7 @@ void Journal::mouseMoveEvent(QMouseEvent *e) {
 void Journal::changeImage(std::string image) {
 	// If we're told to close the app, close it
 	if (image == "CLOSE") {
-		this->app->quit();
+		this->quitApp();
 	}
 
 	std::string imgName;
@@ -187,6 +194,11 @@ void Journal::changeImage(std::string image) {
 		boost::to_upper(lang);
 	}
 
+	if (this->currentImage == imgName) {
+		// Don't update if image is the same
+		return;
+	}
+
 	this->currentImage = imgName;
 
 	// Show close button when applicable
@@ -204,5 +216,11 @@ void Journal::changeImage(std::string image) {
 
 	QPixmap pixmap = loadPixmap(imgPath);
 	this->label.setPixmap(pixmap);
+}
+
+void Journal::quitApp() {
+	this->pipe->requestInterruption();
+	fs::remove(pipePath); // Delete pipe file
+	this->app->quit();
 }
 

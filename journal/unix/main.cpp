@@ -10,6 +10,7 @@
 #include <filesystem>
 #include <fstream>
 #include <unistd.h>
+#include <pwd.h>
 
 #include <QApplication>
 #include <boost/filesystem.hpp>
@@ -34,7 +35,7 @@ fs::path getPipePath(bool nikoMode = false) {
 		return fs::path("\\\\.\\pipe\\oneshot-journal-to-game");
 	#else
 		std::string filename = (nikoMode ? ".oneshot-niko-pipe" : ".oneshot-pipe");
-		return fs::path(getenv("HOME")) / filename;
+		return fs::path(getpwuid(getuid())->pw_dir) / filename;
 	#endif
 }
 
