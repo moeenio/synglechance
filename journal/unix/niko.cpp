@@ -7,32 +7,23 @@
 
 #include "niko.h"
 
-AnimationTimer::AnimationTimer(fs::path pipePath, QWidget *parent) : QThread(parent) {
-	// next_frame = pyqtSignal()
-	// start_animation = pyqtSignal(int, int)
-}
+AnimationTimer::AnimationTimer(fs::path pipePath, QWidget *parent) : PipeWatcher(pipePath, parent) {}
 
-void AnimationTimer::run() {
-	// while True:
-	// 	while not os.path.exists(self.pipe): time.sleep(0.1)
+void AnimationTimer::contentsChanged(std::string msg) {
+	std::size_t comma = msg.find(",");
 
-	// 	pipe = open(self.pipe, "r")
-	// 	pipe.flush()
+	if (comma == std::string::npos) {
+		// If no comma, ignore
+		return;
+	}
 
-	// 	while os.path.exists(self.pipe): # Make sure the file still exists and wasn't cleaned up by SyngleChance
-	// 		message = os.read(pipe.fileno(), 256)
-	// 		if len(message) > 0:
-	// 			m = message.decode()
-	// 			if not "," in m: pass
-	// 			last_line = m.splitlines()[-1]
-	// 			x, y = last_line.split(",")
-	// 			self.start_animation.emit(int(x), int(y))
+	int x = std::stoi(msg.substr(0, comma)), y = std::stoi(msg.substr(comma+1));
+	emit startAnimation(QPoint(x, y));
 
-	// 			while True:
-	// 				self.next_frame.emit()
-	// 				time.sleep(1.0 / 60)
-				
-	// 		time.sleep(0.05)
+	while (!this->isInterruptionRequested()) {
+		emit nextFrame();
+		this->msleep(1000/60);
+	}
 }
 
 Niko::Niko(QApplication *app, fs::path imagePath, fs::path pipePath, QWidget *parent) : QWidget(parent), app(app), screenSize(app->primaryScreen()->size()), imagePath(imagePath), pipePath(pipePath) {
@@ -52,6 +43,10 @@ Niko::Niko(QApplication *app, fs::path imagePath, fs::path pipePath, QWidget *pa
 	}
 
 	this->label.setPixmap(this->frames[0]);
+
+	connect(this->timer, &AnimationTimer::startAnimation, this, &Niko::start);
+	connect(this->timer, &AnimationTimer::nextFrame, this, &Niko::nextFrame);
+	this->timer->start();
 }
 
 void Niko::start(QPoint pos) {
@@ -64,22 +59,13 @@ void Niko::start(QPoint pos) {
 	this->show();
 }
 
-int Niko::getFrame() {
-	if ((this->pos.y() - this->startPos.y()) % 32 >= 16) {
-		return 1;
-	}
-	if ((this->pos.y() - this->startPos.y()) % 64 >= 32) {
-		return 0;
-	}
-	return 2;
-}
-
-void Niko::update() {
+void Niko::nextFrame() {
 	this->label.setPixmap(this->frames[this->getFrame()]);
 	this->pos.setY(this->pos.y() + 2);
 
 	if (this->pos.y() > this->screenSize.height()) {
 		// Once Niko's walked off the screen, quit the app
+		this->timer->stop();
 		this->app->quit();
 	} else if (this->pos.y() > this->screenSize.height() - 64) {
 		// Cut off parts outside screen bounds
@@ -89,4 +75,20 @@ void Niko::update() {
 	};
 
 	this->move(this->pos);
+	this->update();
+}
+
+void Niko::closeEvent(QCloseEvent *e) {
+	this->timer->stop();
+	e->accept();
+}
+
+int Niko::getFrame() {
+	if ((this->pos.y() - this->startPos.y()) % 32 >= 16) {
+		return 1;
+	}
+	if ((this->pos.y() - this->startPos.y()) % 64 >= 32) {
+		return 0;
+	}
+	return 2;
 }
