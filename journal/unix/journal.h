@@ -21,28 +21,27 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QPoint>
-#include <QThread>
 #include <QWidget>
 
 #include "pixmap.h"
+#include "pipe.h"
 
 namespace fs = boost::filesystem;
 
 class Journal;
 
-class WatchPipe : public QThread {
+class WatchPipe : public PipeWatcher {
 	Q_OBJECT
 	public:
 		WatchPipe(fs::path pipePath, QWidget *parent = nullptr);
-		void run();
-		void stop();
+		void contentsChanged(std::string msg) override;
 
 	signals:
 		void changeImage(std::string image);
 		void quitApp();
 
 	private:
-		fs::path pipePath;
+		bool hasChanged = false;
 };
 
 class CloseButton : public QAbstractButton {

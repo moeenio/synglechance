@@ -40,6 +40,8 @@ set(PROJECT_SOURCES
         main.cpp
         pixmap.cpp
         pixmap.h
+        pipe.cpp
+        pipe.h
         journal.cpp
         journal.h
         niko.cpp

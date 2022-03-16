@@ -7,52 +7,18 @@
 
 #include "journal.h"
 
-WatchPipe::WatchPipe(fs::path pipePath, QWidget *parent) : QThread(parent), pipePath(pipePath) {}
+WatchPipe::WatchPipe(fs::path pipePath, QWidget *parent) : PipeWatcher(pipePath, parent) {}
 
-void WatchPipe::run() {
-	while (!this->isInterruptionRequested()) {
-		emit changeImage("default");
-		bool nondefault = false;
-
-		// Create empty file
-		fs::ofstream pipeCreate(this->pipePath, std::ios::trunc);
-		pipeCreate.close();
-
-		std::streampos currentPos = 0, lastPos = 0;
-
-		while (fs::exists(pipePath) && !this->isInterruptionRequested()) {
-			// While pipe exists, get contents
-			fs::ifstream pipe(this->pipePath, std::ios::ate);
-
-			currentPos = pipe.tellg();
-			if (currentPos != lastPos) {
-				pipe.seekg(lastPos);
-				lastPos = currentPos;
-				char *buf = new char[lastPos];
-				pipe.read(buf, lastPos);
-				std::string msg(buf); // Need casting to fix .find() bug
-
-				if (msg.find("default") != std::string::npos) {
-					nondefault = true;
-				}
-				emit changeImage(msg);
-			} else if (currentPos == 0 && nondefault) {
-				// If the pipe is emptied and we showed journal pages, close
-				emit quitApp();
-			}
-
-			pipe.close();
-			this->usleep(50);
+void WatchPipe::contentsChanged(std::string msg) {
+	if (msg.length()) {
+		if (msg.find("default") != std::string::npos) {
+			this->hasChanged = true;
 		}
-
-		this->usleep(50);
+		emit changeImage(msg);
+	} else if (this->hasChanged) {
+		// If the pipe is emptied and we showed journal pages, close
+		emit quitApp();
 	}
-}
-
-void WatchPipe::stop() {
-	this->requestInterruption();
-	this->wait(); // Wait for watch thread finish
-	fs::remove(this->pipePath); // Delete pipe file
 }
 
 CloseButton::CloseButton(fs::path imagePath, Journal *parent) : QAbstractButton(parent), imagePath(imagePath), parent(parent) {
