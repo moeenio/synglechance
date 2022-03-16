@@ -62,7 +62,7 @@ CloseButton::CloseButton(fs::path imagePath, Journal *parent) : QAbstractButton(
 	this->pixmapHover = loadPixmap(imagePath / "close_hover.bmp");
 
 	this->setCursor(QCursor(Qt::PointingHandCursor));
-	this->move(this->getXPos(), 0);
+	this->moveButton();
 }
 
 QSize CloseButton::sizeHint() {
@@ -99,7 +99,7 @@ bool CloseButton::event(QEvent *e) {
 	return QWidget::event(e);
 }
 
-int CloseButton::getXPos() {
+void CloseButton::moveButton(std::string page) {
 	bool leftClose = false;
 
 	#ifdef __APPLE__
@@ -129,7 +129,13 @@ int CloseButton::getXPos() {
 		}
 	#endif
 
-	return leftClose ? 0 : 800-24;
+	if (page == "final") {
+		this->move(QPoint(leftClose ? 198 : 630-24, 30));
+	} else if (page == "save") {
+		this->move(leftClose ? QPoint(8, 16) : QPoint(790-24, 40));
+	} else {
+		this->move(QPoint(leftClose ? 0 : 800-24, 0));
+	}
 }
 
 Journal::Journal(QApplication *app, fs::path imagePath, fs::path pipePath, QWidget *parent) : QWidget(parent), app(app), imagePath(imagePath), pipePath(pipePath) {
@@ -222,6 +228,7 @@ void Journal::changeImage(std::string image) {
 	// Show close button when applicable
 	if (imgName == "default" || imgName == "save" || imgName == "final") {
 		this->closeButton->show();
+		this->closeButton->moveButton(imgName);
 	} else {
 		this->closeButton->hide();
 	}

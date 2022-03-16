@@ -50,11 +50,10 @@ class CloseButton : public QAbstractButton {
 	public:
 		CloseButton(fs::path imagePath, Journal *parent = nullptr);
 		QSize sizeHint();
+		void moveButton(std::string page = "default");
 	private:
 		void paintEvent(QPaintEvent *e);
 		bool event(QEvent *e);
-
-		int getXPos();
 
 		Journal *parent;
 		fs::path imagePath;
