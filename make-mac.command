@@ -32,6 +32,7 @@ echo "-> ${cyan}Install dependencies...${color_reset}"
 conan install .. --build=missing -o platform=$([ $with_steamshim == true ] && echo "steam" || echo "standalone") -o debug=$([ $debug == true ] && echo "True" || echo "False") -s arch=$([ $arm == true ] && echo "armv8" || echo "x86_64") -s os.version=$([ $arm == true ] && echo "11.0" || echo "10.10")
 echo "-> ${cyan}Compile engine...${color_reset}"
 conan build ..
+cd ..
 
 # Create app bundles
 echo "-> ${cyan}Create app bundles...${color_reset}"
@@ -46,7 +47,7 @@ mkdir -p "$ResourcesDir"
 
 # Steamshim
 if [[ $with_steamshim == true ]]; then
-	cp build/bin/steamshim $OSX_App/Contents/MacOS/steamshim
+	cp ./build/bin/steamshim $OSX_App/Contents/MacOS/steamshim
 	install_name_tool -change @loader_path/libsteam_api.dylib "$( cd "$(dirname "$0")" ; pwd -P )"/steamworks/redistributable_bin/osx/libsteam_api.dylib $OSX_App/Contents/macOS/steamshim
 fi
 
