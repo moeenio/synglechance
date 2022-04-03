@@ -27,21 +27,11 @@ cd build
 echo "-> ${cyan}Set version number...${color_reset}"
 m4 ../patches/mac/JournalInfo.plist.in -DONESHOTMACVERSION=$mac_version > ./JournalInfo.plist
 
-# Generate makefile and build main
+# Generate makefile and build
 echo "-> ${cyan}Install dependencies...${color_reset}"
 conan install .. --build=missing -o platform=$([ $with_steamshim == true ] && echo "steam" || echo "standalone") -o debug=$([ $debug == true ] && echo "True" || echo "False") -s arch=$([ $arm == true ] && echo "armv8" || echo "x86_64") -s os.version=$([ $arm == true ] && echo "11.0" || echo "10.10")
 echo "-> ${cyan}Compile engine...${color_reset}"
 conan build ..
-
-# Build journal
-echo "-> ${cyan}Compile journal...${color_reset}"
-# cd ..
-# pyinstaller journal/unix/journal.spec --onefile --windowed
-# rm -rf build/_______
-# rm -rf build/_______.app
-# mv dist/* build
-# rm -r dist
-# rm -rf journal/unix/__pycache__
 
 # Create app bundles
 echo "-> ${cyan}Create app bundles...${color_reset}"
