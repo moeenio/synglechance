@@ -67,6 +67,7 @@ class MkxpConan(ConanFile):
 			# For Unix journal
 			self.requires("qt/6.2.3")
 			self.requires("freetype/2.11.1")
+			self.requires("harfbuzz/4.2.0")
 
 	def configure(self):
 		self.options["openal"].shared = True
