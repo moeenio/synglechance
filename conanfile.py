@@ -66,7 +66,7 @@ class MkxpConan(ConanFile):
 		if not tools.os_info.is_windows:
 			# For Unix journal
 			self.requires("qt/6.2.3")
-			self.requires('freetype/2.11.1')
+			self.requires("freetype/2.11.1")
 
 	def configure(self):
 		self.options["openal"].shared = True
