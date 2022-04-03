@@ -16,7 +16,7 @@ class MkxpConan(ConanFile):
 		"boost/1.73.0",
 		"openal/1.21.1",
 		"physfs/3.0.1@bincrafters/stable",
-		"pixman/0.34.0@bincrafters/stable",
+		"pixman/0.38.0@bincrafters/stable",
 		"ruby/2.7.5@queengooborg/stable",
 		"sdl2/2.0.16@bincrafters/stable",
 		"sdl2_image/2.0.5@bincrafters/stable",
@@ -43,6 +43,7 @@ class MkxpConan(ConanFile):
 		"cygwin_installer:packages=xxd",
 		# Avoid dead url bitrot in cygwin_installer
 		"cygwin_installer:with_pear=False",
+		"pixman:shared=True"
 	)
 
 	#def build_requirements(self):
