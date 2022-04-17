@@ -4,8 +4,7 @@ cmake_policy(VERSION 3.0)
 project(OneShot_Journal VERSION 1.2.0 LANGUAGES CXX)
 set(EXECUTABLE_NAME "_______")
 
-# include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-# conan_basic_setup(TARGETS)
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 
 ## Setup options ##
 
@@ -26,14 +25,6 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET "10.10")
 set(CMAKE_OSX_ARCHITECTURES "x86_64")
 set(CMAKE_XCODE_ATTRIBUTE_OTHER_CODE_SIGN_FLAGS "--deep")
 
-## Get Packages ##
-
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets Gui REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Gui REQUIRED)
-
-find_package(Boost COMPONENTS filesystem REQUIRED)
-include_directories(${Boost_INCLUDE_DIR})
-
 ## Setup main source ##
 
 set(PROJECT_SOURCES
@@ -48,21 +39,16 @@ set(PROJECT_SOURCES
         niko.h
 )
 
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(${EXECUTABLE_NAME}
-        MANUAL_FINALIZATION
-        ${PROJECT_SOURCES}
-    )
-else()
-    add_executable(${EXECUTABLE_NAME}
-        ${PROJECT_SOURCES}
-    )
-endif()
+add_executable(${EXECUTABLE_NAME}
+    ${PROJECT_SOURCES}
+)
 
 ## Link packages ##
 
-target_link_libraries(${EXECUTABLE_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui)
-target_link_libraries(${EXECUTABLE_NAME} PRIVATE ${Boost_LIBRARIES})
+target_link_libraries(${EXECUTABLE_NAME}
+	CONAN_PKG::boost
+	CONAN_PKG::qt
+	${PLATFORM_LIBRARIES})
 
 ## Make bundle ##
 
@@ -79,7 +65,3 @@ set_target_properties(${EXECUTABLE_NAME} PROPERTIES
     MACOSX_BUNDLE_ICON_FILE "icon"
     MACOSX_BUNDLE_COPYRIGHT "Unix Journal for OneShot Copyright © 2022 Gooborg Studios, MIT license. OneShot Copyright © 2017-2019 OneShot team, all rights reserved. View CREDITS.txt for more."
 )
-
-if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(${EXECUTABLE_NAME})
-endif()
