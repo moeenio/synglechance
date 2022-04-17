@@ -84,7 +84,7 @@ class Journal : public QWidget {
 		std::string currentImage;
 		bool mouseDown = false;
 		QPoint mouseDownPos = QPoint(0, 0);
-		QLabel label = QLabel(this);
+		QLabel *label = new QLabel(this);
 		CloseButton *closeButton = new CloseButton(imagePath, this);
 		WatchPipe *pipe = new WatchPipe(pipePath, this);
 };

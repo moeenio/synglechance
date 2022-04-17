@@ -42,7 +42,7 @@ Niko::Niko(QApplication *app, fs::path imagePath, fs::path pipePath, QWidget *pa
 		this->frames[i] = loadPixmap(filePath);
 	}
 
-	this->label.setPixmap(this->frames[0]);
+	this->label->setPixmap(this->frames[0]);
 
 	connect(this->timer, &AnimationTimer::startAnimation, this, &Niko::start);
 	connect(this->timer, &AnimationTimer::nextFrame, this, &Niko::nextFrame);
@@ -60,7 +60,7 @@ void Niko::start(QPoint pos) {
 }
 
 void Niko::nextFrame() {
-	this->label.setPixmap(this->frames[this->getFrame()]);
+	this->label->setPixmap(this->frames[this->getFrame()]);
 	this->pos.setY(this->pos.y() + 2);
 
 	if (this->pos.y() > this->screenSize.height()) {

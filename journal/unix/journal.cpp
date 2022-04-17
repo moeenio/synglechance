@@ -206,7 +206,7 @@ void Journal::changeImage(std::string image) {
 	}
 
 	QPixmap pixmap = loadPixmap(imgPath);
-	this->label.setPixmap(pixmap);
+	this->label->setPixmap(pixmap);
 }
 
 void Journal::quitApp() {

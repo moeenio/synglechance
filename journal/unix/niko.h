@@ -53,6 +53,6 @@ class Niko : public QWidget {
 		QPoint startPos;
 		QPoint pos;
 
-		QLabel label = QLabel(this);
+		QLabel *label = new QLabel(this);
 		AnimationTimer *timer = new AnimationTimer(pipePath, this);
 };
