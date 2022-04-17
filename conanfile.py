@@ -66,7 +66,7 @@ class MkxpConan(ConanFile):
 			self.requires("libalsa/1.1.9")
 		if not tools.os_info.is_windows:
 			# For Unix journal
-			self.requires("qt/6.2.3")
+			self.requires("qt/6.2.4@queengooborg/stable")
 			self.requires("freetype/2.11.1")
 			self.requires("harfbuzz/4.2.0")
 
