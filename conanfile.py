@@ -43,7 +43,9 @@ class MkxpConan(ConanFile):
 		"cygwin_installer:packages=xxd",
 		# Avoid dead url bitrot in cygwin_installer
 		"cygwin_installer:with_pear=False",
-		"pixman:shared=True"
+		"pixman:shared=True",
+		"qt:with_mysql=False",
+		"qt:with_zstd=False"
 	)
 
 	#def build_requirements(self):
@@ -66,7 +68,7 @@ class MkxpConan(ConanFile):
 			self.requires("libalsa/1.1.9")
 		if not tools.os_info.is_windows:
 			# For Unix journal
-			self.requires("qt/6.2.4@queengooborg/stable")
+			self.requires("qt/5.15.3")
 			self.requires("freetype/2.11.1")
 			self.requires("harfbuzz/4.2.0")
 
