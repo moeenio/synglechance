@@ -1,4 +1,5 @@
 import os.path
+import shutil
 
 from conans import CMake, ConanFile, tools
 
@@ -91,6 +92,15 @@ class MkxpConan(ConanFile):
 
 		cmake.configure()
 		cmake.build()
+
+		if tools.os_info.is_macos:
+			qtplugins_dir = os.path.join(
+				self.deps_cpp_info['qt'].rootpath,
+				'bin',
+				'archdatadir',
+				'plugins'
+			)
+			shutil.copytree(qtplugins_dir, 'bin/_______.app/Contents/Plugins')
 
 	def build(self):
 		#if tools.os_info.is_windows:
