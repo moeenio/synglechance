@@ -10,7 +10,7 @@ class MkxpConan(ConanFile):
 	url = "https://github.com/GooborgStudios/synglechange"
 	description = "OneShot game runtime"
 	settings = "os", "compiler", "build_type", "arch"
-	generators = "cmake"
+	generators = "cmake", "qt"
 	exports_sources = "*"
 	requires = (
 		"boost/1.73.0",
