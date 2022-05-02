@@ -60,8 +60,6 @@ function(gp_item_default_embedded_path_override item default_embedded_path_var)
 	set(${default_embedded_path_var} "${path}" PARENT_SCOPE)
 endfunction(gp_item_default_embedded_path_override)
 
-# -- Copy the App bundle to the installation location first
-# EXECUTE_PROCESS(COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/patches/mac/CreateBundle.sh")
 
 # -- Run the BundleUtilities cmake code
 include(BundleUtilities)
