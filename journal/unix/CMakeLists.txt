@@ -54,6 +54,11 @@ target_link_libraries(${EXECUTABLE_NAME}
 	Qt5::Gui
 	${PLATFORM_LIBRARIES})
 
+if(APPLE)
+	# Need to link Qt print support for Cocoa
+	target_link_libraries(${EXECUTABLE_NAME} Qt5::PrintSupport)
+endif(APPLE)
+
 ## Make bundle ##
 
 set_target_properties(${EXECUTABLE_NAME} PROPERTIES
