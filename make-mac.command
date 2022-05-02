@@ -36,15 +36,15 @@ cd ..
 
 # Create app bundles
 echo "-> ${cyan}Create app bundles...${color_reset}"
-OSX_App="./build/bin/OneShot.app"
-ContentsDir="$OSX_App/Contents"
-LibrariesDir="$OSX_App/Contents/Libraries"
-ResourcesDir="$OSX_App/Contents/Resources"
+AppBundle="./build/bin/OneShot.app"
+ContentsDir="$AppBundle/Contents"
+LibrariesDir="$AppBundle/Contents/Libraries"
+ResourcesDir="$AppBundle/Contents/Resources"
 
-OSX_Journal_App="./build/bin/_______.app"
-JournalContentsDir="$OSX_Journal_App/Contents"
-JournalLibrariesDir="$OSX_Journal_App/Contents/Libraries"
-JournalResourcesDir="$OSX_Journal_App/Contents/Resources"
+JournalAppBundle="./build/bin/_______.app"
+JournalContentsDir="$JournalAppBundle/Contents"
+JournalLibrariesDir="$JournalAppBundle/Contents/Libraries"
+JournalResourcesDir="$JournalAppBundle/Contents/Resources"
 
 # create directories in the @target@.app bundle
 mkdir -p "$LibrariesDir"
@@ -54,8 +54,8 @@ mkdir -p "$JournalResourcesDir"
 
 # Steamshim
 if [[ $with_steamshim == true ]]; then
-	cp ./build/bin/steamshim $OSX_App/Contents/MacOS/steamshim
-	install_name_tool -change @loader_path/libsteam_api.dylib "$( cd "$(dirname "$0")" ; pwd -P )"/steamworks/redistributable_bin/osx/libsteam_api.dylib $OSX_App/Contents/macOS/steamshim
+	cp ./build/bin/steamshim $AppBundle/Contents/MacOS/steamshim
+	install_name_tool -change @loader_path/libsteam_api.dylib "$( cd "$(dirname "$0")" ; pwd -P )"/steamworks/redistributable_bin/osx/libsteam_api.dylib $AppBundle/Contents/macOS/steamshim
 fi
 
 # Move files into proper locations
