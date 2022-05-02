@@ -37,17 +37,19 @@ cd ..
 # Create app bundles
 echo "-> ${cyan}Create app bundles...${color_reset}"
 OSX_App="./build/bin/OneShot.app"
-OSX_Journal_App="./build/bin/_______.app"
 ContentsDir="$OSX_App/Contents"
 LibrariesDir="$OSX_App/Contents/Libraries"
-JournalLibrariesDir="$OSX_Journal_App/Contents/Libraries"
 ResourcesDir="$OSX_App/Contents/Resources"
+
+OSX_Journal_App="./build/bin/_______.app"
+JournalContentsDir="$OSX_Journal_App/Contents"
+JournalLibrariesDir="$OSX_Journal_App/Contents/Libraries"
 JournalResourcesDir="$OSX_Journal_App/Contents/Resources"
 
 # create directories in the @target@.app bundle
 mkdir -p "$LibrariesDir"
-mkdir -p "$JournalLibrariesDir"
 mkdir -p "$ResourcesDir"
+mkdir -p "$JournalLibrariesDir"
 mkdir -p "$JournalResourcesDir"
 
 # Steamshim
