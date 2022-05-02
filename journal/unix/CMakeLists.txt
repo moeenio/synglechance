@@ -49,7 +49,9 @@ add_executable(${EXECUTABLE_NAME}
 
 target_link_libraries(${EXECUTABLE_NAME}
 	CONAN_PKG::boost
-	CONAN_PKG::qt
+	Qt5::Core
+	Qt5::Widgets
+	Qt5::Gui
 	${PLATFORM_LIBRARIES})
 
 ## Make bundle ##
