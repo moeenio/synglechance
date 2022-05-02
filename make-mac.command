@@ -37,13 +37,18 @@ cd ..
 # Create app bundles
 echo "-> ${cyan}Create app bundles...${color_reset}"
 OSX_App="./build/bin/OneShot.app"
+OSX_Journal_App="./build/bin/_______.app"
 ContentsDir="$OSX_App/Contents"
 LibrariesDir="$OSX_App/Contents/Libraries"
+JournalLibrariesDir="$OSX_Journal_App/Contents/Libraries"
 ResourcesDir="$OSX_App/Contents/Resources"
+JournalResourcesDir="$OSX_Journal_App/Contents/Resources"
 
 # create directories in the @target@.app bundle
 mkdir -p "$LibrariesDir"
+mkdir -p "$JournalLibrariesDir"
 mkdir -p "$ResourcesDir"
+mkdir -p "$JournalResourcesDir"
 
 # Steamshim
 if [[ $with_steamshim == true ]]; then
@@ -53,14 +58,15 @@ fi
 
 # Move files into proper locations
 cp assets/icon.icns $OSX_App/Contents/Resources/icon.icns
-# cp assets/icon_journal.icns build/_______.app/Contents/Resources/icon_journal.icns
+cp assets/icon_journal.icns build/_______.app/Contents/Resources/icon_journal.icns
 cp steam_appid.txt $OSX_App/Contents/MacOS/steam_appid.txt
 cp patches/mac/oneshot.sh $OSX_App/Contents/MacOS/oneshot.sh
 cp -r build/lib/* $LibrariesDir
-# rm -f build/_______.app/Contents/Info.plist
-# cp build/JournalInfo.plist build/_______.app/Contents/Info.plist
+rm $LibrariesDir/libQt* # Qt is needed for the journal, not the main app
+cp -r build/lib/libQt* $JournalLibrariesDir
 
-# Complete OneShot bundle
-cmake -P patches/mac/CompleteBundle.cmake
+# Complete app bundles
+cmake -DBUNDLE_NAME="OneShot.app" -P patches/mac/CompleteBundle.cmake
+cmake -DBUNDLE_NAME="_______.app" -P patches/mac/CompleteBundle.cmake
 
 echo "\n${green}Complete!  ${white}Please report any issues to https://github.com/GooborgStudios/synglechance/issues${color_reset}"
