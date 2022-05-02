@@ -63,9 +63,6 @@ cp assets/icon.icns $ResourcesDir/icon.icns
 cp assets/icon_journal.icns $JournalResourcesDir/icon_journal.icns
 cp steam_appid.txt $ContentsDir/MacOS/steam_appid.txt
 cp patches/mac/oneshot.sh $ContentsDir/MacOS/oneshot.sh
-cp -r build/lib/* $LibrariesDir
-rm $LibrariesDir/libQt* # Qt is needed for the journal, not the main app
-cp -r build/lib/libQt* $JournalLibrariesDir
 
 # Complete app bundles
 cmake -DBUNDLE_NAME="OneShot.app" -P patches/mac/CompleteBundle.cmake
