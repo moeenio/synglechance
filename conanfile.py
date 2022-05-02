@@ -44,6 +44,7 @@ class MkxpConan(ConanFile):
 		# Avoid dead url bitrot in cygwin_installer
 		"cygwin_installer:with_pear=False",
 		"pixman:shared=True",
+		"qt:shared=True",
 		"qt:with_mysql=False",
 		"qt:with_zstd=False"
 	)
