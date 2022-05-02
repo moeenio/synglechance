@@ -57,10 +57,10 @@ if [[ $with_steamshim == true ]]; then
 fi
 
 # Move files into proper locations
-cp assets/icon.icns $OSX_App/Contents/Resources/icon.icns
-cp assets/icon_journal.icns build/_______.app/Contents/Resources/icon_journal.icns
-cp steam_appid.txt $OSX_App/Contents/MacOS/steam_appid.txt
-cp patches/mac/oneshot.sh $OSX_App/Contents/MacOS/oneshot.sh
+cp assets/icon.icns $ResourcesDir/icon.icns
+cp assets/icon_journal.icns $JournalResourcesDir/icon_journal.icns
+cp steam_appid.txt $ContentsDir/MacOS/steam_appid.txt
+cp patches/mac/oneshot.sh $ContentsDir/MacOS/oneshot.sh
 cp -r build/lib/* $LibrariesDir
 rm $LibrariesDir/libQt* # Qt is needed for the journal, not the main app
 cp -r build/lib/libQt* $JournalLibrariesDir
