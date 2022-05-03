@@ -60,7 +60,7 @@ fi
 
 # Move files into proper locations
 cp assets/icon.icns $ResourcesDir/icon.icns
-cp assets/icon_journal.icns $JournalResourcesDir/icon_journal.icns
+cp assets/icon_journal.icns $JournalResourcesDir/icon.icns
 cp steam_appid.txt $ContentsDir/MacOS/steam_appid.txt
 cp patches/mac/oneshot.sh $ContentsDir/MacOS/oneshot.sh
 
