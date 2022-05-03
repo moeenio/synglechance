@@ -38,13 +38,13 @@ cd ..
 echo "-> ${cyan}Create app bundles...${color_reset}"
 AppBundle="./build/bin/OneShot.app"
 ContentsDir="$AppBundle/Contents"
-LibrariesDir="$AppBundle/Contents/Libraries"
-ResourcesDir="$AppBundle/Contents/Resources"
+LibrariesDir="$ContentsDir/Libraries"
+ResourcesDir="$ContentsDir/Resources"
 
 JournalAppBundle="./build/bin/_______.app"
 JournalContentsDir="$JournalAppBundle/Contents"
-JournalLibrariesDir="$JournalAppBundle/Contents/Libraries"
-JournalResourcesDir="$JournalAppBundle/Contents/Resources"
+JournalLibrariesDir="$JournalContentsDir/Libraries"
+JournalResourcesDir="$JournalContentsDir/Resources"
 
 # create directories in the @target@.app bundle
 mkdir -p "$LibrariesDir"
@@ -67,5 +67,15 @@ cp patches/mac/oneshot.sh $ContentsDir/MacOS/oneshot.sh
 # Complete app bundles
 cmake -DBUNDLE_NAME="OneShot.app" -P patches/mac/CompleteBundle.cmake
 cmake -DBUNDLE_NAME="_______.app" -P patches/mac/CompleteBundle.cmake
+
+# Fixup Qt plugins (XXX hopefully there's a better way to do this)
+install_name_tool -change @rpath/libQt5PrintSupport.5.dylib @executable_path/../Libraries/libQt5PrintSupport.5.dylib ${JournalContentsDir}/Plugins/platforms/libqcocoa.dylib
+install_name_tool -change @rpath/libQt5Widgets.5.dylib @executable_path/../Libraries/libQt5Widgets.5.dylib ${JournalContentsDir}/Plugins/platforms/libqcocoa.dylib
+install_name_tool -change @rpath/libQt5Gui.5.dylib @executable_path/../Libraries/libQt5Gui.5.dylib ${JournalContentsDir}/Plugins/platforms/libqcocoa.dylib
+install_name_tool -change @rpath/libQt5Core.5.dylib @executable_path/../Libraries/libQt5Core.5.dylib ${JournalContentsDir}/Plugins/platforms/libqcocoa.dylib
+
+install_name_tool -change @rpath/libQt5Widgets.5.dylib @executable_path/../Libraries/libQt5Widgets.5.dylib ${JournalContentsDir}/Plugins/styles/libqmacstyle.dylib
+install_name_tool -change @rpath/libQt5Gui.5.dylib @executable_path/../Libraries/libQt5Gui.5.dylib ${JournalContentsDir}/Plugins/styles/libqmacstyle.dylib
+install_name_tool -change @rpath/libQt5Core.5.dylib @executable_path/../Libraries/libQt5Core.5.dylib ${JournalContentsDir}/Plugins/styles/libqmacstyle.dylib
 
 echo "\n${green}Complete!  ${white}Please report any issues to https://github.com/GooborgStudios/synglechance/issues${color_reset}"
