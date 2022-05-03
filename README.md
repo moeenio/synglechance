@@ -17,6 +17,8 @@ There are a few prerequesites you must install before proceeding.  They are:
 	- [AppImageTool](https://github.com/AppImage/AppImageKit)
 	- `sudo apt install libgtk2.0-dev libxfconf-0-dev python3-venv libxcb-xinerama`
 
+If you are compiling a version for Steam, you will also need to download the [Steamworks SDK](https://partner.steamgames.com/). Once you have downloaded it, place the folder in the project root and rename it to `steamworks`.
+
 Once you have installed these dependencies, Conan will take care of the remaining ones. Run the following commands to configure Conan:
 
 ```sh
