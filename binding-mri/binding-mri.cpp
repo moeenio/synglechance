@@ -3,7 +3,7 @@
 **
 ** This file is part of mkxp.
 **
-** Copyright (C) 2013 - 2021 Amaryllis Kulla <ancurio@mapleshrine.eu>
+** Copyright (C) 2013 Jonas Kulla <Nyocurio@gmail.com>
 **
 ** mkxp is free software: you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@
 #include <string>
 #include <zlib.h>
 
-#include <SDL_filesystem.h>
+#include <SDL2/SDL_filesystem.h>
 
 extern const char module_rpg1[];
 
@@ -82,8 +82,7 @@ void wallpaperBindingTerminate();
 void nikoBindingInit();
 void oneshotBindingInit();
 void steamBindingInit();
-void chromaBindingInit();
-
+void screenBindingInit();
 RB_METHOD(mriPrint);
 RB_METHOD(mriP);
 RB_METHOD(mkxpDataDirectory);
@@ -118,8 +117,7 @@ static void mriBindingInit()
 	nikoBindingInit();
 	oneshotBindingInit();
 	steamBindingInit();
-	chromaBindingInit();
-
+	screenBindingInit();
 	if (rgssVer >= 3)
 	{
 		_rb_define_module_function(rb_mKernel, "rgss_main", mriRgssMain);
@@ -157,6 +155,14 @@ static void mriBindingInit()
 		rb_gv_set("TEST", debug);
 
 	rb_gv_set("BTEST", rb_bool_new(shState->config().editor.battleTest));
+
+	// set environment variable for openssl to detect our cert bundle
+
+	rb_eval_string(
+		"if ENV['SSL_CERT_FILE'].nil?\n"
+		"    ENV['SSL_CERT_FILE'] = './lib/cacert.pem'\n"
+		"end\n"
+	);
 }
 
 static void
@@ -579,6 +585,8 @@ static void showExc(VALUE exc, const BacktraceData &btData)
 
 static void mriBindingExecute()
 {
+	Config &conf = shState->rtData().config;
+
 	/* Normally only a ruby executable would do a sysinit,
 	 * but not doing it will lead to crashes due to closed
 	 * stdio streams on some platforms (eg. Windows) */
@@ -587,9 +595,37 @@ static void mriBindingExecute()
 	ruby_sysinit(&argc, &argv);
 
 	ruby_setup();
-	rb_enc_set_default_external(rb_enc_from_encoding(rb_utf8_encoding()));
 
-	Config &conf = shState->rtData().config;
+	// setup ruby library paths
+	rb_eval_string(
+		"$LOAD_PATH.unshift(File.join(Dir.pwd, 'lib', 'ruby'))\n"
+		"$LOAD_PATH.unshift(File.join(Dir.pwd, 'lib', 'ruby', RUBY_PLATFORM))\n"
+	);
+
+	// we probably should only be calling this if we are a ruby executable
+	// but we need to initialize things like the prelude (provides important library functions like IO#read_nonblock
+	// Init_prelude is not exposed anywhere else
+
+	// the three arguments are the executable name, and the '-e ""' is to tell ruby to run an empty file
+	// otherwise (since this parses options for the ruby executable) it's gonna wait on stdin for code
+	// --jit enables the jit i think
+	std::vector<const char*> rubyArgsC{"oneshot"};
+	rubyArgsC.push_back("-e ");
+	void *node;
+	node = ruby_options(rubyArgsC.size(), const_cast<char**>(rubyArgsC.data()));
+
+    int state;
+    bool valid = ruby_executable_node(node, &state);
+    if (valid)
+        state = ruby_exec_node(node);
+    if (state || !valid) {
+        showMsg("An error occurred while initializing Ruby. (Invalid JIT settings?)");
+        ruby_cleanup(state);
+        shState->rtData().rqTermAck.set();
+        return;
+    }
+
+	rb_enc_set_default_external(rb_enc_from_encoding(rb_utf8_encoding()));
 
 	if (!conf.rubyLoadpaths.empty())
 	{

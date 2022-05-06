@@ -1,8 +1,8 @@
-name: Build ModShot Ubuntu
+name: Build Synglechance Ubuntu
 on: workflow_dispatch
 jobs:
   build-ubuntu:
-    name: Build ModShot for Linux
+    name: Build Synglechance for Linux
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -31,5 +31,5 @@ jobs:
         - name: Upload artifact
           uses: actions/upload-artifact@v2
           with:
-            name: modshot_build_ubuntu_rb-${{ matrix.ruby_ver }}_steam-${{ matrix.steam }}
+            name: synglechance_build_ubuntu_rb-${{ matrix.ruby_ver }}_steam-${{ matrix.steam }}
             path: ${{ runner.temp }}/built_artifact

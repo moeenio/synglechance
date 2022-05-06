@@ -12,7 +12,6 @@ endif
 global_include_dirs += include_directories('.')
 
 binding_source = [files(
-    'aleffect-binding.cpp',
     'audio-binding.cpp',
     'binding-mri.cpp',
     'binding-util.cpp',
@@ -23,7 +22,6 @@ binding_source = [files(
     'graphics-binding.cpp',
     'input-binding.cpp',
     'journal-binding.cpp',
-    'modshot-window-binding.cpp',
     'module_rpg.cpp',
     'niko-binding.cpp',
     'oneshot-binding.cpp',

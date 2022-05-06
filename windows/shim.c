@@ -3,7 +3,7 @@
 #include <errno.h>
 #include <stdio.h>
 
-const wchar_t *ARGV0 = "lib\\modshot.exe";
+const wchar_t *ARGV0 = "lib\\oneshot.exe";
 
 int WINAPI WinMain(HINSTANCE hInstance,
                    HINSTANCE hPrevInstance,
@@ -28,7 +28,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
         if(_wchdir(oneshotDir)) {
             MessageBoxW(NULL,
                 L"Changing working directory failed. This should never happen.\nFind rkevin and beat him with a stick.",
-                L"ModShot Shim",
+                L"Synglechance Shim",
                 MB_ICONERROR);
             printf("chdir errno: %d", errno);
         }
@@ -38,10 +38,10 @@ int WINAPI WinMain(HINSTANCE hInstance,
         argv[0] = ARGV0;
     }
 
-    _wexecv(L"lib\\modshot.exe", argv);
+    _wexecv(L"lib\\oneshot.exe", argv);
     MessageBoxW(NULL,
-        L"Cannot start ModShot for some reason.\nPlease check your ModShot installation.",
-        L"ModShot Shim",
+        L"Cannot start Synglechance for some reason.\nPlease check your Synglechance installation.",
+        L"Synglechance Shim",
         MB_ICONERROR);
     return 1;
 }

@@ -17,7 +17,6 @@ jpeg = dependency('libjpeg', static: build_static)
 tiff = dependency('libtiff-4', static: build_static)
 webp = dependency('libwebp', static: build_static)
 zlib = dependency('zlib', static: build_static)
-nsgif = dependency('libnsgif', static: build_static)
 
 if host_system == 'windows'
     bz2 = dependency('bzip2')
@@ -49,7 +48,6 @@ global_include_dirs += include_directories('.',
     'filesystem/headers',
     'graphics/headers',
     'input/headers',
-    'modshot/headers',
     'oneshot/headers',
     'opengl/headers',
     'rgss/headers',
@@ -57,7 +55,7 @@ global_include_dirs += include_directories('.',
     'util/headers'
 )
 
-global_dependencies += [boost, bz2, openal, zlib,  sdl2, sdl_sound, pixman, physfs, vorbisfile, vorbis, iconv, ogg, sdl2_ttf, sigcxx, sdl2_image, png, jpeg, nsgif, freetype, tiff, webp, harfbuzz]
+global_dependencies += [boost, bz2, openal, zlib,  sdl2, sdl_sound, pixman, physfs, vorbisfile, vorbis, iconv, ogg, sdl2_ttf, sigcxx, sdl2_image, png, jpeg, freetype, tiff, webp, harfbuzz]
 
 if host_system == 'windows'
     global_dependencies += compilers['cpp'].find_library('wsock32')
@@ -69,7 +67,6 @@ endif
 main_source = files(
     'audio/source/alstream.cpp',
 	'audio/source/audiostream.cpp',
-	'audio/source/audiochannels.cpp',
 	'audio/source/audio.cpp',
 	'audio/source/soundemitter.cpp',
 	'audio/source/sdlsoundsource.cpp',
@@ -82,8 +79,10 @@ main_source = files(
 	'graphics/source/font.cpp',
 	'graphics/source/sprite.cpp',
 	'graphics/source/scene.cpp',
+	'graphics/source/shader.cpp',
 	'graphics/source/tilemap.cpp',
 	'graphics/source/tileatlas.cpp',
+	'graphics/source/tilequad.cpp',
 	'graphics/source/window.cpp',
 	'graphics/source/viewport.cpp',
 	'graphics/source/plane.cpp',
@@ -94,11 +93,8 @@ main_source = files(
 	'opengl/source/gl-debug.cpp',
 	'opengl/source/gl-fun.cpp',
 	'opengl/source/gl-meta.cpp',
-	'opengl/source/shader.cpp',
 	'opengl/source/texpool.cpp',
 	'opengl/source/vertex.cpp',
-	'opengl/source/tilequad.cpp',
-	'modshot/source/display.cpp',
 	'oneshot/source/screen.cpp',
 	'oneshot/source/oneshot.cpp',
 	'oneshot/source/i18n.cpp',
@@ -107,7 +103,6 @@ main_source = files(
 	'thread/source/eventthread.cpp',
 	'thread/source/sharedstate.cpp',
 	'util/source/config.cpp',
-	'util/source/win-consoleutils.cpp',
 	'main.cpp'
 )
 

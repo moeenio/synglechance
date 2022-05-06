@@ -1,8 +1,8 @@
-name: Build ModShot Windows
+name: Build Synglechance Windows
 on: workflow_dispatch
 jobs:
   build-windows:
-    name: Build ModShot for Windows
+    name: Build Synglechance for Windows
     runs-on: windows-latest
     strategy:
       fail-fast: false
@@ -46,5 +46,5 @@ jobs:
         - name: Upload artifact
           uses: actions/upload-artifact@v2
           with:
-            name: modshot_build_windows_rb-${{ matrix.ruby_ver }}-${{ matrix.sys }}_steam-${{ matrix.steam }}
+            name: synglechance_build_windows_rb-${{ matrix.ruby_ver }}-${{ matrix.sys }}_steam-${{ matrix.steam }}
             path: ${{ runner.temp }}\built_artifact

@@ -87,22 +87,6 @@ $(DOWNLOADS)/ruby/configure: $(DOWNLOADS)/ruby/*.c
 $(DOWNLOADS)/ruby/*.c:
 	$(CLONE) $(GITHUB)/ruby/ruby $(DOWNLOADS)/ruby -b ruby_$(RUBY_BRANCH);
 
-libnsgif: init_dirs ${LIBDIR}/libnsgif.so
-
-$(LIBDIR)/libnsgif.so: $(DOWNLOADS)/libnsgif/Makefile
-	cd $(DOWNLOADS)/libnsgif; \
-	make -j$(NPROC); make install
-
-$(DOWNLOADS)/libnsgif/Makefile: $(DOWNLOADS)/libnsgif/configure
-	cd $(DOWNLOADS)/libnsgif; \
-	$(CONFIGURE)
-
-$(DOWNLOADS)/libnsgif/configure: $(DOWNLOADS)/libnsgif/autogen.sh
-	cd $(DOWNLOADS)/libnsgif; ./autogen.sh
-
-$(DOWNLOADS)/libnsgif/autogen.sh:
-	$(CLONE) $(GITHUB)/jcupitt/libnsgif-autotools $(DOWNLOADS)/libnsgif
-
 # ====
 init_dirs:
 	@mkdir -p $(LIBDIR) $(INCLUDEDIR)
@@ -112,5 +96,5 @@ powerwash: clean-downloads
 clean-downloads:
 	-rm -rf downloads
 
-deps-core: sdlsound iconv libnsgif
+deps-core: sdlsound iconv
 everything: deps-core ruby
