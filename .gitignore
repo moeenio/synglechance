@@ -19,8 +19,6 @@ lib/
 *.dir/
 x64/
 
-Makefile*
-
 /oneshot
 /steamshim_parent/steamshim
 
@@ -55,3 +53,4 @@ JournalInfo.plist
 oclint/
 
 steamworks/
+out/

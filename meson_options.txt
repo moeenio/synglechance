@@ -1,0 +1,12 @@
+option('mri_version', type: 'string', value: '3.1', description: 'Version of MRI to link with')
+option('mri_includes', type: 'string', value: '', description: 'Ruby manual include path')
+option('mri_libpath', type: 'string', value: '', description: 'Ruby manual lib path')
+option('mri_library', type: 'string', value: '', description: 'Ruby manual link name')
+
+option('workdir_current', type: 'boolean', value: false, description: 'Keep current directory on startup')
+
+option('steam', type: 'boolean', value: false, description: 'Add steamworks support')
+
+option('build_static', type: 'boolean', value: true, description: 'Use static libraries')
+
+option('gfx_backend', type: 'combo', value: 'gl', choices: ['gl', 'gles'], description: 'Graphics rendering API to use.')
