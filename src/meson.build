@@ -4,7 +4,7 @@ openal = dependency('openal')
 vorbisfile = dependency('vorbisfile', static: build_static)
 vorbis = dependency('vorbis', static: build_static)
 ogg = dependency('ogg', static: build_static)
-sdl2 = dependency('SDL2')
+sdl2 = dependency('SDL2', method: 'config-tool')
 freetype = dependency('freetype2', static: build_static)
 harfbuzz = dependency('harfbuzz', static: build_static)
 sdl_sound = dependency('SDL2_sound', static: build_static)
@@ -19,53 +19,56 @@ webp = dependency('libwebp', static: build_static)
 zlib = dependency('zlib', static: build_static)
 
 if host_system == 'windows'
-    bz2 = dependency('bzip2')
+	bz2 = dependency('bzip2')
 	iconv = compilers['cpp'].find_library('iconv')
 else
-    bz2 = compilers['cpp'].find_library('bz2')
-	iconv = compilers['cpp'].find_library('iconv')
-    gtk = dependency('gtk+-2.0')
-    xfconf = dependency('libxfconf-0')
+	if host_system == 'linux'
+		gtk = dependency('gtk+-2.0')
+	    xfconf = dependency('libxfconf-0')
 
-	global_dependencies += [gtk, xfconf]
+		global_dependencies += [gtk, xfconf]
+	endif
+
+	bz2 = compilers['cpp'].find_library('bz2')
+	iconv = compilers['cpp'].find_library('iconv')
 endif
 
 # Windows needs to be treated like a special needs child here
 explicit_libs = ''
 if host_system == 'windows'
-    # Newer versions of Ruby will refuse to link without these
-    explicit_libs += 'libmsvcrt;libgcc;libmingwex;libgmp;'
+	# Newer versions of Ruby will refuse to link without these
+	explicit_libs += 'libmsvcrt;libgcc;libmingwex;libgmp;'
 endif
 
 foreach l : explicit_libs.split(';')
-        if l != ''
-            global_link_args += '-l:' + l + '.a'
-        endif
+		if l != ''
+			global_link_args += '-l:' + l + '.a'
+		endif
 endforeach
 
 global_include_dirs += include_directories('.',
-    'audio/headers',
-    'filesystem/headers',
-    'graphics/headers',
-    'input/headers',
-    'oneshot/headers',
-    'opengl/headers',
-    'rgss/headers',
-    'thread/headers',
-    'util/headers'
+	'audio/headers',
+	'filesystem/headers',
+	'graphics/headers',
+	'input/headers',
+	'oneshot/headers',
+	'opengl/headers',
+	'rgss/headers',
+	'thread/headers',
+	'util/headers'
 )
 
 global_dependencies += [boost, bz2, openal, zlib,  sdl2, sdl_sound, pixman, physfs, vorbisfile, vorbis, iconv, ogg, sdl2_ttf, sigcxx, sdl2_image, png, jpeg, freetype, tiff, webp, harfbuzz]
 
 if host_system == 'windows'
-    global_dependencies += compilers['cpp'].find_library('wsock32')
-    global_dependencies += compilers['cpp'].find_library('winmm')
-    global_dependencies += compilers['cpp'].find_library('Secur32')
-    global_dependencies += compilers['cpp'].find_library('Shlwapi')
+	global_dependencies += compilers['cpp'].find_library('wsock32')
+	global_dependencies += compilers['cpp'].find_library('winmm')
+	global_dependencies += compilers['cpp'].find_library('Secur32')
+	global_dependencies += compilers['cpp'].find_library('Shlwapi')
 endif
 
 main_source = files(
-    'audio/source/alstream.cpp',
+	'audio/source/alstream.cpp',
 	'audio/source/audiostream.cpp',
 	'audio/source/audio.cpp',
 	'audio/source/soundemitter.cpp',
@@ -109,19 +112,19 @@ main_source = files(
 global_sources += main_source
 
 if steam == true
-    global_sources += files(
-        'steam/steam.cpp',
-        '../steamshim/steamshim_child.c'
-    )
-    global_include_dirs += include_directories(
-        'steam',
-        '../steamshim'
-    )
+	global_sources += files(
+		'steam/source/steam.cpp',
+		'../steamshim/steamshim_child.c'
+	)
+	global_include_dirs += include_directories(
+		'steam',
+		'../steamshim'
+	)
 
-    global_args += '-DSTEAM'
+	global_args += '-DSTEAM'
 endif
 
 if host_system == 'windows'
 else
-    global_sources += files('oneshot/source/xdg-user-dir-lookup.c')
+	global_sources += files('oneshot/source/xdg-user-dir-lookup.c')
 endif
