@@ -74,7 +74,7 @@ class MkxpConan(ConanFile):
 			self.requires("freetype/2.12.1")
 			self.requires("harfbuzz/4.4.1")
 			self.requires("glib/2.75.0")
-			self.requires("pcre2/10.40")
+			self.requires("pcre2/10.42")
 			self.requires("double-conversion/3.2.1")
 
 	def configure(self):
