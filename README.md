@@ -22,7 +22,6 @@ If you are compiling a version for Steam, you will also need to download the [St
 Once you have installed these dependencies, Conan will take care of the remaining ones. Run the following commands to configure Conan:
 
 ```sh
-conan remote add eliza https://rkevin.jfrog.io/artifactory/api/conan/eliza
 conan remote add queengooborg https://queengooborg.jfrog.io/artifactory/api/conan/default-conan
 conan remote add bincrafters https://bincrafters.jfrog.io/artifactory/api/conan/public-conan
 conan config set general.revisions_enabled=1
