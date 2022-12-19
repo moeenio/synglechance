@@ -16,20 +16,21 @@ class MkxpConan(ConanFile):
 	requires = (
 		"boost/1.73.0",
 		"openal/1.21.1",
-		"physfs/3.0.1@bincrafters/stable",
-		"pixman/0.38.0@bincrafters/stable",
+		"physfs/3.0.2",
+		"pixman/0.40.0",
 		"ruby/2.7.5@queengooborg/stable",
-		"sdl2/2.0.16@bincrafters/stable",
-		"sdl2_image/2.0.5@bincrafters/stable",
-		"sdl2_ttf/2.0.15@bincrafters/stable",
+		"sdl/2.26.0",
+		"sdl_image/2.0.5",
+		"sdl_ttf/2.0.18",
 		"sdl_sound-mkxp/1.0.1@queengooborg/stable",
 		"sigc++/2.10.0@bincrafters/stable",
 		# Overrides
-		"libpng/1.6.37",
-		"zlib/1.2.11",
+		"libpng/1.6.39",
+		"zlib/1.2.13",
 		"bzip2/1.0.8",
-		"libiconv/1.16",
-		"openssl/1.1.1m"
+		"libiconv/1.17",
+		"openssl/1.1.1s",
+		"ogg/1.3.5"
 	)
 	if tools.os_info.is_windows:
 		build_requires = ("ruby_installer/2.7.3@bincrafters/stable", )
@@ -63,16 +64,18 @@ class MkxpConan(ConanFile):
 				raise Error("steamworks not found. Please download from https://partner.steamgames.com/dashboard and put in project root.")
 		if tools.os_info.is_linux:
 			# Overrides
-			self.requires("sqlite3/3.29.0")
+			self.requires("sqlite3/3.40.0")
 			self.requires("flac/1.3.3")
-			self.requires("ogg/1.3.4")
-			self.requires("vorbis/1.3.6")
-			self.requires("libalsa/1.1.9")
+			self.requires("vorbis/1.3.7")
+			self.requires("libalsa/1.2.7.2")
 		if not tools.os_info.is_windows:
 			# For Unix journal
-			self.requires("qt/5.15.3")
-			self.requires("freetype/2.11.1")
-			self.requires("harfbuzz/4.2.0")
+			self.requires("qt/5.15.4")
+			self.requires("freetype/2.12.1")
+			self.requires("harfbuzz/4.4.1")
+			self.requires("glib/2.75.0")
+			self.requires("pcre2/10.40")
+			self.requires("double-conversion/3.2.1")
 
 	def configure(self):
 		self.options["openal"].shared = True
