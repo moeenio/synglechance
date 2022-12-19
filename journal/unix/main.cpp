@@ -14,6 +14,7 @@
 
 #include <QApplication>
 #include <boost/filesystem.hpp>
+#include <physfs.h>
 
 #include "journal.h"
 #include "niko.h"
@@ -34,8 +35,9 @@ fs::path getPipePath(bool nikoMode = false) {
 	#ifdef _WIN32
 		return fs::path("\\\\.\\pipe\\oneshot-journal-to-game");
 	#else
+		const char *prefPath = PHYSFS_getPrefDir(".", "Oneshot");
 		std::string filename = (nikoMode ? ".oneshot-niko-pipe" : ".oneshot-pipe");
-		return fs::path(getpwuid(getuid())->pw_dir) / filename;
+		return fs::path(prefPath()) / filename;
 	#endif
 }
 
