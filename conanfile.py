@@ -81,6 +81,8 @@ class MkxpConan(ConanFile):
 		self.options["openal"].shared = True
 		self.options["sdl2"].shared = True
 		self.options["libiconv"].shared = True
+		self.options["pcre2"].shared = True
+		self.options["double-conversion"].shared = True
 
 	def build_configure(self):
 		cmake = CMake(self, msbuild_verbosity='minimal')
