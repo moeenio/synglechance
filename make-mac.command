@@ -20,19 +20,26 @@ color_reset="\033[0m"   # Reset Colors
 
 echo "${white}Compiling ${bold}SyngleChance v${mac_version} ${white}engine for macOS...${color_reset}\n"
 
-mkdir -p build
+# Clean build directory
+echo "-> ${cyan}Removing build folder...${color_reset}"
+rm -rf build
+
+# Generate makefile and build
+
+# echo "-> ${cyan}Install dependencies...${color_reset}"
+# conan install .. --build=missing -o platform=$([ $with_steamshim == true ] && echo "steam" || echo "standalone") -o debug=$([ $debug == true ] && echo "True" || echo "False") -s arch=$([ $arm == true ] && echo "armv8" || echo "x86_64") -s os.version=$([ $arm == true ] && echo "11.0" || echo "10.13")
+
+echo "-> ${cyan}Configuring build...${color_reset}"
+BOOST_ROOT=$(brew --prefix boost) meson build -Dmri_version=3.1 -Dsteam=${with_steamshim}
+echo "-> ${cyan}Compiling engine...${color_reset}"
+# conan build ..
 cd build
+ninja install
+cd ..
 
 # Set version number -- being replaced by CMake steps
 echo "-> ${cyan}Set version number...${color_reset}"
-m4 ../patches/mac/JournalInfo.plist.in -DONESHOTMACVERSION=$mac_version > ./JournalInfo.plist
-
-# Generate makefile and build
-echo "-> ${cyan}Install dependencies...${color_reset}"
-conan install .. --build=missing -o platform=$([ $with_steamshim == true ] && echo "steam" || echo "standalone") -o debug=$([ $debug == true ] && echo "True" || echo "False") -s arch=$([ $arm == true ] && echo "armv8" || echo "x86_64") -s os.version=$([ $arm == true ] && echo "11.0" || echo "10.13")
-echo "-> ${cyan}Compile engine...${color_reset}"
-conan build ..
-cd ..
+m4 patches/mac/JournalInfo.plist.in -DONESHOTMACVERSION=$mac_version > ./build/JournalInfo.plist
 
 # Create app bundles
 echo "-> ${cyan}Create app bundles...${color_reset}"
