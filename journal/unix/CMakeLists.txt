@@ -49,6 +49,7 @@ add_executable(${EXECUTABLE_NAME}
 
 target_link_libraries(${EXECUTABLE_NAME}
 	CONAN_PKG::boost
+	CONAN_PKG::physfs
 	Qt5::Core
 	Qt5::Widgets
 	Qt5::Gui

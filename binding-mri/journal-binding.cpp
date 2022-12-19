@@ -3,6 +3,7 @@
 #include "pipe.h"
 #include "debugwriter.h"
 #include "i18n.h"
+#include "sharedstate.h"
 
 //OS-Specific code
 #if defined _WIN32
@@ -39,7 +40,7 @@ static volatile bool active = false;
 static volatile int message_len = 0;
 
 #ifdef LINUX
-	static std::string PIPE_PATH = std::string(getpwuid(getuid())->pw_dir) + "/.oneshot-pipe";
+	static std::string PIPE_PATH = shState->config().commonDataPath + "/.oneshot-pipe";
 	static volatile int out_pipe = -1;
 	void cleanup_pipe()
 	{
