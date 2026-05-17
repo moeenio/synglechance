@@ -30,7 +30,7 @@ else
 	endif
 
 	bz2 = compilers['cpp'].find_library('bz2')
-	iconv = compilers['cpp'].find_library('iconv')
+	#iconv = compilers['cpp'].find_library('iconv')
 endif
 
 # Windows needs to be treated like a special needs child here
@@ -58,7 +58,8 @@ global_include_dirs += include_directories('.',
 	'util/headers'
 )
 
-global_dependencies += [boost, bz2, openal, zlib,  sdl2, sdl_sound, pixman, physfs, vorbisfile, vorbis, iconv, ogg, sdl2_ttf, sigcxx, sdl2_image, png, jpeg, freetype, tiff, webp, harfbuzz]
+# global_dependencies += [boost, bz2, openal, zlib,  sdl2, sdl_sound, pixman, physfs, vorbisfile, vorbis, iconv, ogg, sdl2_ttf, sigcxx, sdl2_image, png, jpeg, freetype, tiff, webp, harfbuzz]
+global_dependencies += [boost, bz2, openal, zlib,  sdl2, sdl_sound, pixman, physfs, vorbisfile, vorbis, ogg, sdl2_ttf, sigcxx, sdl2_image, png, jpeg, freetype, tiff, webp, harfbuzz]
 
 if host_system == 'windows'
 	global_dependencies += compilers['cpp'].find_library('wsock32')
