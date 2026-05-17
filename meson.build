@@ -31,10 +31,13 @@ endif
 # ====================
 
 # Suppress warnings
+'''
 global_args += ['-Wno-non-virtual-dtor', '-Wno-reorder', '-Wno-uninitialized', '-Wno-unknown-pragmas', '-Wno-stringop-truncation', '-Wno-parentheses', '-Wno-sign-compare', '-Wno-misleading-indentation']
 if compilers['cpp'].get_id() == 'clang'
     global_args += ['-Wno-undefined-var-template', '-Wno-delete-non-abstract-non-virtual-dtor']
 endif
+'''
+global_args += ['-Wall']
 if host_system == 'windows'
     if compilers['cpp'].get_id() != 'clang'
         global_args += '-masm=intel'
@@ -87,6 +90,7 @@ executable(exe_name,
     cpp_args: global_args,
     objc_args: global_args,
     objcpp_args: global_args,
+    pie: true,
     win_subsystem: 'windows',
     install: (host_system != 'windows')
 )
