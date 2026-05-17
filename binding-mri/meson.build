@@ -3,11 +3,13 @@ if get_option('mri_includes') == ''
     if ver.version_compare('>=3.0') and compilers['cpp'].get_id() == 'clang'
         global_args += '-fdeclspec'
     endif
-    global_dependencies += dependency('ruby-' + ver)
+    global_dependencies += dependency('ruby')
 else
     global_args += ('-I' + get_option('mri_includes'))
     global_dependencies += compilers['cpp'].find_library(get_option('mri_library'), dirs: get_option('mri_libpath'))
 endif
+
+global_args += '-DRUBY_DONT_SUBST'
 
 global_include_dirs += include_directories('.')
 
