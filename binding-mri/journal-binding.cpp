@@ -3,6 +3,7 @@
 #include "pipe.h"
 #include "debugwriter.h"
 #include "i18n.h"
+#include "config.h"
 #include "sharedstate.h"
 
 //OS-Specific code
@@ -40,7 +41,7 @@ static volatile bool active = false;
 static volatile int message_len = 0;
 
 #ifdef LINUX
-	static std::string PIPE_PATH = shState->config().commonDataPath + "/.oneshot-pipe";
+	static std::string PIPE_PATH = "";
 	static volatile int out_pipe = -1;
 	void cleanup_pipe()
 	{
@@ -172,6 +173,7 @@ void journalBindingInit()
 	memset((char*)lang_buffer, 0, BUFFER_SIZE);
 	lang_buffer[0] = '_';
 #if defined __linux
+	PIPE_PATH = shState->config().commonDataPath + "/.oneshot-pipe";
 	mkfifo(PIPE_PATH.c_str(), 0666);
 	atexit(cleanup_pipe);
 #endif
