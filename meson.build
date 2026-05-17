@@ -1,4 +1,4 @@
-project('oneshot', 'c', 'cpp', version: '1.0.0', meson_version: '>=0.56.0', default_options: ['cpp_std=c++14', 'buildtype=release'])
+project('oneshot', 'c', 'cpp', version: '1.0.0', meson_version: '>=1.1', default_options: ['cpp_std=c++14', 'buildtype=release'])
 
 host_system = host_machine.system()
 
@@ -80,7 +80,6 @@ else
 endif
 
 exe_name = meson.project_name()
-
 executable(exe_name,
     sources: global_sources,
     dependencies: global_dependencies,
