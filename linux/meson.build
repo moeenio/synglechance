@@ -1,2 +1,3 @@
-meson.add_install_script('install.sh', meson.project_name(), get_option('mri_version'))
-
+if get_option('copy_libs') == true
+    meson.add_install_script('install.sh', meson.project_name(), get_option('mri_version'))
+endif

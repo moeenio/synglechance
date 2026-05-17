@@ -10,3 +10,5 @@ option('steam', type: 'boolean', value: false, description: 'Add steamworks supp
 option('build_static', type: 'boolean', value: false, description: 'Use static libraries')
 
 option('gfx_backend', type: 'combo', value: 'gl', choices: ['gl', 'gles'], description: 'Graphics rendering API to use.')
+
+option('copy_libs', type: 'boolean', value: true, description: 'Copy all dependencies to the install directory, for AppImage build.')
