@@ -1,10 +1,8 @@
-cmake_minimum_required(VERSION 3.0)
-cmake_policy(VERSION 3.0)
+cmake_minimum_required(VERSION 4.2)
+cmake_policy(VERSION 4.2)
 
 project(OneShot_Journal VERSION 1.2.0 LANGUAGES CXX)
 set(EXECUTABLE_NAME "_______")
-
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 
 ## Setup options ##
 
@@ -48,8 +46,8 @@ add_executable(${EXECUTABLE_NAME}
 ## Link packages ##
 
 target_link_libraries(${EXECUTABLE_NAME}
-	CONAN_PKG::boost
-	CONAN_PKG::physfs
+	boost
+	physfs
 	Qt5::Core
 	Qt5::Widgets
 	Qt5::Gui

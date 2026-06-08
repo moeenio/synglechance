@@ -1,4 +1,9 @@
+project('journal', 'cpp')
+
 journal_dependencies = []
+
+boost = dependency('boost', version: '>=1.49', modules: ['filesystem'])
+physfs = dependency('physfs', version: '>=2.1')
 
 qt5 = import('qt5')
 qt5_dep = dependency('qt5', modules: ['Core', 'Widgets', 'Gui'])

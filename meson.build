@@ -1,5 +1,7 @@
 project('oneshot', 'c', 'cpp', version: '1.0.0', meson_version: '>=1.1', default_options: ['cpp_std=c++14', 'buildtype=release'])
 
+journal = subproject('journal-unix')
+
 host_system = host_machine.system()
 
 xxd = find_program('xxd', native: true)
