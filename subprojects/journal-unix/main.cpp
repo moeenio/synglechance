@@ -37,46 +37,8 @@ fs::path getPipePath(bool nikoMode = false) {
 	#else
 		const char *prefPath = PHYSFS_getPrefDir(".", "Oneshot");
 		std::string filename = (nikoMode ? ".oneshot-niko-pipe" : ".oneshot-pipe");
-		return fs::path(prefPath()) / filename;
+		return fs::path(prefPath) / filename;
 	#endif
-}
-
-std::string checkSaveProgress() {
-	std::string documentsPath;
-	#ifdef _WIN32
-		WCHAR path[MAX_PATH];
-		SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, 0, path);
-		documentsPath = std::string(path);
-	#elif defined __APPLE__
-		documentsPath = std::string(getenv("HOME")) + "/Documents";
-	#elif defined __linux__
-		documentsPath = std::string(xdg_user_dir_lookup("DOCUMENTS"));
-	#else
-		#error OS is unsupported!
-	#endif
-
-	fs::path filePath = fs::path(documentsPath) / "OneShot" / "save_progress.oneshot";
-
-	if (fs::exists(filePath)) {
-		fs::ifstream file(filePath, std::ios::in | std::ios::binary);
-
-		std::string search("HeyNoxidHeresTheLanguage[");
-		std::string line;
-
-		while(std::getline(file, line)) {
-			std::size_t searchResult = line.find(search);
-			if (searchResult != std::string::npos) {
-				line = line.substr(line.find(search)+search.length());
-				std::string lang = line.substr(0, line.length()-1);
-				file.close();
-				return lang == "en_US" ? std::string("en") : lang;
-			}
-		}
-
-		file.close();
-	}
-
-	return "";
 }
 
 int doNiko(int argc, char *argv[]) {
