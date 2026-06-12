@@ -6,20 +6,21 @@
  */
 
 #include "pipe.h"
+#include <fstream>
 
 PipeWatcher::PipeWatcher(fs::path pipePath, QWidget *parent) : QThread(parent), pipePath(pipePath) {}
 
 void PipeWatcher::run() {
 	while (!this->isInterruptionRequested()) {
 		// Create empty file
-		fs::ofstream pipeCreate(this->pipePath, std::ios::trunc);
+		std::ofstream pipeCreate(this->pipePath.native(), std::ios::trunc);
 		pipeCreate.close();
 
 		std::streampos currentPos = 0, lastPos = 0;
 
 		while (fs::exists(pipePath) && !this->isInterruptionRequested()) {
 			// While pipe exists, get contents
-			fs::ifstream pipe(this->pipePath, std::ios::ate);
+			std::ifstream pipe(this->pipePath.native(), std::ios::ate);
 
 			currentPos = pipe.tellg();
 			if (currentPos != lastPos) {

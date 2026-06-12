@@ -6,6 +6,7 @@
  */
 
 #include "journal.h"
+#include <array>
 
 WatchPipe::WatchPipe(fs::path pipePath, QWidget *parent) : PipeWatcher(pipePath, parent) {}
 
