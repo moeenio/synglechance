@@ -1,9 +1,10 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 from pathlib import Path
 import os, sys, time
 
-from PyQt6.QtCore import Qt, QEvent, QThread, pyqtSignal, QRect, QRectF, QTimer, QPoint
+from PyQt6.QtCore import Qt, QEvent, QThread, pyqtSignal, QRect, QRectF, QTimer, QPoint, QStandardPaths
 from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QAbstractButton
 from PyQt6.QtGui import QIcon, QPixmap, QPainter, QCursor, QColor
 
@@ -14,8 +15,14 @@ def get_documents_path():
 		ctypes.windll.shell32.SHGetFolderPathW(None, CSIDL_PERSONAL, None, SHGFP_TYPE_CURRENT, buff)
 		return os.path.join(buff.value, 'My Games')
 	elif sys.platform == 'linux':
-		from gi.repository import GLib
-		return GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_DOCUMENTS)
+		path = QStandardPaths.locate(
+			QStandardPaths.StandardLocation.DocumentsLocation,
+			None,
+			QStandardPaths.LocateOption.LocateDirectory
+		)
+		if path == "":
+			raise FileNotFoundError()
+		return path
 	else:
 		return os.path.expanduser('~/Documents')
 
