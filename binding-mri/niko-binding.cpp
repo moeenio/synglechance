@@ -45,7 +45,7 @@ static volatile bool active = false;
 static volatile int message_len = 0;
 
 #ifdef LINUX
-	static std::string NIKO_PIPE_PATH = "";
+	static std::string NIKO_PIPE_PATH = std::string(getpwuid(getuid())->pw_dir) + "/.oneshot-niko-pipe";
 	static volatile int out_pipe = -1;
 	void niko_cleanup_pipe()
 	{
@@ -198,7 +198,6 @@ void nikoBindingInit()
 {
 	mutex = SDL_CreateMutex();
 #if defined __linux
-	NIKO_PIPE_PATH = shState->config().commonDataPath + "/.oneshot-niko-pipe";
 	mkfifo(NIKO_PIPE_PATH.c_str(), 0666);
 	atexit(niko_cleanup_pipe);
 #endif
