@@ -48,17 +48,19 @@ elif sys.platform == 'linux':
 		pass
 
 def get_img_path():
+	# if we're running a pyinstaller build
 	if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
 		base_path = Path(sys._MEIPASS)
 		if sys.platform == 'darwin':
 			base_path = Path(base_path, '..', '..', '..')
 	else:
-		# XXX Not supposed to be run without PyInstaller bundle
-		# img_path = Path(__file__, '..', 'images').resolve()
-		base_path = Path(Path.home(), "Library/Application Support/Steam/SteamApps/common/OneShot").resolve()
+		# NOTE: this will likely not work on mac, you should pyinstall it instead
+		# previous commits may have a working version for non-pyinstall on mac.
+		base_path = Path(__file__, '..').resolve()
 	return Path(base_path, 'Graphics', 'Journal').resolve()
 
 img_path = get_img_path()
+print("Image path:", img_path)
 
 def loadBMP(img):
 	pixmap = QPixmap(img)
@@ -219,10 +221,13 @@ class Journal(QWidget):
 		else:
 			self.close_button.hide()
 
+		# TODO: check for bmps and use them if present.
+		# the steam release reportedly uses bmps
+		# alternatively, convert the images in this repo to bmp
 		if lang == 'en':
-			img = os.path.join(img_path, '{}.bmp'.format(name))
+			img = os.path.join(img_path, '{}.png'.format(name))
 		else:
-			img = os.path.join(img_path, lang.upper(), '{}.bmp'.format(name))
+			img = os.path.join(img_path, lang.upper(), '{}.png'.format(name))
 		
 		if not os.path.exists(img):
 			return
