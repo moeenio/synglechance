@@ -221,9 +221,9 @@ class Journal(QWidget):
 		else:
 			self.close_button.hide()
 
-		# TODO: check for bmps and use them if present.
-		# the steam release reportedly uses bmps
-		# alternatively, convert the images in this repo to bmp
+		# TODO: the steam release reportedly includes bmp images
+		# # if that is the case, and they're in some way better than the images
+		# in this repo, then use them  (change extension)
 		if lang == 'en':
 			img = os.path.join(img_path, '{}.png'.format(name))
 		else:
