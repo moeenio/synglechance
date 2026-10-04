@@ -253,7 +253,7 @@ class Niko(QWidget):
 		self.setMaximumSize(48, 64)
 
 		self.frames = [
-			loadBMP(os.path.join(img_path, 'niko{}.bmp'.format(n))) for n in range(1,4)
+			loadBMP(os.path.join(img_path, 'niko{}.png'.format(n))) for n in range(1,4)
 		]
 
 		self.label = QLabel(self)
@@ -283,6 +283,7 @@ class Niko(QWidget):
 		self.move(self.x, self.y)
 
 if __name__ == '__main__':
+	print("Niko mode")
 	app = QApplication(sys.argv)
 
 	pipe_path = get_pipe_path()
