@@ -2,76 +2,10 @@
 
 This is a specialized fork of [mkxp by Ancurio](https://github.com/Ancurio/mkxp) designed for [*OneShot*](http://oneshot-game.com/).
 
-## Prepare
-
-There are a few prerequesites you must install before proceeding.  They are:
-
-- [Conan](https://conan.io/downloads.html)
-- [CMake](https://cmake.org/)
-- Windows only:
-	- Visual Studio
-- macOS only:
-	- Xcode
-- Linux only:
-	- [linuxdeploy](https://github.com/linuxdeploy/linuxdeploy)
-	- [AppImageTool](https://github.com/AppImage/AppImageKit)
-	- `sudo apt install libgtk2.0-dev libxfconf-0-dev python3-venv libxcb-xinerama`
-
-If you are compiling a version for Steam, you will also need to download the [Steamworks SDK](https://partner.steamgames.com/). Once you have downloaded it, place the folder in the project root and rename it to `steamworks`.
-
-Once you have installed these dependencies, Conan will take care of the remaining ones. Run the following commands to configure Conan:
-
-```sh
-conan remote add queengooborg https://queengooborg.jfrog.io/artifactory/api/conan/default-conan
-conan remote add bincrafters https://bincrafters.jfrog.io/artifactory/api/conan/public-conan
-conan config set general.revisions_enabled=1
-```
-
-On Windows, additionally run the following:
-
-```sh
-setx CONAN_USE_ALWAYS_SHORT_PATHS 1
-```
-
-## Building
-
-Building the engine is tested and supported on Windows, macOS, and Ubuntu Linux.
-
-### Windows
-
-Launch a command prompt that can run Visual Studio commands.  The easiest way to do this is to open Visual Studio and click `Tools` -> `Command Line` -> `Developer Command Prompt` (or `Developer PowerShell` if prefered).  Then, run the following commands:
-
-```sh
-mkdir build
-cd build
-conan install .. --build=missing
-conan build ..
-```
-
-### macOS
-
-All of the steps on macOS are automated by a single command.  Simply run the following:
-
-```sh
-./make-mac.command
-```
-
-### Linux
-
-```sh
-./make-linux.sh
-./make-appimage.sh . build </path/to/game/files> /build/_______ /build/_______.AppImage`
-```
-
-## Installation
-
-Simply copy the generated binaries in the `build/` folder to your OneShot game folder, available through Steam.  By design, the game will not run without a copy of the game through Steam.
-
-Installation is automatic using the following command on macOS or Linux:
-```sh
-./install-mac.command # macOS
-./install-linux.sh # Linux
-```
+## Building & Installation
+This branch only explicitly supports building with on Linux, with Meson, in
+[a specific Flatpak environment](https://codeberg.org/moeenio/notcatbox/src/branch/main/org.colescaut.notcatbox.yml).
+Conan doesn't work, and Linux distribution packages do not have the required Ruby version. I don't know about Windows and Mac.
 
 ## Running OneShot
 
