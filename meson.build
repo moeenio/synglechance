@@ -1,8 +1,8 @@
 project('oneshot', 'c', 'cpp', version: '1.0.0', meson_version: '>=1.1', default_options: ['cpp_std=c++14', 'buildtype=release'])
 
-# this compiles, but does not run.
-# i'm using the journal/unix_pyqt instead
-# journal = subproject('journal-unix')
+# the journal is not covered by Meson.
+# it simply runs with the Python interpreter provided by
+# the Flatpak environment - see README.
 
 host_system = host_machine.system()
 
